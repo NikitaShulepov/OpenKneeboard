@@ -1,6 +1,6 @@
 ExternalProject_Add(
   OTDIPCFetch
-  GIT_REPOSITORY "https://github.com/VDXROVR/OTD-IPC.git"
+  GIT_REPOSITORY "https://github.com/OpenKneeboard/OTD-IPC.git"
   GIT_TAG "f32a777c0b456d74a895defb1101be31b09aea29"
   CONFIGURE_COMMAND ""
   BUILD_COMMAND ""

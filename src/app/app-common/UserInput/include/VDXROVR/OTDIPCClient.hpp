@@ -27,7 +27,7 @@ namespace VDXROVR {
 /**
  * OpenTabletDriver-IPC Tablet
  *
- * https://github.com/VDXROVR/OTD-IPC
+ * https://github.com/OpenKneeboard/OTD-IPC
  */
 class OTDIPCClient final : public std::enable_shared_from_this<OTDIPCClient>,
                            public IHasDisposeAsync {
