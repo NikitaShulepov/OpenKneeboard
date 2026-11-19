@@ -18,7 +18,7 @@
  * USA.
  */
 
-class OpenKneeboardAPI extends EventTarget {
+class FlightBoardVRAPI extends EventTarget {
     constructor() {
         const runtimeData = VDXROVRNative.initializationData;
         console.log(`Initializing VDXROVR API (${runtimeData.Version.HumanReadable})`);
