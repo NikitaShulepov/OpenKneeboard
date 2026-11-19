@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -13,22 +13,22 @@
 
 #include "Globals.h"
 
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/ProfileSettings.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/ProfileSettings.hpp>
 
-#include <OpenKneeboard/utf8.hpp>
+#include <VDXROVR/utf8.hpp>
 
 #include <algorithm>
 
-using namespace OpenKneeboard;
+using namespace VDXROVR;
 using namespace winrt::Microsoft::UI::Xaml::Controls;
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 
 enum class ProfileKind { DefaultProfile, AdditionalProfile };
 using Profile = ProfileSettings::Profile;
 
-static OpenKneeboardApp::ProfileUIData CreateProfileUIData(
+static VDXROVRApp::ProfileUIData CreateProfileUIData(
   const Profile& profile,
   const ProfileKind kind) {
   auto ret = winrt::make<ProfileUIData>();
@@ -87,7 +87,7 @@ void ProfilesPage::UpdateList() {
   }
 }
 
-OpenKneeboard::fire_and_forget ProfilesPage::OnList_SelectionChanged(
+VDXROVR::fire_and_forget ProfilesPage::OnList_SelectionChanged(
   IInspectable,
   SelectionChangedEventArgs args) {
   auto it = args.AddedItems().First();
@@ -104,7 +104,7 @@ OpenKneeboard::fire_and_forget ProfilesPage::OnList_SelectionChanged(
   co_await mKneeboard->SetProfileSettings(profileSettings);
 }
 
-OpenKneeboard::fire_and_forget ProfilesPage::RemoveProfile(
+VDXROVR::fire_and_forget ProfilesPage::RemoveProfile(
   IInspectable sender,
   RoutedEventArgs) {
   const auto id {unbox_value<winrt::guid>(sender.as<Button>().Tag())};
@@ -148,7 +148,7 @@ OpenKneeboard::fire_and_forget ProfilesPage::RemoveProfile(
   List().SelectedIndex(0);
 }
 
-OpenKneeboard::fire_and_forget ProfilesPage::CreateProfile(
+VDXROVR::fire_and_forget ProfilesPage::CreateProfile(
   IInspectable sender,
   RoutedEventArgs) noexcept {
   ContentDialog dialog;
@@ -218,4 +218,4 @@ bool ProfileUIData::CanDelete() { return mCanDelete; }
 
 void ProfileUIData::CanDelete(bool value) { mCanDelete = value; }
 
-}// namespace winrt::OpenKneeboardApp::implementation
+}// namespace winrt::VDXROVRApp::implementation

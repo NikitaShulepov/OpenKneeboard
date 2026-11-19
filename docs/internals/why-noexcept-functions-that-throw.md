@@ -8,7 +8,7 @@ parent: Internals
 WinRT ABI boundaries must not throw; if they do, C++/WinRT will catch, and
 throw a different exception with a different trace, and much less information.
 
-For this reason, WinRT functions, properties, and and event handlers in OpenKneeboard
+For this reason, WinRT functions, properties, and and event handlers in VDXROVR
 should be marked as `noexcept`; this means that uncaught exceptions will invoke the
 `std::terminate` handler, which will lead to a useful trace, exception, and dump.
 

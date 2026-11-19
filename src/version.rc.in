@@ -17,12 +17,12 @@ BEGIN
     BEGIN
         BLOCK "040904E4"
         BEGIN
-            VALUE "CompanyName",      "Frederick Emmott\0"
+            VALUE "CompanyName",      "NikitaShulepov\0"
             VALUE "FileDescription",  "@FILE_DESCRIPTION@\0"
             VALUE "FileVersion",      VER_FILEVERSION_STR
             VALUE "LegalCopyright",   "\xa9 Frederick Emmott\0"
             VALUE "OriginalFilename", "@ORIGINAL_FILENAME@\0"
-            VALUE "ProductName",      "OpenKneeboard\0"
+            VALUE "ProductName",      "VDXROVR\0"
             VALUE "ProductVersion",   VER_PRODUCTVERSION_STR
         END
     END

@@ -1,14 +1,14 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/json.hpp>
+#include <VDXROVR/json.hpp>
 
-using namespace OpenKneeboard::detail::SparseJson;
+using namespace VDXROVR::detail::SparseJson;
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 static_assert(
   ConstStrLowerFirst(Wrap("FooBar")).mBuffer == std::string_view {"fooBar"});
@@ -18,7 +18,7 @@ static_assert(
   ConstStrSkipFirstLowerNext(Wrap("mFooBar")).mBuffer
   == std::string_view {"fooBar"});
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR
 
 namespace nlohmann {
 void adl_serializer<winrt::guid>::to_json(json& j, const winrt::guid& v) {

@@ -1,18 +1,18 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2026 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 
-#include <OpenKneeboard/SpriteAtlas.hpp>
+#include <VDXROVR/SpriteAtlas.hpp>
 
 #include <RectangleBinPack/MaxRectsBinPack.h>
 
 #include <algorithm>
 #include <ranges>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 SpriteAtlas::SpriteAtlas(const std::span<PixelSize>& sprites) {
   // "+1" to allow an empty space between each one
@@ -74,7 +74,7 @@ SpriteAtlas::SpriteAtlas(const std::span<PixelSize>& sprites) {
     }
   }
 
-  OPENKNEEBOARD_ASSERT(mSprites.size() == std::ranges::size(sprites));
+  VDXROVR_ASSERT(mSprites.size() == std::ranges::size(sprites));
 
   mAtlasSize = {
     std::ranges::max(mSprites, {}, &PixelRect::Right<uint32_t>)
@@ -84,4 +84,4 @@ SpriteAtlas::SpriteAtlas(const std::span<PixelSize>& sprites) {
   };
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

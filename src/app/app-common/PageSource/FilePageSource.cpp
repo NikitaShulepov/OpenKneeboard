@@ -1,18 +1,18 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/ChromiumPageSource.hpp>
-#include <OpenKneeboard/DXResources.hpp>
-#include <OpenKneeboard/FilePageSource.hpp>
-#include <OpenKneeboard/ImageFilePageSource.hpp>
-#include <OpenKneeboard/PDFFilePageSource.hpp>
-#include <OpenKneeboard/PlainTextFilePageSource.hpp>
+#include <VDXROVR/ChromiumPageSource.hpp>
+#include <VDXROVR/DXResources.hpp>
+#include <VDXROVR/FilePageSource.hpp>
+#include <VDXROVR/ImageFilePageSource.hpp>
+#include <VDXROVR/PDFFilePageSource.hpp>
+#include <VDXROVR/PlainTextFilePageSource.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/format/filesystem.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/format/filesystem.hpp>
 
 #include <shims/winrt/base.h>
 
@@ -21,7 +21,7 @@
 
 #include <icu.h>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 std::vector<std::string> FilePageSource::GetSupportedExtensions(
   const audited_ptr<DXResources>& dxr) noexcept {
   std::vector<std::string> ret {".txt", ".pdf", ".htm", ".html"};
@@ -81,4 +81,4 @@ task<std::shared_ptr<IPageSource>> FilePageSource::Create(
 
   co_return nullptr;
 }
-}// namespace OpenKneeboard
+}// namespace VDXROVR

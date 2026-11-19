@@ -1,13 +1,13 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/TabNavigationAction.hpp>
-#include <OpenKneeboard/TabView.hpp>
+#include <VDXROVR/TabNavigationAction.hpp>
+#include <VDXROVR/TabView.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 TabNavigationAction::TabNavigationAction(const std::shared_ptr<TabView>& state)
   : ToolbarToggleAction("\uE700", _("Contents")),
@@ -46,4 +46,4 @@ task<void> TabNavigationAction::Deactivate() {
   co_return;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

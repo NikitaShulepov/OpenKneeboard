@@ -1,16 +1,16 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/BookmarksUILayer.hpp>
-#include <OpenKneeboard/CursorEvent.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
+#include <VDXROVR/BookmarksUILayer.hpp>
+#include <VDXROVR/CursorEvent.hpp>
+#include <VDXROVR/KneeboardState.hpp>
 
-#include <OpenKneeboard/config.hpp>
+#include <VDXROVR/config.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 std::shared_ptr<BookmarksUILayer> BookmarksUILayer::Create(
   const audited_ptr<DXResources>& dxr,
@@ -137,7 +137,7 @@ task<void> BookmarksUILayer::Render(
   const IUILayer::NextList& next,
   const Context& context,
   const PixelRect& rect) {
-  OPENKNEEBOARD_TraceLoggingScope("BookmarksUILayer::Render()");
+  VDXROVR_TraceLoggingScope("BookmarksUILayer::Render()");
   auto [first, rest] = Split(next);
 
   if (!this->IsEnabled()) {
@@ -305,4 +305,4 @@ void BookmarksUILayer::OnClick(const Button& button) {
   tabView->SetPageID(button.mBookmark.mPageID);
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

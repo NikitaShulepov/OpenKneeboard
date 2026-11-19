@@ -1,16 +1,16 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/IPageSourceWithDeveloperTools.hpp>
-#include <OpenKneeboard/ITab.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/TabDeveloperToolsAction.hpp>
-#include <OpenKneeboard/TabView.hpp>
+#include <VDXROVR/IPageSourceWithDeveloperTools.hpp>
+#include <VDXROVR/ITab.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/TabDeveloperToolsAction.hpp>
+#include <VDXROVR/TabView.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 TabDeveloperToolsAction::TabDeveloperToolsAction(
   KneeboardState* kneeboard,
@@ -61,4 +61,4 @@ task<void> TabDeveloperToolsAction::Execute() {
   page->OpenDeveloperToolsWindow(mKneeboardView, tv->GetPageID());
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

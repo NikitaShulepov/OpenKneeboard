@@ -1,21 +1,21 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/ChromiumPageSource.hpp>
-#include <OpenKneeboard/FilePageSource.hpp>
-#include <OpenKneeboard/ImageFilePageSource.hpp>
-#include <OpenKneeboard/PDFFilePageSource.hpp>
-#include <OpenKneeboard/PlainTextFilePageSource.hpp>
-#include <OpenKneeboard/SingleFileTab.hpp>
+#include <VDXROVR/ChromiumPageSource.hpp>
+#include <VDXROVR/FilePageSource.hpp>
+#include <VDXROVR/ImageFilePageSource.hpp>
+#include <VDXROVR/PDFFilePageSource.hpp>
+#include <VDXROVR/PlainTextFilePageSource.hpp>
+#include <VDXROVR/SingleFileTab.hpp>
 
-#include <OpenKneeboard/scope_exit.hpp>
+#include <VDXROVR/scope_exit.hpp>
 
 #include <shims/nlohmann/json.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 SingleFileTab::SingleFileTab(
   const audited_ptr<DXResources>& dxr,
@@ -119,4 +119,4 @@ task<void> SingleFileTab::SetPath(std::filesystem::path rawPath) {
   co_await this->SetDelegates({delegate});
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

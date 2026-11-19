@@ -1,21 +1,21 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 #pragma once
-#include <OpenKneeboard/APIEvent.hpp>
-#include <OpenKneeboard/UserAction.hpp>
+#include <VDXROVR/APIEvent.hpp>
+#include <VDXROVR/UserAction.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/dprint.hpp>
 
 #include <magic_args/magic_args.hpp>
 #include <magic_args/subcommands.hpp>
 #include <magic_enum/magic_enum.hpp>
 
-namespace OpenKneeboard::SimpleRemotes {
-using namespace OpenKneeboard;
+namespace VDXROVR::SimpleRemotes {
+using namespace VDXROVR;
 
 struct Args {
   magic_args::optional_positional_argument<std::size_t> mCount {
@@ -68,4 +68,4 @@ using subcommands = make<
   TOGGLE_FORCE_ZOOM,
   TOGGLE_TINT,
   TOGGLE_VISIBILITY>;
-};// namespace OpenKneeboard::SimpleRemotes
+};// namespace VDXROVR::SimpleRemotes

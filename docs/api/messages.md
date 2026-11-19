@@ -37,7 +37,7 @@ Value: a JSON-encoded array; each element is a two-element array containing anot
 
 ## RemoteUserAction
 
-This message tells OpenKneeboard to take an action with no parameters, as if the corresponding remote control executable or input binding was pressed.
+This message tells VDXROVR to take an action with no parameters, as if the corresponding remote control executable or input binding was pressed.
 
 The value is one of:
 
@@ -159,11 +159,11 @@ Value: JSON-encoded Object:
 
 `Brightness` must be a float, not an integer - for example, `0` and `1` are not valid values, and must be replaced with `0.0` or `1.0`.
 
-`Brightness` is required, and `Mode` is case-sensitive - for example, `relative` is not a valid `Mode`. If `Brightness` is missing or `Mode` is not one of the values listed here, the event is ignored, and the reason is written to OpenKneeboard's debug log.
+`Brightness` is required, and `Mode` is case-sensitive - for example, `relative` is not a valid `Mode`. If `Brightness` is missing or `Mode` is not one of the values listed here, the event is ignored, and the reason is written to VDXROVR's debug log.
 
 ## NudgeVRView
 
-Moves or resizes a kneeboard in VR by a small amount, as if the user adjusted it in OpenKneeboard's settings; the change is saved to the current profile. This is intended for binding small adjustments to a dial, rotary encoder, or buttons, e.g. on a Stream Deck or a wheel.
+Moves or resizes a kneeboard in VR by a small amount, as if the user adjusted it in VDXROVR's settings; the change is saved to the current profile. This is intended for binding small adjustments to a dial, rotary encoder, or buttons, e.g. on a Stream Deck or a wheel.
 
 Value: JSON-encoded Object:
 
@@ -177,7 +177,7 @@ Value: JSON-encoded Object:
 
 - `Kneeboard`: *optional integer* - `0` (or omit) for the active kneeboard, `1` for the first kneeboard, `2` for the second, and so on
 - all other values are *optional floats*; each one is **added** to the current setting, and values that are not provided are not changed:
-  - `X`, `EyeY`, `Z`: position, in meters, using the same right-handed coordinate system as the rest of OpenKneeboard: `X` is to the right, `EyeY` is up, relative to eye level, and `Z` is backwards, so in front of you is negative Z
+  - `X`, `EyeY`, `Z`: position, in meters, using the same right-handed coordinate system as the rest of VDXROVR: `X` is to the right, `EyeY` is up, relative to eye level, and `Z` is backwards, so in front of you is negative Z
   - `RX`, `RY`, `RZ`: rotation around each axis, in radians
   - `MaxWidth`, `MaxHeight`: the kneeboard's maximum physical size, in meters
 
@@ -189,9 +189,9 @@ As with `SetBrightness`, float values must be written as floats - for example, `
 
 *Added in v2.0.*
 
-Shows or hides a single kneeboard in VR, as if its 'Enabled in VR' switch in OpenKneeboard's settings was changed; the change is saved to the current profile. This is intended for binding to a button, e.g. on a Stream Deck or a wheel, so a kneeboard that is only wanted occasionally can be put away without opening the settings app.
+Shows or hides a single kneeboard in VR, as if its 'Enabled in VR' switch in VDXROVR's settings was changed; the change is saved to the current profile. This is intended for binding to a button, e.g. on a Stream Deck or a wheel, so a kneeboard that is only wanted occasionally can be put away without opening the settings app.
 
-This only affects VR: the kneeboard is not removed, and the OpenKneeboard app window keeps showing the active kneeboard - or, if every kneeboard is hidden, the last one that was active.
+This only affects VR: the kneeboard is not removed, and the VDXROVR app window keeps showing the active kneeboard - or, if every kneeboard is hidden, the last one that was active.
 
 Value: JSON-encoded Object:
 
@@ -203,13 +203,13 @@ Value: JSON-encoded Object:
 
 - `Kneeboard`: *integer* - `1` for the first kneeboard, `2` for the second, and so on. `HideVRView` also accepts `0` for the active kneeboard; `ShowVRView` and `ToggleVRViewVisibility` do not, as the active kneeboard is always visible.
 
-`Kneeboard` is required by all three messages; to hide the active kneeboard, send `0` explicitly. If it is missing, the event is ignored, and the reason is written to OpenKneeboard's debug log.
+`Kneeboard` is required by all three messages; to hide the active kneeboard, send `0` explicitly. If it is missing, the event is ignored, and the reason is written to VDXROVR's debug log.
 
 The active kneeboard is never hidden: if the active kneeboard is hidden, the next visible kneeboard becomes active, and if every kneeboard is hidden, there is no active kneeboard until one is shown again. While there is no active kneeboard, messages and bindings that act on the active kneeboard - such as changing page - do nothing.
 
 A hidden kneeboard keeps its position in the list, so it can be shown again by number.
 
-If every kneeboard is hidden, `ToggleVRViewVisibility` shows all of them, whichever kneeboard it names; so do OpenKneeboard's own 'show' and 'toggle visibility' bindings and remote controls.
+If every kneeboard is hidden, `ToggleVRViewVisibility` shows all of them, whichever kneeboard it names; so do VDXROVR's own 'show' and 'toggle visibility' bindings and remote controls.
 
 Kneeboards that mirror another kneeboard can be shown and hidden independently of the kneeboard they mirror.
 
@@ -217,7 +217,7 @@ Kneeboards that mirror another kneeboard can be shown and hidden independently o
 
 *Added in v2.0.*
 
-Changes how transparent a single kneeboard is in VR, as if its opacity sliders in OpenKneeboard's settings were moved; the change is saved to the current profile.
+Changes how transparent a single kneeboard is in VR, as if its opacity sliders in VDXROVR's settings were moved; the change is saved to the current profile.
 
 Value: JSON-encoded Object:
 
@@ -235,7 +235,7 @@ Value: JSON-encoded Object:
 - `Target`: *string* - which of the kneeboard's two opacities to change: `Gaze` (while you are looking at it), `Normal` (while you are not), or `Both`. With `Add`, `Both` keeps the difference between them until one reaches `0.0` or `1.0`
 - `Value`: *float* - `0.0` is fully transparent, `1.0` is fully opaque
 
-All four fields are required, and the strings are case-sensitive. If a field is missing or a string is not one of the values listed here, the event is ignored, and the reason is written to OpenKneeboard's debug log.
+All four fields are required, and the strings are case-sensitive. If a field is missing or a string is not one of the values listed here, the event is ignored, and the reason is written to VDXROVR's debug log.
 
 The result is clamped to between `0.0` and `1.0`, so a button can be held down at either end. A fully transparent kneeboard is invisible but keeps its position in the list, so it can be faded back in by number. If `Value` is not a finite number, the event is ignored.
 
@@ -245,6 +245,6 @@ As with `SetBrightness`, float values must be written as floats - for example, `
 
 ## Requesting additional APIs
 
-Keep in mind the purpose of OpenKneeboard: OpenKneeboard is a tool for users to show their content how they wish in VR, via OpenKneeboard's settings. It is not a developer toolkit.
+Keep in mind the purpose of VDXROVR: VDXROVR is a tool for users to show their content how they wish in VR, via VDXROVR's settings. It is not a developer toolkit.
 
 If your request fits that purpose, search for an existing feature request GitHub issue. If there is one, add a thumbs up reaction to the top post, otherwise create a new one. Do not add '+1'/'me too' comments.

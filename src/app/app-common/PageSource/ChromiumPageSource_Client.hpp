@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -6,11 +6,11 @@
 // OpenKneeboard repository.
 #pragma once
 
-#include <OpenKneeboard/ChromiumPageSource.hpp>
+#include <VDXROVR/ChromiumPageSource.hpp>
 
 #include <optional>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 struct ExperimentalFeature {
   std::string mName;
@@ -159,4 +159,4 @@ class ChromiumPageSource::Client final : public CefClient,
   task<JSAPIResult> RequestPageChange(nlohmann::json);
   task<JSAPIResult> GetGraphicsTabletInfo();
 };
-}// namespace OpenKneeboard
+}// namespace VDXROVR

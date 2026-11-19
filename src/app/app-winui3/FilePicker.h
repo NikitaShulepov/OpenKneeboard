@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -14,7 +14,7 @@
 #include <filesystem>
 #include <string>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 /** (Almost) reimplement File/Folder pickers.
  *
@@ -60,4 +60,4 @@ class FilePicker final {
   std::vector<FileType> mFileTypes;
 };
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

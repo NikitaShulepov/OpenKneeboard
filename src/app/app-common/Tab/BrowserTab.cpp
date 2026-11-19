@@ -1,16 +1,16 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/BrowserTab.hpp>
+#include <VDXROVR/BrowserTab.hpp>
 
-#include <OpenKneeboard/json/Geometry2D.hpp>
+#include <VDXROVR/json/Geometry2D.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/dprint.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 BrowserTab::BrowserTab(
   const audited_ptr<DXResources>& dxr,
@@ -40,7 +40,7 @@ task<std::shared_ptr<BrowserTab>> BrowserTab::Create(
 }
 
 BrowserTab::~BrowserTab() {
-  OPENKNEEBOARD_TraceLoggingScope("BrowserTab::~BrowserTab()");
+  VDXROVR_TraceLoggingScope("BrowserTab::~BrowserTab()");
   this->RemoveAllEventListeners();
 }
 
@@ -52,7 +52,7 @@ std::string BrowserTab::GetStaticGlyph() {
 }
 
 task<void> BrowserTab::Reload() {
-  OPENKNEEBOARD_TraceLoggingCoro("BrowserTab::Reload()");
+  VDXROVR_TraceLoggingCoro("BrowserTab::Reload()");
   auto keepAlive = shared_from_this();
 
   mDelegate = {};
@@ -83,7 +83,7 @@ bool BrowserTab::IsSimHubIntegrationEnabled() const {
 }
 
 task<void> BrowserTab::SetSimHubIntegrationEnabled(bool enabled) {
-  OPENKNEEBOARD_TraceLoggingCoro("BrowserTab::SetSimHubIntegrationEnabled()");
+  VDXROVR_TraceLoggingCoro("BrowserTab::SetSimHubIntegrationEnabled()");
   if (enabled == this->IsSimHubIntegrationEnabled()) {
     co_return;
   }
@@ -92,16 +92,16 @@ task<void> BrowserTab::SetSimHubIntegrationEnabled(bool enabled) {
   this->evSettingsChangedEvent.Emit();
 }
 
-bool BrowserTab::AreOpenKneeboardAPIsEnabled() const {
-  return mSettings.mExposeOpenKneeboardAPIs;
+bool BrowserTab::AreVDXROVRAPIsEnabled() const {
+  return mSettings.mExposeVDXROVRAPIs;
 }
 
-task<void> BrowserTab::SetOpenKneeboardAPIsEnabled(const bool enabled) {
-  OPENKNEEBOARD_TraceLoggingCoro("BrowserTab::SetOpenKneeboardAPIsEnabled()");
-  if (enabled == this->AreOpenKneeboardAPIsEnabled()) {
+task<void> BrowserTab::SetVDXROVRAPIsEnabled(const bool enabled) {
+  VDXROVR_TraceLoggingCoro("BrowserTab::SetVDXROVRAPIsEnabled()");
+  if (enabled == this->AreVDXROVRAPIsEnabled()) {
     co_return;
   }
-  mSettings.mExposeOpenKneeboardAPIs = enabled;
+  mSettings.mExposeVDXROVRAPIs = enabled;
   co_await this->Reload();
   this->evSettingsChangedEvent.Emit();
 }
@@ -111,7 +111,7 @@ bool BrowserTab::IsBackgroundTransparent() const {
 }
 
 task<void> BrowserTab::SetBackgroundTransparent(bool transparent) {
-  OPENKNEEBOARD_TraceLoggingCoro("BrowserTab::SetBackgroundTransparent()");
+  VDXROVR_TraceLoggingCoro("BrowserTab::SetBackgroundTransparent()");
   if (transparent == this->IsBackgroundTransparent()) {
     co_return;
   }
@@ -120,12 +120,12 @@ task<void> BrowserTab::SetBackgroundTransparent(bool transparent) {
   this->evSettingsChangedEvent.Emit();
 }
 
-OPENKNEEBOARD_DEFINE_SPARSE_JSON(
+VDXROVR_DEFINE_SPARSE_JSON(
   BrowserTab::Settings,
   mURI,
   mInitialSize,
   mIntegrateWithSimHub,
   mTransparentBackground,
-  mExposeOpenKneeboardAPIs)
+  mExposeVDXROVRAPIs)
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

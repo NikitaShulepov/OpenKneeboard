@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -6,13 +6,13 @@
 // OpenKneeboard repository.
 #pragma once
 
-#include <OpenKneeboard/StateMachine.hpp>
+#include <VDXROVR/StateMachine.hpp>
 
-#include <OpenKneeboard/array.hpp>
+#include <VDXROVR/array.hpp>
 
-namespace OpenKneeboard::SHM {
+namespace VDXROVR::SHM {
 
-#define OPENKNEEBOARD_SHM_WRITER_STATES \
+#define VDXROVR_SHM_WRITER_STATES \
   IT(Unlocked) \
   IT(TryLock) \
   IT(Locked) \
@@ -23,7 +23,7 @@ namespace OpenKneeboard::SHM {
 
 enum class WriterState {
 #define IT(x) x,
-  OPENKNEEBOARD_SHM_WRITER_STATES
+  VDXROVR_SHM_WRITER_STATES
 #undef IT
 };
 
@@ -45,4 +45,4 @@ using WriterStateMachine = StateMachine<
 
 static_assert(lockable_state_machine<SHM::WriterStateMachine>);
 
-}// namespace OpenKneeboard::SHM
+}// namespace VDXROVR::SHM

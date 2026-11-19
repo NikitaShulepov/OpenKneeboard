@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -12,17 +12,17 @@
 
 #include "WithPropertyChangedEvent.h"
 
-#include <OpenKneeboard/ViewsSettings.hpp>
+#include <VDXROVR/ViewsSettings.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 class KneeboardState;
 }
 
 using namespace winrt::Microsoft::UI::Xaml;
 using namespace winrt::Microsoft::UI::Xaml::Controls;
-using namespace OpenKneeboard;
+using namespace VDXROVR;
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 struct VRViewSettingsControl : VRViewSettingsControlT<VRViewSettingsControl>,
                                WithPropertyChangedEvent,
                                EventReceiver {
@@ -33,20 +33,20 @@ struct VRViewSettingsControl : VRViewSettingsControlT<VRViewSettingsControl>,
   void ViewID(const winrt::guid&);
 
   bool IsEnabledInVR();
-  OpenKneeboard::fire_and_forget IsEnabledInVR(bool);
+  VDXROVR::fire_and_forget IsEnabledInVR(bool);
 
   IInspectable SelectedKind();
-  OpenKneeboard::fire_and_forget SelectedKind(
+  VDXROVR::fire_and_forget SelectedKind(
     Windows::Foundation::IInspectable);
 
   IInspectable SelectedDefaultTab();
-  OpenKneeboard::fire_and_forget SelectedDefaultTab(
+  VDXROVR::fire_and_forget SelectedDefaultTab(
     Windows::Foundation::IInspectable);
 
   winrt::Microsoft::UI::Xaml::Visibility TooManyViewsVisibility();
 
  private:
-  audited_ptr<OpenKneeboard::KneeboardState> mKneeboard;
+  audited_ptr<VDXROVR::KneeboardState> mKneeboard;
 
   winrt::guid mViewID;
 
@@ -56,9 +56,9 @@ struct VRViewSettingsControl : VRViewSettingsControlT<VRViewSettingsControl>,
 
   Control mSubControl {nullptr};
 };
-}// namespace winrt::OpenKneeboardApp::implementation
-namespace winrt::OpenKneeboardApp::factory_implementation {
+}// namespace winrt::VDXROVRApp::implementation
+namespace winrt::VDXROVRApp::factory_implementation {
 struct VRViewSettingsControl : VRViewSettingsControlT<
                                  VRViewSettingsControl,
                                  implementation::VRViewSettingsControl> {};
-}// namespace winrt::OpenKneeboardApp::factory_implementation
+}// namespace winrt::VDXROVRApp::factory_implementation

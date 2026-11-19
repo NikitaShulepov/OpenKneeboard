@@ -1,20 +1,20 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 
-#include <OpenKneeboard/ProcessShutdownBlock.hpp>
-#include <OpenKneeboard/RunnerThread.hpp>
-#include <OpenKneeboard/ThreadGuard.hpp>
+#include <VDXROVR/ProcessShutdownBlock.hpp>
+#include <VDXROVR/RunnerThread.hpp>
+#include <VDXROVR/ThreadGuard.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/scope_exit.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/scope_exit.hpp>
 
 #include <source_location>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 RunnerThread::RunnerThread() = default;
 
 RunnerThread::RunnerThread(
@@ -31,7 +31,7 @@ RunnerThread::RunnerThread(
   mDQC.DispatcherQueue().TryEnqueue(
     std::bind_front(
       [](auto name, auto impl, auto stop, auto loc, auto event)
-        -> OpenKneeboard::fire_and_forget {
+        -> VDXROVR::fire_and_forget {
         const scope_exit setEventOnExit([event, name]() {
           TraceLoggingWrite(
             gTraceProvider,
@@ -52,7 +52,7 @@ RunnerThread::RunnerThread(
 }
 
 RunnerThread::~RunnerThread() {
-  OPENKNEEBOARD_TraceLoggingScope("RunnerThread::~RunnerThread()");
+  VDXROVR_TraceLoggingScope("RunnerThread::~RunnerThread()");
   this->Stop();
 }
 
@@ -68,7 +68,7 @@ void RunnerThread::Stop() {
     TraceLoggingString(mName.c_str(), "Name"));
   mStopSource.request_stop();
 
-  ([](auto event, auto dqc) -> OpenKneeboard::fire_and_forget {
+  ([](auto event, auto dqc) -> VDXROVR::fire_and_forget {
     dprint("Waiting for completion event");
     co_await winrt::resume_on_signal(event.get());
     dprint("Shutting down runner thread DQC");
@@ -89,4 +89,4 @@ RunnerThread& RunnerThread::operator=(RunnerThread&& other) noexcept {
   return *this;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

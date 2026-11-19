@@ -1,19 +1,19 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/Filesystem.hpp>
-#include <OpenKneeboard/OpenXRMode.hpp>
-#include <OpenKneeboard/RunSubprocessAsync.hpp>
-#include <OpenKneeboard/RuntimeFiles.hpp>
+#include <VDXROVR/Filesystem.hpp>
+#include <VDXROVR/OpenXRMode.hpp>
+#include <VDXROVR/RunSubprocessAsync.hpp>
+#include <VDXROVR/RuntimeFiles.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/dprint.hpp>
 
 #include <format>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 static auto LaunchAndWaitForOpenXRHelperSubprocess(
   RunAs runas,
@@ -53,4 +53,4 @@ task<void> SetOpenXR32ModeWithHelperProcess(OpenXRMode mode) {
   }
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

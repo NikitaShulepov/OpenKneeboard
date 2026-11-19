@@ -1,25 +1,25 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 
-#include <OpenKneeboard/ChromiumPageSource.hpp>
-#include <OpenKneeboard/D2DErrorRenderer.hpp>
-#include <OpenKneeboard/IHasDisposeAsync.hpp>
-#include <OpenKneeboard/PluginStore.hpp>
-#include <OpenKneeboard/PluginTab.hpp>
+#include <VDXROVR/ChromiumPageSource.hpp>
+#include <VDXROVR/D2DErrorRenderer.hpp>
+#include <VDXROVR/IHasDisposeAsync.hpp>
+#include <VDXROVR/PluginStore.hpp>
+#include <VDXROVR/PluginTab.hpp>
 
-#include <OpenKneeboard/format/filesystem.hpp>
-#include <OpenKneeboard/semver.hpp>
-#include <OpenKneeboard/version.hpp>
+#include <VDXROVR/format/filesystem.hpp>
+#include <VDXROVR/semver.hpp>
+#include <VDXROVR/version.hpp>
 
 #include <Shlwapi.h>
 
 #include <wininet.h>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 PluginTab::PluginTab(
   const audited_ptr<DXResources>& dxr,
@@ -97,10 +97,10 @@ task<void> PluginTab::Reload() {
   }
 
   if (
-    CompareVersions(plugin.mMetadata.mOKBMinimumVersion, Version::ReleaseName)
+    CompareVersions(plugin.mMetadata.mVDXROVRMinimumVersion, Version::ReleaseName)
     == ThreeWayCompareResult::GreaterThan) {
-    dprint.Warning("OpenKneeboard is too old for plugin `{}`", plugin.mID);
-    mState = State::OpenKneeboardTooOld;
+    dprint.Warning("VDXROVR is too old for plugin `{}`", plugin.mID);
+    mState = State::VDXROVRTooOld;
     co_return;
   }
 
@@ -118,7 +118,7 @@ task<void> PluginTab::Reload() {
       const std::string_view pluginScheme {"plugin://"};
       if (settings.mURI.starts_with(pluginScheme)) {
         const auto vhost =
-          std::format("{}.openkneeboardplugins.localhost", plugin.GetIDHash());
+          std::format("{}.vdxrovrplugins.localhost", plugin.GetIDHash());
         const auto path = plugin.mJSONPath.parent_path();
         settings.mVirtualHosts.emplace(vhost, path);
         settings.mURI.replace(
@@ -138,7 +138,7 @@ task<void> PluginTab::Reload() {
     }
     default:
       dprint("Unrecognized plugin implementation");
-      OPENKNEEBOARD_BREAK;
+      VDXROVR_BREAK;
       co_return;
   }
 }
@@ -197,14 +197,14 @@ PluginTab::RenderPage(RenderContext ctx, PageID page, PixelRect rect) {
     case State::PluginNotFound:
       mErrorRenderer->Render(ctx.d2d(), _("Plugin Not Installed"), rect);
       co_return;
-    case State::OpenKneeboardTooOld:
+    case State::VDXROVRTooOld:
       mErrorRenderer->Render(
-        ctx.d2d(), _("Plugin Requires Newer OpenKneeboard"), rect);
+        ctx.d2d(), _("Plugin Requires Newer VDXROVR"), rect);
       co_return;
   }
   std::unreachable();
 }
 
-OPENKNEEBOARD_DEFINE_SPARSE_JSON(PluginTab::Settings, mPluginTabTypeID);
+VDXROVR_DEFINE_SPARSE_JSON(PluginTab::Settings, mPluginTabTypeID);
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

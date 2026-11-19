@@ -1,11 +1,11 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/CEF/JSSources.hpp>
-#include <OpenKneeboard/ChromiumWorker.hpp>
+#include <VDXROVR/CEF/JSSources.hpp>
+#include <VDXROVR/ChromiumWorker.hpp>
 
 #include <Windows.h>
 
@@ -15,16 +15,16 @@
 
 #include <unordered_map>
 
-namespace OpenKneeboard::CEF {
+namespace VDXROVR::CEF {
 
 namespace {
 
-CefString GetOpenKneeboardNativeJS() {
-  return JSSources::Get().OpenKneeboardNative<CefString>();
+CefString GetVDXROVRNativeJS() {
+  return JSSources::Get().VDXROVRNative<CefString>();
 }
 
-CefString GetOpenKneeboardAPIJS() {
-  return JSSources::Get().OpenKneeboardAPI<CefString>();
+CefString GetVDXROVRAPIJS() {
+  return JSSources::Get().VDXROVRAPI<CefString>();
 }
 
 CefString GetSimHubJS() { return JSSources::Get().SimHub<CefString>(); }
@@ -54,8 +54,8 @@ class BrowserApp final : public CefApp,
       BrowserData {
         .mInitializationData = extraInfo->GetString("InitData"),
         .mIntegrateWithSimHub = extraInfo->GetBool("IntegrateWithSimHub"),
-        .mExposeOpenKneeboardAPIs =
-          extraInfo->GetBool("ExposeOpenKneeboardAPIs"),
+        .mExposeVDXROVRAPIs =
+          extraInfo->GetBool("ExposeVDXROVRAPIs"),
       });
   }
 
@@ -68,7 +68,7 @@ class BrowserApp final : public CefApp,
 
   void OnWebKitInitialized() override {
     CefRegisterExtension(
-      "OpenKneeboard/Native", GetOpenKneeboardNativeJS(), this);
+      "VDXROVR/Native", GetVDXROVRNativeJS(), this);
   }
 
   void OnContextCreated(
@@ -102,9 +102,9 @@ class BrowserApp final : public CefApp,
     CefRefPtr<CefV8Value> ret;
     CefRefPtr<CefV8Exception> exception;
 
-    if (!data.mExposeOpenKneeboardAPIs) {
+    if (!data.mExposeVDXROVRAPIs) {
       context->Eval(
-        "console.warn('OpenKneeboard JS APIs are disabled by user settings');",
+        "console.warn('VDXROVR JS APIs are disabled by user settings');",
         {},
         1,
         ret,
@@ -114,14 +114,14 @@ class BrowserApp final : public CefApp,
     data.mJS.mMainWorldContext = context;
 
     context->Eval(
-      GetOpenKneeboardAPIJS(),
-      "https://openkneeboard.local/OpenKneeboardAPI.js",
+      GetVDXROVRAPIJS(),
+      "https://vdxrovr.local/VDXROVRAPI.js",
       1,
       ret,
       exception);
     context->Eval(
       "new OpenKneeboardAPI()",
-      "https://openkneeboard.local/OpenKneeboardInit.js",
+      "https://vdxrovr.local/VDXROVRInit.js",
       1,
       ret,
       exception);
@@ -132,7 +132,7 @@ class BrowserApp final : public CefApp,
     if (data.mIntegrateWithSimHub) {
       context->Eval(
         GetSimHubJS(),
-        "https://openkneeboard.local/simhub.js",
+        "https://vdxrovr.local/simhub.js",
         1,
         ret,
         exception);
@@ -155,7 +155,7 @@ class BrowserApp final : public CefApp,
     }
     data.mJS = {};
     frame->SendProcessMessage(
-      PID_BROWSER, CefProcessMessage::Create("okb/onContextReleased"));
+      PID_BROWSER, CefProcessMessage::Create("vdxrovr/onContextReleased"));
   }
 
   bool OnProcessMessageReceived(
@@ -164,7 +164,7 @@ class BrowserApp final : public CefApp,
     CefProcessId sourceProcess,
     CefRefPtr<CefProcessMessage> message) override {
     const auto name = message->GetName().ToString();
-    if (name == "okb/asyncResult") {
+    if (name == "vdxrovr/asyncResult") {
       auto& state = mBrowserData.at(browser->GetIdentifier()).mJS;
       const auto args = message->GetArgumentList();
       const auto id = args->GetInt(0);
@@ -183,7 +183,7 @@ class BrowserApp final : public CefApp,
       return true;
     }
 
-    constexpr std::string_view EventPrefix = "okbEvent/";
+    constexpr std::string_view EventPrefix = "vdxrovrEvent/";
     if (name.starts_with(EventPrefix)) {
       const auto eventName = name.substr(EventPrefix.length());
 
@@ -215,13 +215,13 @@ class BrowserApp final : public CefApp,
     CefString& /*exception*/) override {
     const auto browser = CefV8Context::GetCurrentContext()->GetBrowser();
 
-    if (name == "OKBNative_GetInitializationData") {
+    if (name == "VDXROVRNative_GetInitializationData") {
       return JSGetInitializationData(browser, ret);
     }
-    if (name == "OKBNative_AsyncRequest") {
+    if (name == "VDXROVRNative_AsyncRequest") {
       return JSAsyncRequest(browser, arguments, ret);
     }
-    if (name == "OKBNative_AddEventCallback") {
+    if (name == "VDXROVRNative_AddEventCallback") {
       return JSAddEventCallback(browser, arguments);
     }
 
@@ -293,22 +293,22 @@ class BrowserApp final : public CefApp,
 
     CefString mInitializationData;
     bool mIntegrateWithSimHub {false};
-    bool mExposeOpenKneeboardAPIs {false};
+    bool mExposeVDXROVRAPIs {false};
     JSData mJS {};
   };
   std::unordered_map<int, BrowserData> mBrowserData;
 };
 
-}// namespace OpenKneeboard::CEF
+}// namespace VDXROVR::CEF
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 int ChromiumWorkerMain(HINSTANCE instance, void* sandbox) {
   const CefMainArgs mainArgs(instance);
-  const CefRefPtr<CefApp> app {new OpenKneeboard::CEF::BrowserApp()};
+  const CefRefPtr<CefApp> app {new VDXROVR::CEF::BrowserApp()};
 
   return CefExecuteProcess(mainArgs, app.get(), sandbox);
 }
-}// namespace OpenKneeboard
+}// namespace VDXROVR
 
 /** Prefer discrete GPU.
  *

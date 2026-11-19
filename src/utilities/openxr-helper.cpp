@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -11,10 +11,10 @@
  * If done from the main process, the registry write will be app-specific.
  */
 
-#include <OpenKneeboard/RuntimeFiles.hpp>
+#include <VDXROVR/RuntimeFiles.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/scope_exit.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/scope_exit.hpp>
 
 #include <Windows.h>
 #include <shellapi.h>
@@ -23,7 +23,7 @@
 #include <functional>
 #include <string>
 
-using namespace OpenKneeboard;
+using namespace VDXROVR;
 
 enum class RegistryView {
   WOW64_64,
@@ -133,17 +133,17 @@ static void EnableOpenXRLayer(
   RegCloseKey(openXRKey);
 }
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 /* PS >
- * [System.Diagnostics.Tracing.EventSource]::new("OpenKneeboard.OpenXR.Helper")
- * 2489967e-a7f2-5db8-ba74-27c35b944d56
+ * [System.Diagnostics.Tracing.EventSource]::new("VDXROVR.OpenXR.Helper")
+ * 88b84e86-e559-414d-8738-c59f86dcbf08
  */
 TRACELOGGING_DEFINE_PROVIDER(
   gTraceProvider,
-  "OpenKneeboard.OpenXR.Helper",
-  (0x2489967e, 0xa7f2, 0x5db8, 0xba, 0x74, 0x27, 0xc3, 0x5b, 0x94, 0x4d, 0x56));
-}// namespace OpenKneeboard
+  "VDXROVR.OpenXR.Helper",
+  (0x88b84e86, 0xe559, 0x414d, 0x87, 0x38, 0xc5, 0x9f, 0x86, 0xdc, 0xbf, 0x08));
+}// namespace VDXROVR
 
 int __stdcall wWinMain(HINSTANCE, HINSTANCE, PWSTR commandLine, int) {
   TraceLoggingRegister(gTraceProvider);

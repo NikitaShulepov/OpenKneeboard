@@ -1,4 +1,4 @@
-find_package(openkneeboard-lua CONFIG REQUIRED GLOBAL)
+find_package(vdxrovr-lua CONFIG REQUIRED GLOBAL)
 
 add_library(ThirdParty::Lua ALIAS lua)
 add_library(lualib_delayload INTERFACE)
@@ -17,8 +17,8 @@ get_target_property(
   IMPORTED_LOCATION_DEBUG
 )
 
-include(ok_add_runtime_files)
-ok_add_runtime_files(
+include(vdxrovr_add_runtime_files)
+vdxrovr_add_runtime_files(
   lua-runtime-dll
   "$<IF:$<CONFIG:Debug>,${LUA_DEBUG_DLL},${LUA_RELEASE_DLL}>"
 )

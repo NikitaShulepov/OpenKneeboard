@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -9,12 +9,12 @@
 
 #include "OpenXRKneeboard.hpp"
 
-#include <OpenKneeboard/SHM/Vulkan.hpp>
-#include <OpenKneeboard/Vulkan.hpp>
-#include <OpenKneeboard/Vulkan/ExtendedCreateInfo.hpp>
-#include <OpenKneeboard/Vulkan/SpriteBatch.hpp>
+#include <VDXROVR/SHM/Vulkan.hpp>
+#include <VDXROVR/Vulkan.hpp>
+#include <VDXROVR/Vulkan/ExtendedCreateInfo.hpp>
+#include <VDXROVR/Vulkan/SpriteBatch.hpp>
 
-#include <OpenKneeboard/config.hpp>
+#include <VDXROVR/config.hpp>
 
 #include <shims/vulkan/vulkan.h>
 
@@ -22,7 +22,7 @@
 
 #include <d3d11_4.h>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 class OpenXRVulkanKneeboard final : public OpenXRKneeboard {
  public:
@@ -56,7 +56,7 @@ class OpenXRVulkanKneeboard final : public OpenXRKneeboard {
     const std::span<SHM::LayerSprite>& layers) override;
 
  private:
-  std::unique_ptr<OpenKneeboard::Vulkan::Dispatch> mVK;
+  std::unique_ptr<VDXROVR::Vulkan::Dispatch> mVK;
 
   const VkAllocationCallbacks* mAllocator {nullptr};
   VkInstance mVKInstance {VK_NULL_HANDLE};
@@ -94,4 +94,4 @@ class OpenXRVulkanKneeboard final : public OpenXRKneeboard {
   void WaitForAllFences();
 };
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

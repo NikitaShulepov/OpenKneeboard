@@ -1,18 +1,18 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/ITab.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/KneeboardView.hpp>
-#include <OpenKneeboard/SwitchTabAction.hpp>
-#include <OpenKneeboard/SwitchTabFlyout.hpp>
-#include <OpenKneeboard/TabView.hpp>
-#include <OpenKneeboard/TabsList.hpp>
+#include <VDXROVR/ITab.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/KneeboardView.hpp>
+#include <VDXROVR/SwitchTabAction.hpp>
+#include <VDXROVR/SwitchTabFlyout.hpp>
+#include <VDXROVR/TabView.hpp>
+#include <VDXROVR/TabsList.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 SwitchTabFlyout::SwitchTabFlyout(
   KneeboardState* kbs,
@@ -44,4 +44,4 @@ std::vector<std::shared_ptr<IToolbarItem>> SwitchTabFlyout::GetSubItems()
   return ret;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

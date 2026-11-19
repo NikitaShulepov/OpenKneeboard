@@ -1,20 +1,20 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/CursorEvent.hpp>
-#include <OpenKneeboard/DXResources.hpp>
-#include <OpenKneeboard/DoodleRenderer.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
+#include <VDXROVR/CursorEvent.hpp>
+#include <VDXROVR/DXResources.hpp>
+#include <VDXROVR/DoodleRenderer.hpp>
+#include <VDXROVR/KneeboardState.hpp>
 
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/dprint.hpp>
 
 #include <mutex>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 DoodleRenderer::DoodleRenderer(
   const audited_ptr<DXResources>& dxr,
@@ -68,7 +68,7 @@ void DoodleRenderer::PostCursorEvent(
   PageID pageID,
   const PixelSize& nativePageSize) {
   if (!nativePageSize) {
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     return;
   }
 
@@ -141,7 +141,7 @@ ID2D1Bitmap* DoodleRenderer::GetDrawingSurface(PageID pageID) {
   auto it = mDrawings.find(pageID);
   if (it == mDrawings.end()) {
     // Should have been initialized by cursor events
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     return nullptr;
   }
 
@@ -152,13 +152,13 @@ ID2D1Bitmap* DoodleRenderer::GetDrawingSurface(PageID pageID) {
 
   const auto& contentPixels = page.mNativeSize;
   if (!contentPixels) {
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     return nullptr;
   }
 
   const auto surfaceSize = contentPixels.ScaledToFit(MaxViewRenderSize);
   if (surfaceSize.IsEmpty()) [[unlikely]] {
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     return nullptr;
   }
 
@@ -224,4 +224,4 @@ void DoodleRenderer::Render(
   this->Render(rt->d2d(), pageID, rect);
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

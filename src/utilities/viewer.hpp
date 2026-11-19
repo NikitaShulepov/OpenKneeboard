@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -8,12 +8,12 @@
 
 #include "viewer-settings.hpp"
 
-#include <OpenKneeboard/SHM.hpp>
+#include <VDXROVR/SHM.hpp>
 
 #include <filesystem>
 #include <string>
 
-namespace OpenKneeboard::Viewer {
+namespace VDXROVR::Viewer {
 
 class Renderer {
  public:
@@ -43,4 +43,4 @@ class Renderer {
     uint64_t fenceValueIn) = 0;
 };
 
-}// namespace OpenKneeboard::Viewer
+}// namespace VDXROVR::Viewer

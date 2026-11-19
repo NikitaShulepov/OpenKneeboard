@@ -1,24 +1,24 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/AppSettings.hpp>
+#include <VDXROVR/AppSettings.hpp>
 
-#include <OpenKneeboard/json.hpp>
+#include <VDXROVR/json.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
-OPENKNEEBOARD_DEFINE_SPARSE_JSON(BookmarkSettings, mEnabled, mLoop)
-OPENKNEEBOARD_DEFINE_SPARSE_JSON(
+VDXROVR_DEFINE_SPARSE_JSON(BookmarkSettings, mEnabled, mLoop)
+VDXROVR_DEFINE_SPARSE_JSON(
   InGameUISettings,
   mHeaderEnabled,
   mFooterEnabled,
   mFooterFrameCountEnabled,
   mBookmarksBarEnabled);
 
-OPENKNEEBOARD_DEFINE_SPARSE_JSON(
+VDXROVR_DEFINE_SPARSE_JSON(
   TintSettings,
   mEnabled,
   mBrightness,
@@ -28,7 +28,7 @@ OPENKNEEBOARD_DEFINE_SPARSE_JSON(
   mBlue)
 
 // mWindowRect is handled by `*_json_postprocess` functions above
-OPENKNEEBOARD_DEFINE_SPARSE_JSON(
+VDXROVR_DEFINE_SPARSE_JSON(
   UISettings,
   mLoopPages,
   mLoopTabs,
@@ -36,4 +36,4 @@ OPENKNEEBOARD_DEFINE_SPARSE_JSON(
   mInGameUI,
   mTint)
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

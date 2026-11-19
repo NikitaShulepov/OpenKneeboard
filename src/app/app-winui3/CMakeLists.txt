@@ -5,8 +5,8 @@ set(
   "%(AdditionalDependencies)"
 )
 
-ok_add_executable(
-  OpenKneeboard-App-WinUI3
+vdxrovr_add_executable(
+  VDXROVR-App-WinUI3
   WIN32
   RUNTIME_EXE
   Resource.rc app.manifest
@@ -47,7 +47,7 @@ ok_add_executable(
 
 include(winui3-boilerplate.cmake)
 target_include_directories(
-  OpenKneeboard-App-WinUI3
+  VDXROVR-App-WinUI3
   PRIVATE
   "${CMAKE_CURRENT_BINARY_DIR}/Generated Files"
 )
@@ -64,23 +64,23 @@ set_property(
   "DependentUpon=InputDeviceSettingsPage.idl"
 )
 target_link_libraries(
-  OpenKneeboard-App-WinUI3
+  VDXROVR-App-WinUI3
   PRIVATE
-  OpenKneeboard-App-Common
-  OpenKneeboard-ChromiumApp
-  OpenKneeboard-ChromiumWorker
-  OpenKneeboard-DXResources
-  OpenKneeboard-GetMainHWND
-  OpenKneeboard-RuntimeFiles
-  OpenKneeboard-Elevation
-  OpenKneeboard-chrono
-  OpenKneeboard-config
-  OpenKneeboard-dprint
-  OpenKneeboard-fatal
-  OpenKneeboard-handles
-  OpenKneeboard-semver
-  OpenKneeboard-tracing
-  OpenKneeboard-version
+  VDXROVR-App-Common
+  VDXROVR-ChromiumApp
+  VDXROVR-ChromiumWorker
+  VDXROVR-DXResources
+  VDXROVR-GetMainHWND
+  VDXROVR-RuntimeFiles
+  VDXROVR-Elevation
+  VDXROVR-chrono
+  VDXROVR-config
+  VDXROVR-dprint
+  VDXROVR-fatal
+  VDXROVR-handles
+  VDXROVR-semver
+  VDXROVR-tracing
+  VDXROVR-version
   System::Comctl32
   System::Dxgi
   System::Shell32
@@ -88,7 +88,7 @@ target_link_libraries(
   ThirdParty::LibZip
 )
 target_link_options(
-  OpenKneeboard-App-WinUI3
+  VDXROVR-App-WinUI3
   PRIVATE
   # Needs library path mutating first
   "/DELAYLOAD:libcef.dll"
@@ -97,43 +97,43 @@ target_link_options(
 )
 
 target_include_directories(
-  OpenKneeboard-App-WinUI3
+  VDXROVR-App-WinUI3
   PRIVATE
   "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 
-set(BUILD_TIME_MARKER_FILE "${CMAKE_CURRENT_BINARY_DIR}/openkneeboard-build-time-marker.hpp")
+set(BUILD_TIME_MARKER_FILE "${CMAKE_CURRENT_BINARY_DIR}/vdxrovr-build-time-marker.hpp")
 add_custom_command(
   OUTPUT "${BUILD_TIME_MARKER_FILE}"
   COMMAND "${CMAKE_COMMAND}" -E touch "${BUILD_TIME_MARKER_FILE}"
 )
-target_sources(OpenKneeboard-App-WinUI3 PRIVATE "${BUILD_TIME_MARKER_FILE}")
+target_sources(VDXROVR-App-WinUI3 PRIVATE "${BUILD_TIME_MARKER_FILE}")
 
 target_precompile_headers(
-  OpenKneeboard-App-WinUI3
+  VDXROVR-App-WinUI3
   PRIVATE
   pch.h
 )
 
 target_compile_definitions(
-  OpenKneeboard-App-WinUI3
+  VDXROVR-App-WinUI3
   PRIVATE
   DISABLE_XAML_GENERATED_MAIN
   MICROSOFT_WINDOWSAPPSDK_UNDOCKEDREGFREEWINRT_AUTO_INITIALIZE_LOADLIBRARY
 )
 
 target_compile_options(
-  OpenKneeboard-App-WinUI3
+  VDXROVR-App-WinUI3
   PRIVATE
 
   # We intentionally throw from noexcept functions to get more useful
   # backtraces/crash dumps from winrt event handlers
   "/wd4297"
-  "/FI${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/OpenKneeboard-App-WinUI3.dir/$<CONFIG>/cmake_pch.hxx"
+  "/FI${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/VDXROVR-App-WinUI3.dir/$<CONFIG>/cmake_pch.hxx"
 )
 
 set_target_properties(
-  OpenKneeboard-App-WinUI3
+  VDXROVR-App-WinUI3
   PROPERTIES
-  OUTPUT_NAME "OpenKneeboardApp"
+  OUTPUT_NAME "VDXROVRApp"
 )

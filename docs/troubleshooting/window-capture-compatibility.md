@@ -10,11 +10,11 @@ Capture will work with most apps, but has limitations.
 
 On apps using older frameworks, dialog boxes and drop-down menus may not be shown. There is no workaround.
 
-In the future, it may be supported on some versions of Windows 11; any updates will be on [the GitHub issue](https://github.com/OpenKneeboard/OpenKneeboard/issues/883).
+In the future, it may be supported on some versions of Windows 11; any updates will be on [the GitHub issue](https://github.com/NikitaShulepov/VDXROVR/issues/883).
 
 ## The captured window doesn't update when it's not visible (e.g. when in-game)
 
-Some applications choose not to update when the window is fully covered by other windows, including full-screen games; OpenKneeboard can not change this behavior. You can ask the developer of the application to remove this optimization, or, some apps may have workarounds:
+Some applications choose not to update when the window is fully covered by other windows, including full-screen games; VDXROVR can not change this behavior. You can ask the developer of the application to remove this optimization, or, some apps may have workarounds:
 
 ### Chrome, Edge, and other Chromium-based browsers
 
@@ -36,7 +36,7 @@ You can try making it so that some portion of the app window is always visible o
 
 ## Cursor
 
-While OpenKneeboard's own cursor will move, it will not move the Windows mouse cursor, as Windows only supports mouse interaction with the active window.
+While VDXROVR's own cursor will move, it will not move the Windows mouse cursor, as Windows only supports mouse interaction with the active window.
 
 ## Mouse/tablet forwarding
 
@@ -45,7 +45,7 @@ While OpenKneeboard's own cursor will move, it will not move the Windows mouse c
 
 If mouse/tablet forwarding does not work for you with a specific app or causes any other issues, it is simply incompatible. There is no configuration, no troubleshooting, or anything else you can do to fix it, [unless you are the app developer, and familiar with Win32 and your framework](../faq/third-party-developers.md#why-doesnt-the-mouse-emulation-work-correctly-in-my-app-when-using-window-capture-tabs).
 
-Apps, frameworks, and Windows itself try very hard to make it so mouse movement only affects active window; sometimes, despite OpenKneeboards' best efforts, they succeed.
+Apps, frameworks, and Windows itself try very hard to make it so mouse movement only affects active window; sometimes, despite VDXROVRs' best efforts, they succeed.
 
 These issues are very time consuming, and there are too many apps/frameworks for me to investigate them. There is no need to ask, or to open bug reports/feature requests.
 

@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -12,16 +12,16 @@
 
 #include "Globals.h"
 
-#include <OpenKneeboard/Filesystem.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/LaunchURI.hpp>
+#include <VDXROVR/Filesystem.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/LaunchURI.hpp>
 
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/scope_exit.hpp>
-#include <OpenKneeboard/semver.hpp>
-#include <OpenKneeboard/utf8.hpp>
-#include <OpenKneeboard/version.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/scope_exit.hpp>
+#include <VDXROVR/semver.hpp>
+#include <VDXROVR/utf8.hpp>
+#include <VDXROVR/version.hpp>
 
 #include <winrt/Microsoft.UI.Xaml.Controls.h>
 #include <winrt/Windows.Storage.Streams.h>
@@ -41,9 +41,9 @@ using namespace winrt::Windows::Web::Http;
 using namespace winrt::Windows::Foundation;
 using namespace winrt;
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
-static OpenKneeboard::fire_and_forget ShowResultDialog(
+static VDXROVR::fire_and_forget ShowResultDialog(
   std::string_view message,
   winrt::apartment_context uiThread,
   XamlRoot xamlRoot);
@@ -118,7 +118,7 @@ task<UpdateResult> CheckForUpdates(
       hstring {L"application/vnd.github.v3+json"}));
 
   const auto baseUri = testing.mBaseURI.empty()
-    ? "https://autoupdate.openkneeboard.com"
+    ? "https://github.com/NikitaShulepov/VDXROVR/releases"
     : testing.mBaseURI;
 
   const auto uri = std::format("{}/{}-msi.json", baseUri, settings.mChannel);
@@ -173,7 +173,7 @@ task<UpdateResult> CheckForUpdates(
 
   scope_exit oncePerDay(
     [](auto now, auto settings, auto appSettings)
-      -> OpenKneeboard::fire_and_forget {
+      -> VDXROVR::fire_and_forget {
       settings.mDisabledUntil = now + (60 * 60 * 24);
       appSettings.mAutoUpdate = settings;
       auto kneeboard = gKneeboard.lock();
@@ -249,7 +249,7 @@ task<UpdateResult> CheckForUpdates(
   {
     HyperlinkButton releaseNotesLink;
     releaseNotesLink.Content(box_value(
-      to_hstring(std::format(_("OpenKneeboard {} is available!"), newName))));
+      to_hstring(std::format(_("VDXROVR {} is available!"), newName))));
     releaseNotesLink.NavigateUri(
       Uri {to_hstring(latestRelease.at("html_url").get<std::string_view>())});
     releaseNotesLink.HorizontalAlignment(HorizontalAlignment::Center);
@@ -280,7 +280,7 @@ task<UpdateResult> CheckForUpdates(
 
     ContentDialog dialog;
     dialog.XamlRoot(xamlRoot);
-    dialog.Title(box_value(to_hstring(_(L"Update OpenKneeboard"))));
+    dialog.Title(box_value(to_hstring(_(L"Update VDXROVR"))));
     dialog.Content(layout);
     if (isPrerelease) {
       dialog.PrimaryButtonText(_(L"Install Test Version"));
@@ -408,7 +408,7 @@ task<UpdateResult> CheckForUpdates(
     }
 
     // Settings saved by scope guard
-    co_await OpenKneeboard::LaunchURI(to_utf8(destination));
+    co_await VDXROVR::LaunchURI(to_utf8(destination));
     Application::Current().Exit();
     co_return UpdateResult::InstallingUpdate;
   }
@@ -421,7 +421,7 @@ task<UpdateResult> CheckForUpdates(
   co_return UpdateResult::NotInstallingUpdate;
 }
 
-static OpenKneeboard::fire_and_forget ShowResultDialog(
+static VDXROVR::fire_and_forget ShowResultDialog(
   std::string_view message,
   winrt::apartment_context uiThread,
   XamlRoot xamlRoot) {
@@ -429,11 +429,11 @@ static OpenKneeboard::fire_and_forget ShowResultDialog(
 
   ContentDialog dialog;
   dialog.XamlRoot(xamlRoot);
-  dialog.Title(box_value(to_hstring(_(L"Update OpenKneeboard"))));
+  dialog.Title(box_value(to_hstring(_(L"Update VDXROVR"))));
   dialog.Content(box_value(to_hstring(message)));
   dialog.CloseButtonText(_(L"OK"));
   dialog.DefaultButton(ContentDialogButton::Close);
   co_await dialog.ShowAsync();
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

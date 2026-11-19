@@ -1,13 +1,13 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/TabFirstPageAction.hpp>
-#include <OpenKneeboard/TabView.hpp>
+#include <VDXROVR/TabFirstPageAction.hpp>
+#include <VDXROVR/TabView.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 TabFirstPageAction::TabFirstPageAction(const std::shared_ptr<TabView>& state)
   : ToolbarAction("\uE892", _("First Page")),
@@ -39,4 +39,4 @@ task<void> TabFirstPageAction::Execute() {
   }
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

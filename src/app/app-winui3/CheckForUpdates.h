@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -10,7 +10,7 @@
 #include "pch.h"
 // clang-format on
 
-#include <OpenKneeboard/task.hpp>
+#include <VDXROVR/task.hpp>
 
 #include <shims/winrt/base.h>
 
@@ -18,7 +18,7 @@
 
 #include <future>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 enum class UpdateCheckType {
   Automatic,
@@ -34,4 +34,4 @@ task<UpdateResult> CheckForUpdates(
   UpdateCheckType,
   winrt::Microsoft::UI::Xaml::XamlRoot);
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

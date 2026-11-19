@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -10,10 +10,10 @@
 #include "IndependentVRViewUIKind.g.cpp"
 // clang-format on
 
-#include <OpenKneeboard/utf8.hpp>
+#include <VDXROVR/utf8.hpp>
 
-using namespace OpenKneeboard;
+using namespace VDXROVR;
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 IndependentVRViewUIKind::IndependentVRViewUIKind() { Label(_(L"Independent")); }
-}// namespace winrt::OpenKneeboardApp::implementation
+}// namespace winrt::VDXROVRApp::implementation

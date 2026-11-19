@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -10,7 +10,7 @@
 #include "DegreesValueConverter.g.h"
 // clang-format on
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 struct DegreesValueConverter : DegreesValueConverterT<DegreesValueConverter> {
   DegreesValueConverter() = default;
 
@@ -25,9 +25,9 @@ struct DegreesValueConverter : DegreesValueConverterT<DegreesValueConverter> {
     winrt::Windows::Foundation::IInspectable const& parameter,
     hstring const& language);
 };
-}// namespace winrt::OpenKneeboardApp::implementation
-namespace winrt::OpenKneeboardApp::factory_implementation {
+}// namespace winrt::VDXROVRApp::implementation
+namespace winrt::VDXROVRApp::factory_implementation {
 struct DegreesValueConverter : DegreesValueConverterT<
                                  DegreesValueConverter,
                                  implementation::DegreesValueConverter> {};
-}// namespace winrt::OpenKneeboardApp::factory_implementation
+}// namespace winrt::VDXROVRApp::factory_implementation

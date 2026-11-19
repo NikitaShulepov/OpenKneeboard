@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -10,14 +10,14 @@
 #include "pch.h"
 // clang-format on
 
-#include <OpenKneeboard/Events.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
+#include <VDXROVR/Events.hpp>
+#include <VDXROVR/KneeboardState.hpp>
 
 #include <shims/winrt/base.h>
 
 #include <winrt/Microsoft.UI.Xaml.Data.h>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 struct WithPropertyChangedEvent {
   winrt::event_token PropertyChanged(
@@ -56,4 +56,4 @@ struct WithPropertyChangedEventOnProfileChange
   EventHandlerToken mProfileChangedEvent {};
 };
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

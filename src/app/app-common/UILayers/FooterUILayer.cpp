@@ -1,25 +1,25 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include "OpenKneeboard/InterprocessRenderer.hpp"
+#include "VDXROVR/InterprocessRenderer.hpp"
 
-#include <OpenKneeboard/APIEvent.hpp>
-#include <OpenKneeboard/CursorEvent.hpp>
-#include <OpenKneeboard/DCSEvents.hpp>
-#include <OpenKneeboard/DXResources.hpp>
-#include <OpenKneeboard/FooterUILayer.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
+#include <VDXROVR/APIEvent.hpp>
+#include <VDXROVR/CursorEvent.hpp>
+#include <VDXROVR/DCSEvents.hpp>
+#include <VDXROVR/DXResources.hpp>
+#include <VDXROVR/FooterUILayer.hpp>
+#include <VDXROVR/KneeboardState.hpp>
 
-#include <OpenKneeboard/chrono.hpp>
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/tracing.hpp>
+#include <VDXROVR/chrono.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/tracing.hpp>
 
 #include <algorithm>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 FooterUILayer::FooterUILayer(
   const audited_ptr<DXResources>& dxr,
@@ -105,7 +105,7 @@ task<void> FooterUILayer::Render(
   const IUILayer::NextList& next,
   const Context& context,
   const PixelRect& rect) {
-  OPENKNEEBOARD_TraceLoggingScope("FooterUILayer::Render()");
+  VDXROVR_TraceLoggingScope("FooterUILayer::Render()");
   mLastRenderSize = rect.mSize;
 
   const auto tabView = context.mTabView;
@@ -196,7 +196,7 @@ task<void> FooterUILayer::Render(
     auto ipc = mKneeboard->GetInterprocessRenderer();
     if (ipc) {
       drawClock(
-        std::format(L"OKB Frame {}", ipc->GetFrameCountForMetricsOnly()),
+        std::format(L"VDXROVR Frame {}", ipc->GetFrameCountForMetricsOnly()),
         DWRITE_TEXT_ALIGNMENT_CENTER);
     }
   }
@@ -248,4 +248,4 @@ void FooterUILayer::OnGameChanged(
   mMissionTime = {};
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

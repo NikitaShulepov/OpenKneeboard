@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -6,7 +6,7 @@
 // OpenKneeboard repository.
 #include "FilePicker.h"
 
-#include "OpenKneeboard/dprint.hpp"
+#include "VDXROVR/dprint.hpp"
 
 #include <wil/resource.h>
 
@@ -15,7 +15,7 @@
 #include <string>
 #include <system_error>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 FilePicker::FilePicker(HWND parent) : mParent(parent) {}
 
@@ -214,4 +214,4 @@ winrt::com_ptr<IShellItem> FilePicker::GetInitialPath() const {
   return {};
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

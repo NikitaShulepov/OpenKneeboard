@@ -1,16 +1,16 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/DebugTimer.hpp>
+#include <VDXROVR/DebugTimer.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/dprint.hpp>
 
 #include <format>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 DebugTimer::DebugTimer(std::string_view label)
   : mLabel(label),
@@ -31,4 +31,4 @@ void DebugTimer::End() {
       std::chrono::steady_clock::now() - mStart));
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

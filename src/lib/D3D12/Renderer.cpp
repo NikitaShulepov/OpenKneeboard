@@ -1,15 +1,15 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 
-#include <OpenKneeboard/D3D12/Renderer.hpp>
+#include <VDXROVR/D3D12/Renderer.hpp>
 
-#include <OpenKneeboard/hresult.hpp>
+#include <VDXROVR/hresult.hpp>
 
-namespace OpenKneeboard::D3D12 {
+namespace VDXROVR::D3D12 {
 
 SwapchainBufferResources::SwapchainBufferResources(
   ID3D12Device* device,
@@ -34,7 +34,7 @@ SwapchainBufferResources::SwapchainBufferResources(
     nullptr,
     IID_PPV_ARGS(mCommandList.put())));
   mCommandList->SetName(
-    L"OpenKneeboard::D3D12::SwapchainBufferResources::"
+    L"VDXROVR::D3D12::SwapchainBufferResources::"
     L"SwapchainBufferResources");
   check_hresult(
     device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(mFence.put())));
@@ -45,7 +45,7 @@ SwapchainBufferResources::~SwapchainBufferResources() {
     winrt::handle event {CreateEventW(nullptr, FALSE, FALSE, nullptr)};
     check_hresult(mFence->SetEventOnCompletion(mFenceValue, event.get()));
     const auto waitResult = WaitForSingleObject(event.get(), 5000);
-    OPENKNEEBOARD_ALWAYS_ASSERT(
+    VDXROVR_ALWAYS_ASSERT(
       waitResult == WAIT_OBJECT_0,
       "Wait result: {:#010x}",
       static_cast<uintptr_t>(waitResult));
@@ -88,7 +88,7 @@ void Renderer::RenderLayers(
   const SHM::D3D12::Frame& frame,
   const std::span<SHM::LayerSprite>& layers,
   const RenderMode renderMode) {
-  OPENKNEEBOARD_TraceLoggingScope("D3D12::Renderer::RenderLayers()");
+  VDXROVR_TraceLoggingScope("D3D12::Renderer::RenderLayers()");
 
   auto& br = sr.mBufferResources.at(swapchainTextureIndex);
 
@@ -96,7 +96,7 @@ void Renderer::RenderLayers(
   if (br.mFenceValue) {
     const auto minimumValue = br.mFenceValue;
     const auto actualValue = br.mFence->GetCompletedValue();
-    OPENKNEEBOARD_ALWAYS_ASSERT(
+    VDXROVR_ALWAYS_ASSERT(
       actualValue >= minimumValue,
       "Required {} >= {}",
       actualValue,
@@ -142,4 +142,4 @@ void Renderer::RenderLayers(
   check_hresult(mQueue->Signal(br.mFence.get(), ++br.mFenceValue));
 }
 
-}// namespace OpenKneeboard::D3D12
+}// namespace VDXROVR::D3D12

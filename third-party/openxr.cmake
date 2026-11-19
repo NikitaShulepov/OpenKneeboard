@@ -25,8 +25,8 @@ target_include_directories(
 
 add_library(ThirdParty::OpenXR ALIAS OpenXRSDK)
 
-include(ok_add_license_file)
-ok_add_license_file(
+include(vdxrovr_add_license_file)
+vdxrovr_add_license_file(
   "${SOURCE_DIR}/LICENSE"
   "LICENSE-ThirdParty-OpenXR SDK.txt"
   DEPENDS OpenXRSDKSource-update

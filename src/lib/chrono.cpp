@@ -5,12 +5,12 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include <OpenKneeboard/chrono.hpp>
+#include <VDXROVR/chrono.hpp>
 
 #include <chrono>
 #include <thread>
 
-namespace OpenKneeboard::chrono {
+namespace VDXROVR::chrono {
 
 const std::chrono::time_zone* current_zone_or_utc() {
   static std::once_flag once;
@@ -25,4 +25,4 @@ const std::chrono::time_zone* current_zone_or_utc() {
   return tz;
 }
 
-}// namespace OpenKneeboard::chrono
+}// namespace VDXROVR::chrono

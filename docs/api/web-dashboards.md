@@ -7,7 +7,7 @@ has_children: true
 # Web Dashboard APIs
 {: .no_toc }
 
-OpenKneeboard currently has a very limited JavaScript API for Web Dashboard tabs; this is likely to be extended in the future. Future plans are primarily being discussed in [issue #240](https://github.com/OpenKneeboard/OpenKneeboard/issues/240)
+VDXROVR currently has a very limited JavaScript API for Web Dashboard tabs; this is likely to be extended in the future. Future plans are primarily being discussed in [issue #240](https://github.com/NikitaShulepov/VDXROVR/issues/240)
 
 ## Table of Contents
 {: .no_toc, .text-delta }
@@ -15,28 +15,28 @@ OpenKneeboard currently has a very limited JavaScript API for Web Dashboard tabs
 1. TOC
 {:toc}
 
-## Detecting OpenKneeboard
+## Detecting VDXROVR
 
-There are several ways to detect if your web page is being accessed within OpenKneeboard's "Web Dashboard" tabs:
+There are several ways to detect if your web page is being accessed within VDXROVR's "Web Dashboard" tabs:
 
-- the user agent string contains `OpenKneeboard/a.b.c.d`, where `a.b.c.d` is the version number
-- `window.OpenKneeboard` is set, and is a valid object
-- *DEPRECATED - removed in v1.9*: the `<body>` element has the `OpenKneeboard` class
-- *DEPRECATED - removed in v1.9*: the `<body>` element has the `OpenKneeboard_WebView2` class; this also indicates that OpenKneeboard is using Microsoft's Chromium-based-Edge 'WebView2' browser engine
+- the user agent string contains `VDXROVR/a.b.c.d`, where `a.b.c.d` is the version number
+- `window.VDXROVR` is set, and is a valid object
+- *DEPRECATED - removed in v1.9*: the `<body>` element has the `VDXROVR` class
+- *DEPRECATED - removed in v1.9*: the `<body>` element has the `VDXROVR_WebView2` class; this also indicates that VDXROVR is using Microsoft's Chromium-based-Edge 'WebView2' browser engine
 
-OpenKneeboard v1.9 and above no longer add CSS classes to the body, as this can lead to compatibility problems. The easiest way to restore the old behavior is to add the following to your page:
+VDXROVR v1.9 and above no longer add CSS classes to the body, as this can lead to compatibility problems. The easiest way to restore the old behavior is to add the following to your page:
 
 ```js
-if (window.OpenKneeboard) {
-  document.body.classList.add("OpenKneeboard");
+if (window.VDXROVR) {
+  document.body.classList.add("VDXROVR");
 }
 ```
 
-The `window.OpenKneeboard` object is loaded before any scripts on the page start executing.
+The `window.VDXROVR` object is loaded before any scripts on the page start executing.
 
 ## Transparency
 
-OpenKneeboard's virtual browser window is fully transparent; this allows full RGBA transparency via standard CSS, e.g:
+VDXROVR's virtual browser window is fully transparent; this allows full RGBA transparency via standard CSS, e.g:
 
 ```css
 body {
@@ -46,15 +46,15 @@ body {
 
 ## JavaScript APIs
 
-All APIs are methods on the `window.OpenKneeboard` object; it is best practice to confirm that OpenKneeboard is being used and the API you want is available; for example, if you want to call [`SetPreferredPixelSize()`](#setpreferredpixelsize), a safe way to call it is like this:
+All APIs are methods on the `window.VDXROVR` object; it is best practice to confirm that VDXROVR is being used and the API you want is available; for example, if you want to call [`SetPreferredPixelSize()`](#setpreferredpixelsize), a safe way to call it is like this:
 
 ```js
-if (window.OpenKneeboard?.SetPreferredPixelSize) {
-  window.OpenKneeboard.SetPreferredPixelSize(width, height);
+if (window.VDXROVR?.SetPreferredPixelSize) {
+  window.VDXROVR.SetPreferredPixelSize(width, height);
 }
 ```
 
-In v1.9 and above, `window.OpenKneeboard` can usually be accessed just as `OpenKneeboard`.
+In v1.9 and above, `window.VDXROVR` can usually be accessed just as `VDXROVR`.
 
 ### Conventions in v1.9+
 
@@ -65,19 +65,19 @@ Functions have consistent return behavior:
 - if the success value is undocumented or documented as `any`, it may contain additional information intended to inform you, but may change without warning between versions. Do not write code that depends on a particular value or type
 - on failure:
   - the error will be logged to the developer tools console
-  - the `Promise` will be rejected with an `OpenKneeboardAPIError`
+  - the `Promise` will be rejected with an `VDXROVRAPIError`
 
-The `OpenKneeboardAPIError` extends the standard JavaScript `Error` class, adding an `apiMethodName` string property; for example:
+The `VDXROVRAPIError` extends the standard JavaScript `Error` class, adding an `apiMethodName` string property; for example:
 
 ```js
 // In v1.9+:
 try {
   /* ... some code here ... */
-  await OpenKneeboard.SomeAPI(/* ... */ );
+  await VDXROVR.SomeAPI(/* ... */ );
   /* ... some more code ... */
 } catch (error) {
-  if (error instanceof OpenKneeboardAPIError) {
-    // Logs "OpenKneeboard.SomeAPI()" and an explanation
+  if (error instanceof VDXROVRAPIError) {
+    // Logs "VDXROVR.SomeAPI()" and an explanation
     console.log(error.apiMethodName, error.message);
   }
 }
@@ -85,11 +85,11 @@ try {
 
 ### A note on `await`
 
-Several OpenKneeboard API functions return a `Promise`; the examples will use the `await` syntac for these, e.g.:
+Several VDXROVR API functions return a `Promise`; the examples will use the `await` syntac for these, e.g.:
 
 ```js
 try {
-  await OpenKneeboard.DoSomething();
+  await VDXROVR.DoSomething();
   DoSomethingElse();
 } catch (error) {
   HandleError(error);
@@ -99,20 +99,20 @@ try {
 As these are standard `Promise` objects, if you prefer, you can use the traditional syntax instead:
 
 ```js
-OpenKneeboard.DoSomething()
+VDXROVR.DoSomething()
   .then(function(result) { DoSomethingElse(); })
   .catch(function(error) {HandleError(error); });
 ```
 
 ### TypeScript
 
-In v1.9 and above, TypeScript definitions are included both in `data` subfolder of the OpenKneeboard source tree, and in the `share\doc` subfolder of an OpenKneeboard installation.
+In v1.9 and above, TypeScript definitions are included both in `data` subfolder of the VDXROVR source tree, and in the `share\doc` subfolder of an VDXROVR installation.
 
-Unless you are intentionally using an experimental API, you should only include `OpenKneeboard.d.ts` in your project; the various `OpenKneeboard-Experimental-*.d.ts` files define additional features that are not usually available.
+Unless you are intentionally using an experimental API, you should only include `VDXROVR.d.ts` in your project; the various `VDXROVR-Experimental-*.d.ts` files define additional features that are not usually available.
 
-If you are not familiar with TypeScript, you may still want to copy the `OpenKneeboard.d.ts` file into your project - some IDEs will automatically use it to provide better help while you are writing your JavaScript code.
+If you are not familiar with TypeScript, you may still want to copy the `VDXROVR.d.ts` file into your project - some IDEs will automatically use it to provide better help while you are writing your JavaScript code.
 
-All of OpenKneeboard's stable APIs are defined in [`OpenKneeboard.d.ts`](https://github.com/OpenKneeboard/OpenKneeboard/blob/master/data/OpenKneeboard.d.ts).
+All of VDXROVR's stable APIs are defined in [`VDXROVR.d.ts`](https://github.com/NikitaShulepov/VDXROVR/blob/master/data/VDXROVR.d.ts).
 
 ### SetPreferredPixelSize
 
@@ -120,14 +120,14 @@ Set the preferred pixel size and aspect ratio for this page.
 
 ```js
 // Syntax (v1.8):
-window.OpenKneeboard.SetPreferredPixelSize(width: number, height: number): undefined;
+window.VDXROVR.SetPreferredPixelSize(width: number, height: number): undefined;
 // Example (v1.8):
-window.OpenKneeboard.SetPreferredPixelSize(1024, 768);
+window.VDXROVR.SetPreferredPixelSize(1024, 768);
 
 // Syntax (v1.9+):
-OpenKneeboard.SetPreferredPixelSize(width: number, height: number): Promise<any>;
+VDXROVR.SetPreferredPixelSize(width: number, height: number): Promise<any>;
 // Example (v1.9+):
-await OpenKneeboard.SetPreferredPixelSize(1024, 768);
+await VDXROVR.SetPreferredPixelSize(1024, 768);
 ```
 
 `width` and `height`:
@@ -135,18 +135,18 @@ await OpenKneeboard.SetPreferredPixelSize(1024, 768);
 - must be greater than or equal to 1
 - must be less than or equal to `D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION` (16384 as of Direct3D 11.1).
 
-In v1.9+, awaiting/resolving the promise is *optional*, but does provide a means to detect success or failure; for compatibility, it can also be accessed via the `window.OpenKneeboard`
+In v1.9+, awaiting/resolving the promise is *optional*, but does provide a means to detect success or failure; for compatibility, it can also be accessed via the `window.VDXROVR`
 
 ### GetVersion
 
-*This requires OpenKneeboard v1.9 and above.*
+*This requires VDXROVR v1.9 and above.*
 
 ```js
 // Syntax:
-OpenKneeboard.GetVersion(): Promise<Object>;
+VDXROVR.GetVersion(): Promise<Object>;
 
 // Example:
-const okbVersion = await OpenKneeboard.GetVersion();
+const okbVersion = await VDXROVR.GetVersion();
 ```
 
 The promise resolves to an object like the following:
@@ -166,9 +166,9 @@ The promise resolves to an object like the following:
 }
 ```
 
-- `Components`: individual parts of the OpenKneeboard as numbers; you probably want to use these for any version-dependent logic in your code. Released OpenKneeboard versions have versions of the form v*Major*.*Minor*.*Patch*.*Build* or v*Major*.*Minor*.*Patch*+GHA*Build*. `Build` is the run number from GitHub actions; it is 0 for local developer builds.
-- `HumanReadable`: if you display an OpenKneeboard version number to the user in any form, you should use this string. For example, `v1.8.2-rc1` is much clearer to the user than `v1.8.2.2057` (the actual v1.8.2 release is `v1.8.2.2080`).
-- `IsGitHubActionsBuild`: whether or not this version of OpenKneeboard was built automatically through continuous integration; otherwise, it is a local developer build
+- `Components`: individual parts of the VDXROVR as numbers; you probably want to use these for any version-dependent logic in your code. Released VDXROVR versions have versions of the form v*Major*.*Minor*.*Patch*.*Build* or v*Major*.*Minor*.*Patch*+GHA*Build*. `Build` is the run number from GitHub actions; it is 0 for local developer builds.
+- `HumanReadable`: if you display an VDXROVR version number to the user in any form, you should use this string. For example, `v1.8.2-rc1` is much clearer to the user than `v1.8.2.2057` (the actual v1.8.2 release is `v1.8.2.2080`).
+- `IsGitHubActionsBuild`: whether or not this version of VDXROVR was built automatically through continuous integration; otherwise, it is a local developer build
 - `IsStableRelease`: true for builds made on GitHub Actions from a stable release tag; false for all other builds.
 - `IsTaggedVersion`: true for builds made on GitHub Actions from a release tag, false for all other builds. This differs from `IsStableRelease` for tagged pre-release builds; for example, an automated build of `v1.9.0-rc1` would be a tagged version, but not a stable release.
 
@@ -178,21 +178,21 @@ The two forms of version number are used because:
 
 ## OpenDeveloperToolsWindow
 
-Opens the MS Edge developer tools window; requires OpenKneeboard v1.9.
+Opens the MS Edge developer tools window; requires VDXROVR v1.9.
 
 ```js
-OpenKneeboard.OpenDeveloperToolsWindow();
+VDXROVR.OpenDeveloperToolsWindow();
 ```
 
 ## Experimental JavaScript APIs
 
-These features will be changed without notice, and in any update, including patch releases; you should avoid using them in released software if possible; reach out in `#code-talk` [on Discord](https://go.openkneeboard.com/discord) before releasing software that uses them.
+These features will be changed without notice, and in any update, including patch releases; you should avoid using them in released software if possible; reach out in `#code-talk` [on Discord](https://github.com/NikitaShulepov/VDXROVR) before releasing software that uses them.
 
 If you want to use an experimental API with the goal of switching to a stable API when it is used, the best approach is to wrap enabling it in a `try`/`catch`, e.g.:
 
 ```js
 try {
-  await OpenKneeboard.EnableExperimentalFeature('foo', 1234);
+  await VDXROVR.EnableExperimentalFeature('foo', 1234);
   TurnOnMyUseOfThisExperimentalFeature();
 } catch (ex) {
   console.log("Failed to initialize experimental feature foo", ex);
@@ -205,9 +205,9 @@ Experimental features are identified by a name, and a version number (usually `Y
 
 ```js
 // Syntax:
-OpenKneeboard.EnableExperimentalFeature(name: string, version: number): Promise<any>;
+VDXROVR.EnableExperimentalFeature(name: string, version: number): Promise<any>;
 // Example:
-await OpenKneeboard.EnableExperimentalFeature("foo", 2024071801);
+await VDXROVR.EnableExperimentalFeature("foo", 2024071801);
 ```
 
 On success, the Promise will resolve to a JSON object, which may contain additional information for debugging.
@@ -220,7 +220,7 @@ Enable multiple features in one go.
 
 ```js
 // Example:
-await OpenKneeboard.EnableExperimentalFeature([
+await VDXROVR.EnableExperimentalFeature([
   { name: "Foo", version: 1234 },
   { name: "Bar", version: 5678 },
 ]);
@@ -231,26 +231,26 @@ Return values will be the same; if any feature names/versions are not supported,
 ### GraphicsTabletInfo
 
 This feature requires:
-- OpenKneeboard v1.9.15 or above
+- VDXROVR v1.9.15 or above
 - experimental feature `GraphicsTabletInfo` version `2025012901`
 
 ```js
 // Syntax:
-await OpenKneeboard.GetGraphicsTabletInfo(): Promise
+await VDXROVR.GetGraphicsTabletInfo(): Promise
 
 // Example:
-await OpenKneeboard.EnableExperimentalFeature(
+await VDXROVR.EnableExperimentalFeature(
   'GraphicsTabletInfo',
   2025012901);
-var info = await OpenKneeboard.GetGraphicsTabletInfo();
-await OpenKneeboard.SetPreferredPixelSize(
+var info = await VDXROVR.GetGraphicsTabletInfo();
+await VDXROVR.SetPreferredPixelSize(
   info.SuggestedPixelSize.Width,
   info.SuggestedPixelSize.Height)
 ```
 
 `GetGraphicsTabletInfo()` returns a structure with the following members:
 - `HaveTablet`: boolean
-- `SuggestedPixelSize`: `{ Width: number, Height: number }`; suggested values for `OpenKneeboard.SetPreferredPixelSize()` to match the aspect ratio of the graphics tablet. This value is present and contains recommended values even if `HaveTablet` is false.
+- `SuggestedPixelSize`: `{ Width: number, Height: number }`; suggested values for `VDXROVR.SetPreferredPixelSize()` to match the aspect ratio of the graphics tablet. This value is present and contains recommended values even if `HaveTablet` is false.
 
 This API is intended for web pages that aim to provide kneeboard content in flight simulators, in
 order to provide the largest drawable area possible.
@@ -258,20 +258,20 @@ order to provide the largest drawable area possible.
 ### DoodlesOnly
 
 This feature requires:
-- OpenKneeboard v1.9 or above
+- VDXROVR v1.9 or above
 - experimental feature: `DoodlesOnly` version `2024071802`
 
-Enabling this feature disables the standard mouse emulation, and instead uses OpenKneeboard's standard "draw on top" behavior, letting users take notes or sketch on top of your content.
+Enabling this feature disables the standard mouse emulation, and instead uses VDXROVR's standard "draw on top" behavior, letting users take notes or sketch on top of your content.
 
 As the mouse emulation is disabled, after enabling this feature, it is no longer possible for the user to interact with your web page, including the scroll bars; it should only be used for single-screen content.
 
 ```js
 // Example:
-await OpenKneeboard.EnableExperimentalFeatures([
+await VDXROVR.EnableExperimentalFeatures([
   {name: "DoodlesOnly", version: 2024071802},
   {name: "SetCursorEventsMode", version: 2024071801},
 ]);
-await OpenKneeboard.SetCursorEventsMode("DoodlesOnly");
+await VDXROVR.SetCursorEventsMode("DoodlesOnly");
 ```
 
 #### Change history
@@ -284,24 +284,24 @@ await OpenKneeboard.SetCursorEventsMode("DoodlesOnly");
 ### SetCursorEventsMode
 
 This feature requires:
-- OpenKneeboard v1.9 or above
+- VDXROVR v1.9 or above
 - experimental feature: `SetCursorEventsMode` version `2024071801`
 
 ```js
 // Syntax:
-OpenKneeboard.SetCursorEventsMode("MouseEmulation" | "DoodlesOnly"): Promise<any>;
+VDXROVR.SetCursorEventsMode("MouseEmulation" | "DoodlesOnly"): Promise<any>;
 // Example:
-await OpenKneeboard.EnableExperimentalFeatures([
+await VDXROVR.EnableExperimentalFeatures([
   {name: "DoodlesOnly", version: 2024071802},
   {name: "SetCursorEventsMode", version: 2024071801},
 ]);
-await OpenKneeboard.SetCursorEventsMode("DoodlesOnly");
+await VDXROVR.SetCursorEventsMode("DoodlesOnly");
 ```
 
 - setting the mode to `"DoodlesOnly"` requires `DoodlesOnly` version `2024071802`
 
 ### Page-Based Web Applications
 
-This allows creating a web page that works like a native OpenKneeboard tab type with multiple pages, instead of a potentially-scrollable web view.
+This allows creating a web page that works like a native VDXROVR tab type with multiple pages, instead of a potentially-scrollable web view.
 
 This functionality is documented [on a separate page](web-dashboards/page-based-content.md).

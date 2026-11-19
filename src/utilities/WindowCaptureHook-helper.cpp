@@ -1,32 +1,32 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/ConsoleLoopCondition.hpp>
-#include <OpenKneeboard/WindowCaptureControl.hpp>
+#include <VDXROVR/ConsoleLoopCondition.hpp>
+#include <VDXROVR/WindowCaptureControl.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/scope_exit.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/scope_exit.hpp>
 
 #include <Windows.h>
 #include <shellapi.h>
 
 #include <cstdlib>
 
-using namespace OpenKneeboard;
+using namespace VDXROVR;
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 /* PS >
- * [System.Diagnostics.Tracing.EventSource]::new("OpenKneeboard.WindowCaptureHook.Helper")
- * e8aa8bc1-a583-5d15-5ef0-8592c150f2be
+ * [System.Diagnostics.Tracing.EventSource]::new("VDXROVR.WindowCaptureHook.Helper")
+ * 91dbd3e1-3093-4a45-9dc9-998d12d1fa4a
  */
 TRACELOGGING_DEFINE_PROVIDER(
   gTraceProvider,
-  "OpenKneeboard.WindowCaptureHook.Helper",
-  (0xe8aa8bc1, 0xa583, 0x5d15, 0x5e, 0xf0, 0x85, 0x92, 0xc1, 0x50, 0xf2, 0xbe));
-}// namespace OpenKneeboard
+  "VDXROVR.WindowCaptureHook.Helper",
+  (0x91dbd3e1, 0x3093, 0x4a45, 0x9d, 0xc9, 0x99, 0x8d, 0x12, 0xd1, 0xfa, 0x4a));
+}// namespace VDXROVR
 
 // We only need a standard `main()` function, but using wWinMain prevents
 // a window/task bar entry from temporarily appearing

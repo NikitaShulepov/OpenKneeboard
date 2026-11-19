@@ -1,18 +1,18 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include "OpenKneeboard/fatal.hpp"
+#include "VDXROVR/fatal.hpp"
 
-#include <OpenKneeboard/RenderDoc.hpp>
+#include <VDXROVR/RenderDoc.hpp>
 
 #include <Windows.h>
 
 #include <renderdoc_app.h>
 
-namespace OpenKneeboard::RenderDoc {
+namespace VDXROVR::RenderDoc {
 
 struct API {
   HMODULE mModule {NULL};
@@ -31,7 +31,7 @@ struct API {
   operator bool() const noexcept { return mRenderDoc; }
 
   auto operator->() const noexcept {
-    OPENKNEEBOARD_ALWAYS_ASSERT(mRenderDoc);
+    VDXROVR_ALWAYS_ASSERT(mRenderDoc);
     return mRenderDoc;
   }
 
@@ -73,4 +73,4 @@ NestedFrameCapture::~NestedFrameCapture() {
   }
 }
 
-}// namespace OpenKneeboard::RenderDoc
+}// namespace VDXROVR::RenderDoc

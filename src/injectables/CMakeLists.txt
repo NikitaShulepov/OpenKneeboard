@@ -1,17 +1,17 @@
-ok_add_library(detours-ext STATIC detours-ext.cpp)
-target_link_libraries(detours-ext PUBLIC ThirdParty::detours OpenKneeboard-dprint)
+vdxrovr_add_library(detours-ext STATIC detours-ext.cpp)
+target_link_libraries(detours-ext PUBLIC ThirdParty::detours VDXROVR-dprint)
 
 configure_file(
-  OpenKneeboard-OpenXR.in.def
-  OpenKneeboard-OpenXR${BUILD_BITNESS}.def
+  VDXROVR-OpenXR.in.def
+  VDXROVR-OpenXR${BUILD_BITNESS}.def
   @ONLY
   NEWLINE_STYLE UNIX
 )
-ok_add_library(
-  OpenKneeboard-OpenXR
+vdxrovr_add_library(
+  VDXROVR-OpenXR
   MODULE
   DUALARCH
-  OpenKneeboard-OpenXR${BUILD_BITNESS}.def
+  VDXROVR-OpenXR${BUILD_BITNESS}.def
   OpenXRKneeboard.cpp
   OpenXRD3D11Kneeboard.cpp
   OpenXRD3D12Kneeboard.cpp
@@ -19,40 +19,40 @@ ok_add_library(
   OpenXRNext.cpp
 )
 target_link_libraries(
-  OpenKneeboard-OpenXR
+  VDXROVR-OpenXR
   PRIVATE
   ThirdParty::OpenXR
   ThirdParty::DirectXTK
   ThirdParty::DirectXTK12
   ThirdParty::VulkanHeaders
-  OpenKneeboard-D3D11
-  OpenKneeboard-D3D12
-  OpenKneeboard-Vulkan
-  OpenKneeboard-Elevation
-  OpenKneeboard-RayIntersectsRect
-  OpenKneeboard-SHM
-  OpenKneeboard-SHM-Client-D3D11
-  OpenKneeboard-SHM-Client-D3D12
-  OpenKneeboard-SHM-Client-Vulkan
-  OpenKneeboard-SpriteAtlas
-  OpenKneeboard-StateMachine
-  OpenKneeboard-VRKneeboard
-  OpenKneeboard-config
-  OpenKneeboard-dprint
-  OpenKneeboard-scope_exit
-  OpenKneeboard-shims
-  OpenKneeboard-version
+  VDXROVR-D3D11
+  VDXROVR-D3D12
+  VDXROVR-Vulkan
+  VDXROVR-Elevation
+  VDXROVR-RayIntersectsRect
+  VDXROVR-SHM
+  VDXROVR-SHM-Client-D3D11
+  VDXROVR-SHM-Client-D3D12
+  VDXROVR-SHM-Client-Vulkan
+  VDXROVR-SpriteAtlas
+  VDXROVR-StateMachine
+  VDXROVR-VRKneeboard
+  VDXROVR-config
+  VDXROVR-dprint
+  VDXROVR-scope_exit
+  VDXROVR-shims
+  VDXROVR-version
 )
 
 configure_file(
-  OpenKneeboard-OpenXR.in.json
-  OpenKneeboard-OpenXR.intermediate.json
+  VDXROVR-OpenXR.in.json
+  VDXROVR-OpenXR.intermediate.json
   NEWLINE_STYLE UNIX
 )
 
 # Keep the un-suffixed name to keep compatibility with previous installations
-set(64BIT_OPENXR_JSON "${BUILD_OUT_BINDIR}/OpenKneeboard-OpenXR.json")
-set(32BIT_OPENXR_JSON "${BUILD_OUT_BINDIR}/OpenKneeboard-OpenXR32.json")
+set(64BIT_OPENXR_JSON "${BUILD_OUT_BINDIR}/VDXROVR-OpenXR.json")
+set(32BIT_OPENXR_JSON "${BUILD_OUT_BINDIR}/VDXROVR-OpenXR32.json")
 if (BUILD_IS_32BIT)
   set(OPENXR_JSON_OUT "${32BIT_OPENXR_JSON}")
 else ()
@@ -61,20 +61,20 @@ endif ()
 file(
   GENERATE
   OUTPUT "${OPENXR_JSON_OUT}"
-  INPUT "${CMAKE_CURRENT_BINARY_DIR}/OpenKneeboard-OpenXR.intermediate.json"
+  INPUT "${CMAKE_CURRENT_BINARY_DIR}/VDXROVR-OpenXR.intermediate.json"
   NEWLINE_STYLE UNIX
 )
 
-ok_add_library(OpenKneeboard-WindowCaptureHook MODULE DUALARCH WindowCaptureHook.cpp)
+vdxrovr_add_library(VDXROVR-WindowCaptureHook MODULE DUALARCH WindowCaptureHook.cpp)
 target_link_libraries(
-  OpenKneeboard-WindowCaptureHook
+  VDXROVR-WindowCaptureHook
   PRIVATE
-  OpenKneeboard-config
-  OpenKneeboard-tracing
+  VDXROVR-config
+  VDXROVR-tracing
   detours-ext
 )
 set_target_properties(
-  OpenKneeboard-WindowCaptureHook
+  VDXROVR-WindowCaptureHook
   PROPERTIES
 
   # Needed to avoid C function name mangling on 32-bit builds

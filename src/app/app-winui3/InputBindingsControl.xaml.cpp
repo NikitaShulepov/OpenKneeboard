@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -13,13 +13,13 @@
 
 #include "Globals.h"
 
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/UserInputButtonBinding.hpp>
-#include <OpenKneeboard/UserInputButtonEvent.hpp>
-#include <OpenKneeboard/UserInputDevice.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/UserInputButtonBinding.hpp>
+#include <VDXROVR/UserInputButtonEvent.hpp>
+#include <VDXROVR/UserInputDevice.hpp>
 
-#include <OpenKneeboard/scope_exit.hpp>
-#include <OpenKneeboard/utf8.hpp>
+#include <VDXROVR/scope_exit.hpp>
+#include <VDXROVR/utf8.hpp>
 
 #include <dinput.h>
 
@@ -27,7 +27,7 @@
 
 #include <shobjidl.h>
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 InputBindingsControl::InputBindingsControl() noexcept {
   this->InitializeComponent();
   this->PopulateUI();
@@ -119,7 +119,7 @@ void InputBindingsControl::DeviceID(const hstring& value) {
   }
 }
 
-OpenKneeboard::fire_and_forget InputBindingsControl::PromptForBinding(
+VDXROVR::fire_and_forget InputBindingsControl::PromptForBinding(
   UserAction action) {
   ContentDialog dialog;
   dialog.XamlRoot(this->XamlRoot());
@@ -174,7 +174,7 @@ OpenKneeboard::fire_and_forget InputBindingsControl::PromptForBinding(
           : strongThis->mDevice->GetButtonComboDescription(pressedButtons);
 
         [](auto strongThis, auto dialog, const auto bindingDesc)
-          -> OpenKneeboard::fire_and_forget {
+          -> VDXROVR::fire_and_forget {
           co_await strongThis->mUIThread;
           dialog.Content(box_value(to_hstring(
             std::format(
@@ -192,7 +192,7 @@ OpenKneeboard::fire_and_forget InputBindingsControl::PromptForBinding(
 
       [](
         auto strongThis,
-        auto dialog) noexcept -> OpenKneeboard::fire_and_forget {
+        auto dialog) noexcept -> VDXROVR::fire_and_forget {
         // Show the complete combo for a moment
         co_await winrt::resume_after(std::chrono::milliseconds(250));
         co_await strongThis->mUIThread;
@@ -272,4 +272,4 @@ void InputBindingsControl::UpdateUI(UserAction action) {
     to_hstring(mDevice->GetButtonComboDescription(binding.GetButtonIDs())));
 }
 
-}// namespace winrt::OpenKneeboardApp::implementation
+}// namespace winrt::VDXROVRApp::implementation

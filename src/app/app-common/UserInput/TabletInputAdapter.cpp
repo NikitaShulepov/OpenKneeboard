@@ -1,23 +1,23 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 
-#include <OpenKneeboard/CursorEvent.hpp>
-#include <OpenKneeboard/Filesystem.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/KneeboardView.hpp>
-#include <OpenKneeboard/OTDIPCClient.hpp>
-#include <OpenKneeboard/TabletInputAdapter.hpp>
-#include <OpenKneeboard/TabletInputDevice.hpp>
-#include <OpenKneeboard/UserAction.hpp>
-#include <OpenKneeboard/UserInputButtonBinding.hpp>
-#include <OpenKneeboard/UserInputButtonEvent.hpp>
+#include <VDXROVR/CursorEvent.hpp>
+#include <VDXROVR/Filesystem.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/KneeboardView.hpp>
+#include <VDXROVR/OTDIPCClient.hpp>
+#include <VDXROVR/TabletInputAdapter.hpp>
+#include <VDXROVR/TabletInputDevice.hpp>
+#include <VDXROVR/UserAction.hpp>
+#include <VDXROVR/UserInputButtonBinding.hpp>
+#include <VDXROVR/UserInputButtonEvent.hpp>
 
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/dprint.hpp>
 
 #include <shims/nlohmann/json.hpp>
 
@@ -33,7 +33,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 static std::atomic_flag gHaveInstance;
 
@@ -54,7 +54,7 @@ TabletInputAdapter::TabletInputAdapter(
   KneeboardState* kneeboard,
   const TabletSettings& settings)
   : mKneeboard(kneeboard) {
-  OPENKNEEBOARD_TraceLoggingScope("TabletInputAdapter::TabletInputAdapter()");
+  VDXROVR_TraceLoggingScope("TabletInputAdapter::TabletInputAdapter()");
   LoadSettings(settings);
 }
 
@@ -85,7 +85,7 @@ void TabletInputAdapter::StartOTDIPC() {
 }
 
 task<void> TabletInputAdapter::StopOTDIPC() {
-  OPENKNEEBOARD_TraceLoggingCoro("TabletInputAdapter::StopOTDIPC()");
+  VDXROVR_TraceLoggingCoro("TabletInputAdapter::StopOTDIPC()");
   if (mOTDIPC) {
     co_await mOTDIPC->DisposeAsync();
   }
@@ -145,7 +145,7 @@ void TabletInputAdapter::LoadSettings(
 }
 
 task<void> TabletInputAdapter::DisposeAsync() noexcept {
-  OPENKNEEBOARD_TraceLoggingCoro("TabletInputAdapter::DisposeAsync()");
+  VDXROVR_TraceLoggingCoro("TabletInputAdapter::DisposeAsync()");
   const auto disposing = co_await mDisposal.StartOnce();
   if (!disposing) {
     co_return;
@@ -154,7 +154,7 @@ task<void> TabletInputAdapter::DisposeAsync() noexcept {
 }
 
 TabletInputAdapter::~TabletInputAdapter() {
-  OPENKNEEBOARD_TraceLoggingScope("TabletInputAdapter::~TabletInputAdapter()");
+  VDXROVR_TraceLoggingScope("TabletInputAdapter::~TabletInputAdapter()");
   this->RemoveAllEventListeners();
   gHaveInstance.clear();
 }
@@ -299,7 +299,7 @@ std::shared_ptr<TabletInputDevice> TabletInputAdapter::GetOTDDevice(
   return device;
 }
 
-OpenKneeboard::fire_and_forget TabletInputAdapter::OnOTDDevice(
+VDXROVR::fire_and_forget TabletInputAdapter::OnOTDDevice(
   TabletInfo tablet) {
   if (!mSettings.mWarnIfOTDIPCUnusuable) {
     mSettings.mWarnIfOTDIPCUnusuable = true;
@@ -312,7 +312,7 @@ OpenKneeboard::fire_and_forget TabletInputAdapter::OnOTDDevice(
   }
 }
 
-OpenKneeboard::fire_and_forget TabletInputAdapter::OnOTDInput(
+VDXROVR::fire_and_forget TabletInputAdapter::OnOTDInput(
   std::string id,
   TabletState state) {
   auto weak = weak_from_this();
@@ -324,14 +324,14 @@ OpenKneeboard::fire_and_forget TabletInputAdapter::OnOTDInput(
   auto tablet = mOTDIPC->GetTablet(id);
   if (!tablet) {
     dprint("Received OTD input without device info");
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     co_return;
   }
 
   auto device = GetOTDDevice(id);
   if (!device) {
     dprint("Received OTD input but couldn't create a TabletInputDevice");
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     co_return;
   }
 
@@ -345,4 +345,4 @@ std::vector<TabletInfo> TabletInputAdapter::GetTabletInfo() const {
   return {};
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

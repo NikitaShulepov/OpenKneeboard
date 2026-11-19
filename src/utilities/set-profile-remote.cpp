@@ -1,14 +1,14 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/APIEvent.hpp>
+#include <VDXROVR/APIEvent.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/dprint.hpp>
 
-using namespace OpenKneeboard;
+using namespace VDXROVR;
 
 #include <Windows.h>
 #include <shellapi.h>

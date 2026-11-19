@@ -1,27 +1,27 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/CreateTabActions.hpp>
-#include <OpenKneeboard/CursorClickableRegions.hpp>
-#include <OpenKneeboard/CursorEvent.hpp>
-#include <OpenKneeboard/CursorRenderer.hpp>
-#include <OpenKneeboard/D3D11.hpp>
-#include <OpenKneeboard/GetSystemColor.hpp>
-#include <OpenKneeboard/ITab.hpp>
-#include <OpenKneeboard/InterprocessRenderer.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/KneeboardView.hpp>
-#include <OpenKneeboard/SpriteAtlas.hpp>
-#include <OpenKneeboard/TabView.hpp>
-#include <OpenKneeboard/ToolbarAction.hpp>
+#include <VDXROVR/CreateTabActions.hpp>
+#include <VDXROVR/CursorClickableRegions.hpp>
+#include <VDXROVR/CursorEvent.hpp>
+#include <VDXROVR/CursorRenderer.hpp>
+#include <VDXROVR/D3D11.hpp>
+#include <VDXROVR/GetSystemColor.hpp>
+#include <VDXROVR/ITab.hpp>
+#include <VDXROVR/InterprocessRenderer.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/KneeboardView.hpp>
+#include <VDXROVR/SpriteAtlas.hpp>
+#include <VDXROVR/TabView.hpp>
+#include <VDXROVR/ToolbarAction.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/hresult.hpp>
-#include <OpenKneeboard/scope_exit.hpp>
-#include <OpenKneeboard/tracing.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/hresult.hpp>
+#include <VDXROVR/scope_exit.hpp>
+#include <VDXROVR/tracing.hpp>
 
 #include <mutex>
 #include <ranges>
@@ -32,7 +32,7 @@
 #include <dxgi1_2.h>
 #include <wincodec.h>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 void InterprocessRenderer::SubmitFrame(
   const std::vector<SHM::LayerConfig>& shmLayers,
@@ -41,7 +41,7 @@ void InterprocessRenderer::SubmitFrame(
     return;
   }
 
-  OPENKNEEBOARD_TraceLoggingScopedActivity(
+  VDXROVR_TraceLoggingScopedActivity(
     activity, "InterprocessRenderer::SubmitFrame()");
 
   auto ctx = mDXR->mD3D11ImmediateContext.get();
@@ -66,17 +66,17 @@ void InterprocessRenderer::SubmitFrame(
 
   auto fence = destResources->mFence.get();
   {
-    OPENKNEEBOARD_TraceLoggingScope(
+    VDXROVR_TraceLoggingScope(
       "CopyFromCanvas",
       TraceLoggingValue(ipcTextureInfo.mTextureIndex, "TextureIndex"),
       TraceLoggingValue(ipcTextureInfo.mFenceOut, "FenceOut"));
     {
-      OPENKNEEBOARD_TraceLoggingScope("CopyFromCanvas/CopySubresourceRegion");
+      VDXROVR_TraceLoggingScope("CopyFromCanvas/CopySubresourceRegion");
       ctx->CopySubresourceRegion(
         destResources->mTexture.get(), 0, 0, 0, 0, srcTexture, 0, &srcBox);
     }
     {
-      OPENKNEEBOARD_TraceLoggingScope("CopyFromCanvas/FenceOut");
+      VDXROVR_TraceLoggingScope("CopyFromCanvas/FenceOut");
       check_hresult(ctx->Signal(fence, ipcTextureInfo.mFenceOut));
     }
   }
@@ -100,7 +100,7 @@ void InterprocessRenderer::SubmitFrame(
   }
 
   {
-    OPENKNEEBOARD_TraceLoggingScope("SHMSubmitFrame");
+    VDXROVR_TraceLoggingScope("SHMSubmitFrame");
     mSHM.SubmitFrame(
       ipcTextureInfo,
       config,
@@ -119,10 +119,10 @@ void InterprocessRenderer::InitializeCanvas(const PixelSize& size) {
     return;
   }
 
-  OPENKNEEBOARD_TraceLoggingScope("InterprocessRenderer::InitializeCanvas()");
+  VDXROVR_TraceLoggingScope("InterprocessRenderer::InitializeCanvas()");
 
   if (size.IsEmpty()) [[unlikely]] {
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     return;
   }
 
@@ -164,7 +164,7 @@ void InterprocessRenderer::PostUserAction(UserAction action) {
       mVisible = false;
       break;
     default:
-      OPENKNEEBOARD_BREAK;
+      VDXROVR_BREAK;
       return;
   }
 
@@ -185,7 +185,7 @@ InterprocessRenderer::GetIPCTextureResources(
     return &ret;
   }
 
-  OPENKNEEBOARD_TraceLoggingScopedActivity(
+  VDXROVR_TraceLoggingScopedActivity(
     activity,
     "InterprocessRenderer::GetIPCTextureResources:",
     TraceLoggingValue(textureIndex, "textureIndex"),
@@ -246,7 +246,7 @@ std::shared_ptr<InterprocessRenderer> InterprocessRenderer::Create(
   return ret;
 }
 
-OpenKneeboard::fire_and_forget InterprocessRenderer::final_release(
+VDXROVR::fire_and_forget InterprocessRenderer::final_release(
   std::unique_ptr<InterprocessRenderer> it) {
   // Delete in the correct thread
   co_await it->mOwnerThread;
@@ -288,7 +288,7 @@ InterprocessRenderer::~InterprocessRenderer() {
 task<SHM::LayerConfig> InterprocessRenderer::RenderLayer(
   const ViewRenderInfo& layer,
   const PixelRect& bounds) noexcept {
-  OPENKNEEBOARD_TraceLoggingScope("InterprocessRenderer::RenderLayer");
+  VDXROVR_TraceLoggingScope("InterprocessRenderer::RenderLayer");
   const auto view = layer.mView.get();
 
   SHM::LayerConfig ret {};
@@ -312,13 +312,13 @@ task<SHM::LayerConfig> InterprocessRenderer::RenderLayer(
 task<void> InterprocessRenderer::RenderNow() noexcept {
   if (mRendering.test_and_set()) {
     dprint("Two renders in the same instance");
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     co_return;
   }
 
   const scope_exit markDone([this]() { mRendering.clear(); });
 
-  OPENKNEEBOARD_TraceLoggingScopedActivity(
+  VDXROVR_TraceLoggingScopedActivity(
     activity, "InterprocessRenderer::RenderNow()");
 
   const auto renderInfos = mKneeboard->GetViewRenderInfo();
@@ -377,4 +377,4 @@ task<void> InterprocessRenderer::RenderNow() noexcept {
   this->SubmitFrame(shmLayers, inputLayerID);
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

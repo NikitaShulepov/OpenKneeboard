@@ -1,18 +1,18 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/RayIntersectsRect.hpp>
-#include <OpenKneeboard/SHM/ActiveConsumers.hpp>
-#include <OpenKneeboard/VRKneeboard.hpp>
+#include <VDXROVR/RayIntersectsRect.hpp>
+#include <VDXROVR/SHM/ActiveConsumers.hpp>
+#include <VDXROVR/VRKneeboard.hpp>
 
 #include <ranges>
 
 using namespace DirectX::SimpleMath;
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 VRKneeboard::Pose VRKneeboard::GetKneeboardPose(
   const VRRenderSettings& vr,
@@ -188,4 +188,4 @@ bool VRKneeboard::IsLookingAtKneeboard(
   return isLookingAtKneeboard;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

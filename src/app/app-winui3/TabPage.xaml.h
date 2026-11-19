@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -7,12 +7,12 @@
 #pragma once
 #include "TabPage.g.h"
 
-#include <OpenKneeboard/CursorEvent.hpp>
-#include <OpenKneeboard/DXResources.hpp>
-#include <OpenKneeboard/Events.hpp>
-#include <OpenKneeboard/Pixels.hpp>
-#include <OpenKneeboard/TabView.hpp>
-#include <OpenKneeboard/ThreadGuard.hpp>
+#include <VDXROVR/CursorEvent.hpp>
+#include <VDXROVR/DXResources.hpp>
+#include <VDXROVR/Events.hpp>
+#include <VDXROVR/Pixels.hpp>
+#include <VDXROVR/TabView.hpp>
+#include <VDXROVR/ThreadGuard.hpp>
 
 #include <memory>
 #include <mutex>
@@ -22,7 +22,7 @@
 #include <d2d1.h>
 #include <dxgi1_2.h>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 class CursorRenderer;
 class D2DErrorRenderer;
 struct DXResources;
@@ -34,25 +34,25 @@ class KneeboardState;
 class RenderTarget;
 class ToolbarAction;
 class ToolbarToggleAction;
-}// namespace OpenKneeboard
+}// namespace VDXROVR
 
 using namespace winrt::Microsoft::UI::Dispatching;
 using namespace winrt::Microsoft::UI::Input;
 using namespace winrt::Microsoft::UI::Xaml;
 using namespace winrt::Microsoft::UI::Xaml::Input;
 using namespace winrt::Microsoft::UI::Xaml::Navigation;
-using namespace OpenKneeboard;
+using namespace VDXROVR;
 
 namespace muxc = winrt::Microsoft::UI::Xaml::Controls;
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 struct TabPage : TabPageT<TabPage>, EventReceiver {
-  using TabView = ::OpenKneeboard::TabView;
+  using TabView = ::VDXROVR::TabView;
 
   TabPage();
   ~TabPage();
 
-  static OpenKneeboard::fire_and_forget final_release(std::unique_ptr<TabPage>);
+  static VDXROVR::fire_and_forget final_release(std::unique_ptr<TabPage>);
 
   void OnNavigatedTo(const NavigationEventArgs&) noexcept;
   void OnCanvasSizeChanged(
@@ -86,7 +86,7 @@ struct TabPage : TabPageT<TabPage>, EventReceiver {
   void FlushCursorEvents();
 
   void SetTab(const std::shared_ptr<TabView>&);
-  OpenKneeboard::fire_and_forget UpdateToolbar();
+  VDXROVR::fire_and_forget UpdateToolbar();
   void InitializeSwapChain();
   void ResizeSwapChain();
 
@@ -137,12 +137,12 @@ struct TabPage : TabPageT<TabPage>, EventReceiver {
     const audited_ptr<DXResources>&,
     const TabView::RuntimeID&);
 
-  audited_ptr<OpenKneeboard::DXResources> mDXR;
-  audited_ptr<OpenKneeboard::KneeboardState> mKneeboard;
+  audited_ptr<VDXROVR::DXResources> mDXR;
+  audited_ptr<VDXROVR::KneeboardState> mKneeboard;
 
   ThreadGuard mThreadGuard;
 };
-}// namespace winrt::OpenKneeboardApp::implementation
-namespace winrt::OpenKneeboardApp::factory_implementation {
+}// namespace winrt::VDXROVRApp::implementation
+namespace winrt::VDXROVRApp::factory_implementation {
 struct TabPage : TabPageT<TabPage, implementation::TabPage> {};
-}// namespace winrt::OpenKneeboardApp::factory_implementation
+}// namespace winrt::VDXROVRApp::factory_implementation

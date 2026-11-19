@@ -1,14 +1,14 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/DebugPrivileges.hpp>
+#include <VDXROVR/DebugPrivileges.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/dprint.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 static bool sHaveInstance = false;
 
 DebugPrivileges::DebugPrivileges() {
@@ -65,4 +65,4 @@ DebugPrivileges::~DebugPrivileges() {
   dprint("Released debug privileges");
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

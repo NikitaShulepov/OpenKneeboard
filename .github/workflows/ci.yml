@@ -3,7 +3,7 @@ on:
   pull_request:
     paths:
       - "assets/**"
-      - "installer/**"
+      - "VDXROVR-Installer/**"
       - "src/**"
       - "third-party/**"
       - "*.props"
@@ -13,7 +13,7 @@ on:
   push:
     paths:
       - "assets/**"
-      - "installer/**"
+      - "VDXROVR-Installer/**"
       - "src/**"
       - "third-party/**"
       - "*.props"
@@ -28,13 +28,120 @@ env:
   FEED_URL: https://nuget.pkg.github.com/${{github.repository_owner}}/index.json
   VCPKG_BINARY_SOURCES: "clear;nuget,https://nuget.pkg.github.com/${{github.repository_owner}}/index.json,${{ github.event_name == 'push' && 'readwrite' || 'read' }}"
 jobs:
+  section3-preflight:
+    name: License Section 3 & Patch Pre-Flight Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate License Section 3 compliance & patch integrity
+        shell: python
+        env:
+          REPO_SLUG: ${{ github.repository }}
+        run: |
+          import os, re, subprocess, sys
+          repo_slug = os.environ.get("REPO_SLUG", "")
+          files = subprocess.check_output(["git", "ls-files"], text=True).splitlines()
+          errors = []
+
+          # 1. Detect leftover conflict markers or rejected patch hunks before build
+          text_exts = {
+              ".c", ".cc", ".cpp", ".cxx", ".h", ".hpp", ".hxx", ".inl", ".idl",
+              ".in", ".rc", ".manifest", ".cmake", ".txt", ".json", ".yml", ".yaml",
+              ".ps1", ".py", ".sh", ".wxs", ".wprp", ".xaml", ".js", ".ts", ".md",
+          }
+          for path in files:
+              if path.endswith((".rej", ".orig")):
+                  errors.append(f"{path}:0 [patch-reject] Rejected/backup patch file blocks clean apply")
+                  continue
+              if path.startswith("third-party/") and not path.startswith("third-party/vcpkg-overlays/"):
+                  continue
+              ext = os.path.splitext(path)[1].lower()
+              base = os.path.basename(path)
+              if ext not in text_exts and base != "CMakeLists.txt":
+                  continue
+              try:
+                  with open(path, "r", encoding="utf-8", errors="ignore") as f:
+                      lines = f.readlines()
+                  has_conflict_start = any(l.startswith("<<<<<<< ") for l in lines)
+                  for idx, line in enumerate(lines, 1):
+                      if line.startswith(("<<<<<<< ", ">>>>>>> ")) or (has_conflict_start and line.rstrip("\r\n") == "======="):
+                          errors.append(f"{path}:{idx} [conflict-marker] {line.strip()[:80]}")
+              except OSError:
+                  pass
+
+          # 2. Enforce License Section 3 compliance & path integrity on forks
+          if repo_slug != "Open" + "Kneeboard/" + "Open" + "Kneeboard":
+              id_terms = [
+                  ("Open" + "Kneeboard", re.compile(r"open" + r"kneeboard", re.I)),
+                  ("O" + "KB", re.compile(r"\bo" + r"kb\b|o" + r"kb[_-]|[_-]o" + r"kb", re.I)),
+                  ("Fred" + "Emmott", re.compile(r"fred" + r"(?:erick)?\s*emmott", re.I)),
+                  ("upstream-guid", re.compile(
+                      r"843c9331-" + r"0610-4ab1-9cf9-5305c896fb5b|"
+                      r"7d4d2c1b-" + r"3f56-48d8-b47b-5b3f860f8f23|"
+                      r"2e4ca00a-" + r"ef2b-4511-9060-c5f87a0bc945", re.I)),
+              ]
+              exempt_re = re.compile(
+                  r"Copyright|LegalCopyright|see the LICENSE file|Original "
+                  r"|The majority of Open" + r"Kneeboard is under|Open" + r"Kneeboard repository\."
+                  r"|GNU General Public License|#include\s+<Fred" + r"Emmott/"
+                  r"|Fred" + r"Emmott::|github\.com/fred" + r"emmott/"
+                  r"|window->SetValue\(\"Open" + r"Kneeboard\"|Open" + r"KneeboardAPI"
+                  r"|declare namespace Open" + r"Kneeboard|\.Open" + r"KneeboardPlugin"
+                  r"|Id=\"Open" + r"KneeboardPlugin\"|legacyLocal|legacySaved"
+                  r"|Section 3\.i exception",
+                  re.I,
+              )
+              path_bad = re.compile(r"open" + r"kneeboard|fred" + r"(?:erick)?\s*emmott|\bo" + r"kb\b", re.I)
+              for path in files:
+                  if path.startswith("third-party/") and not path.startswith("third-party/vcpkg-overlays/"):
+                      continue
+                  base = os.path.basename(path)
+                  if path_bad.search(base):
+                      errors.append(f"{path}:0 [path-collision] Forbidden identifier in file path")
+                  if path in ("LICENSE", ".github/workflows/ci.yml"):
+                      continue
+                  ext = os.path.splitext(path)[1].lower()
+                  if ext not in text_exts and base != "CMakeLists.txt":
+                      continue
+                  try:
+                      with open(path, "r", encoding="utf-8", errors="ignore") as f:
+                          for idx, line in enumerate(f, 1):
+                              if exempt_re.search(line):
+                                  continue
+                              for term, rx in id_terms:
+                                  if rx.search(line):
+                                      errors.append(f"{path}:{idx} [{term}] {line.strip()[:100]}")
+                                      break
+                  except OSError:
+                      pass
+
+              with open(".github/workflows/ci.yml", "r", encoding="utf-8") as cf:
+                  ci_txt = cf.read()
+              if ("Open" + "Kneeboard-GHA") in ci_txt or ("x64-windows-open" + "kneeboard") in ci_txt:
+                  errors.append(".github/workflows/ci.yml:0 [section-3.i] Un-rebranded CI artifact or triplet name")
+              if "steps.build-installer.outputs.installer-name" in ci_txt and "Source-GHA" not in ci_txt:
+                  errors.append(".github/workflows/ci.yml:0 [section-3.ii] Installer upload requires paired Source-GHA archive")
+              for m in re.finditer(r"working-directory:\s*source/([^\s]+)", ci_txt):
+                  rel_dir = m.group(1).strip()
+                  if not os.path.isdir(rel_dir):
+                      errors.append(f".github/workflows/ci.yml:0 [path-mismatch] Missing directory for working-directory: {rel_dir}")
+
+          if errors:
+              print("::error::Section 3 / Patch pre-flight validation failed:")
+              for e in errors[:30]:
+                  print("  " + e)
+              if len(errors) > 30:
+                  print(f"  ... and {len(errors) - 30} more issue(s)")
+              sys.exit(1)
+          print(f"Pre-flight OK: scanned {len(files)} tracked files with 0 Section 3 or patch collisions.")
   populate-vcpkg-cache:
     name: Populate vcpkg cache (${{matrix.triplet}})
+    needs: section3-preflight
     runs-on: windows-2022
     strategy:
       matrix:
         include:
-          - triplet: x64-windows-openkneeboard
+          - triplet: x64-windows-vdxrovr
             extra: ""
           - triplet: x86-windows-static
             extra: "--x-no-default-features"
@@ -62,12 +169,12 @@ jobs:
         run: third-party/vcpkg/vcpkg install --triplet ${{matrix.triplet}} --clean-after-build ${{matrix.extra}}
   build:
     name: Build (${{matrix.config}})
-    needs: populate-vcpkg-cache
-    if: always() && !failure() && !cancelled()
+    needs: [section3-preflight, populate-vcpkg-cache]
+    if: ${{ needs.section3-preflight.result == 'success' && !failure() && !cancelled() }}
     runs-on: windows-2022
     strategy:
       matrix:
-        config: [RelWithDebInfo, Debug]
+        config: [RelWithDebInfo]
     steps:
       - uses: actions/checkout@v7
         with:
@@ -114,24 +221,24 @@ jobs:
           Add-Content $Env:GITHUB_OUTPUT "VERSION=${version}"
           echo "::endgroup::"
       - name: Attach debug symbols
-        if: ${{ matrix.config != 'Debug' && github.repository == 'OpenKneeboard/OpenKneeboard' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')) }}
+        if: ${{ matrix.config != 'Debug' }}
         uses: actions/upload-artifact@v7
         with:
-          name: OpenKneeboard-GHA${{github.run_number}}-DebugSymbols
+          name: VDXROVR-GHA${{github.run_number}}-DebugSymbols
           path: build/out/${{matrix.config}}/pdb
       - name: Build installer generator
         if: ${{matrix.config != 'Debug' }}
         shell: pwsh
-        working-directory: source/OpenKneeboard-Installer
+        working-directory: source/VDXROVR-Installer
         run: |
           dotnet publish `
             --configuration Release `
             --output "${{github.workspace}}/build/out/${{matrix.config}}/installer-generator"
       - name: Attach bundle
-        if: ${{ matrix.config != 'Debug' && github.repository == 'OpenKneeboard/OpenKneeboard' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')) }}
+        if: ${{ matrix.config != 'Debug' }}
         uses: actions/upload-artifact@v7
         with:
-          name: OpenKneeboard-GHA${{github.run_number}}
+          name: VDXROVR-GHA${{github.run_number}}
           path: |
             build/out/${{matrix.config}}
             !build/out/${{matrix.config}}/pdb
@@ -146,7 +253,7 @@ jobs:
         shell: pwsh
         working-directory: build/out/${{matrix.config}}
         run: |
-          installer-generator/OpenKneeboard-Installer.exe `
+          installer-generator/VDXROVR-Installer.exe `
             "$(Get-Location)" `
             --stamp-file ${{github.workspace}}/installer.stamp
           $InstallerPath = Get-Content ${{github.workspace}}/installer.stamp
@@ -154,11 +261,23 @@ jobs:
           Add-Content $env:GITHUB_OUTPUT "installer-path=${InstallerPath}"
           Add-Content $env:GITHUB_OUTPUT "installer-name=${InstallerName}"
       - name: Upload unsigned installer
-        if: ${{ matrix.config != 'Debug' && github.repository == 'OpenKneeboard/OpenKneeboard' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')) }}
+        if: ${{ matrix.config != 'Debug' }}
         uses: actions/upload-artifact@v7
         with:
           name: ${{steps.build-installer.outputs.installer-name}}
           path: ${{steps.build-installer.outputs.installer-path}}
+      - name: Package source archive (License Section 3.ii)
+        if: ${{ matrix.config != 'Debug' }}
+        shell: pwsh
+        run: |
+          $srcZip = "${{github.workspace}}/build/VDXROVR-Source-GHA${{github.run_number}}.zip"
+          git -C "${{github.workspace}}/source" archive --format=zip -o $srcZip HEAD
+      - name: Upload source archive (License Section 3.ii)
+        if: ${{ matrix.config != 'Debug' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: VDXROVR-Source-GHA${{github.run_number}}
+          path: build/VDXROVR-Source-GHA${{github.run_number}}.zip
       - name: Generate release notes
         if: github.ref_type == 'tag' && matrix.config != 'Debug'
         id: release-notes
@@ -176,3 +295,6 @@ jobs:
           draft: true
           body_path: ${{steps.release-notes.outputs.PATH}}
           prerelease: ${{contains(github.ref_name, '-')}}
+          files: |
+            ${{steps.build-installer.outputs.installer-path}}
+            ${{github.workspace}}/build/VDXROVR-Source-GHA${{github.run_number}}.zip

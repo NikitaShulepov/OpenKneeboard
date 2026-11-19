@@ -1,24 +1,24 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 
-#include <OpenKneeboard/APIEvent.hpp>
-#include <OpenKneeboard/DCSBriefingTab.hpp>
-#include <OpenKneeboard/DCSEvents.hpp>
-#include <OpenKneeboard/DCSExtractedMission.hpp>
-#include <OpenKneeboard/ImageFilePageSource.hpp>
-#include <OpenKneeboard/Lua.hpp>
-#include <OpenKneeboard/NavigationTab.hpp>
-#include <OpenKneeboard/PlainTextPageSource.hpp>
+#include <VDXROVR/APIEvent.hpp>
+#include <VDXROVR/DCSBriefingTab.hpp>
+#include <VDXROVR/DCSEvents.hpp>
+#include <VDXROVR/DCSExtractedMission.hpp>
+#include <VDXROVR/ImageFilePageSource.hpp>
+#include <VDXROVR/Lua.hpp>
+#include <VDXROVR/NavigationTab.hpp>
+#include <VDXROVR/PlainTextPageSource.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/format/filesystem.hpp>
-#include <OpenKneeboard/scope_exit.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/format/filesystem.hpp>
+#include <VDXROVR/scope_exit.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 task<std::shared_ptr<DCSBriefingTab>> DCSBriefingTab::Create(
   const audited_ptr<DXResources>& dxr,
   KneeboardState* kbs) {
@@ -142,7 +142,7 @@ task<void> DCSBriefingTab::Reload() noexcept {
   this->evContentChangedEvent.Emit();
 }
 
-OpenKneeboard::fire_and_forget DCSBriefingTab::OnAPIEvent(
+VDXROVR::fire_and_forget DCSBriefingTab::OnAPIEvent(
   APIEvent event,
   std::filesystem::path installPath,
   std::filesystem::path) {
@@ -235,4 +235,4 @@ std::optional<std::string> DCSBriefingTab::GetPersistentIDForPage(
   return std::nullopt;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

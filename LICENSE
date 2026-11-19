@@ -177,6 +177,7 @@ Sections 1 and 2 above provided that you also do all of the following:
           support the `.OpenKneeboardPlugin` filename extension
         - derived works may add additional identifiers and owners to this section, but may not
           remove or change the above identifiers and owners
+        - derived work identifiers and owner: `VDXROVR`, `VDXROVR`, `io.github.nikitashulepov.vdxrovr`, `XR_APILAYER_NIKITASHULEPOV_VDXROVR`, owner: 'NikitaShulepov' (https://github.com/NikitaShulepov/VDXROVR)
     ii. Do at least one of the following:
         a) Accompany it with the complete corresponding machine-readable
         source code, which must be distributed under the terms of Sections

@@ -1,15 +1,15 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/Shaders/SpriteBatch/SPIRV.hpp>
-#include <OpenKneeboard/Vulkan.hpp>
+#include <VDXROVR/Shaders/SpriteBatch/SPIRV.hpp>
+#include <VDXROVR/Vulkan.hpp>
 
-#include <OpenKneeboard/tracing.hpp>
+#include <VDXROVR/tracing.hpp>
 
-namespace OpenKneeboard::Vulkan {
+namespace VDXROVR::Vulkan {
 
 SpriteBatch::SpriteBatch(
   Dispatch* dispatch,
@@ -23,7 +23,7 @@ SpriteBatch::SpriteBatch(
     mDevice(device),
     mAllocator(allocator),
     mQueueFamilyIndex(queueFamilyIndex) {
-  OPENKNEEBOARD_TraceLoggingScope("SpriteBatch::SpriteBatch()");
+  VDXROVR_TraceLoggingScope("SpriteBatch::SpriteBatch()");
 
   mVK->GetDeviceQueue(device, queueFamilyIndex, queue, &mQueue);
 
@@ -236,7 +236,7 @@ void SpriteBatch::CreateUniformBuffer() {
 }
 
 SpriteBatch::~SpriteBatch() {
-  OPENKNEEBOARD_TraceLoggingWrite("SpriteBatch::~SpriteBatch()");
+  VDXROVR_TraceLoggingWrite("SpriteBatch::~SpriteBatch()");
   if (mTarget) [[unlikely]] {
     fatal("Closing spritebatch without calling End()");
   }
@@ -289,7 +289,7 @@ void SpriteBatch::End(const std::source_location& loc) {
     fatal(loc, "Calling End() without Begin()");
   }
 
-  OPENKNEEBOARD_TraceLoggingScopedActivity(
+  VDXROVR_TraceLoggingScopedActivity(
     activity,
     "Vulkan::SpriteBatch::End",
     TraceLoggingValue(mSprites.size(), "SpriteCount"));
@@ -370,7 +370,7 @@ void SpriteBatch::End(const std::source_location& loc) {
 
   if (sources.size() > MaxSpritesPerBatch) {
     fatal(
-      "OpenKneeboard's Vulkan Spritebatch only supports up to {} source "
+      "VDXROVR's Vulkan Spritebatch only supports up to {} source "
       "imeages",
       MaxSpritesPerBatch);
   }
@@ -475,7 +475,7 @@ void SpriteBatch::End(const std::source_location& loc) {
       descriptors,
       0,
       nullptr);
-  }// namespace OpenKneeboard::Vulkan
+  }// namespace VDXROVR::Vulkan
 
   if (mClearColor) {
     VkClearAttachment clear {
@@ -713,4 +713,4 @@ SpriteBatch::DeviceCreateInfo::DeviceCreateInfo(const VkDeviceCreateInfo& base)
   }
 }
 
-}// namespace OpenKneeboard::Vulkan
+}// namespace VDXROVR::Vulkan

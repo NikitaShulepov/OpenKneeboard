@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -12,12 +12,12 @@
 
 #include "Globals.h"
 
-#include <OpenKneeboard/Filesystem.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/RuntimeFiles.hpp>
+#include <VDXROVR/Filesystem.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/RuntimeFiles.hpp>
 
-#include <OpenKneeboard/format/filesystem.hpp>
-#include <OpenKneeboard/utf8.hpp>
+#include <VDXROVR/format/filesystem.hpp>
+#include <VDXROVR/utf8.hpp>
 
 #include <winrt/Microsoft.UI.Xaml.Controls.h>
 
@@ -33,18 +33,18 @@ using namespace winrt::Microsoft::UI::Xaml;
 using namespace winrt::Microsoft::UI::Xaml::Controls;
 using namespace winrt;
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 std::string GetLuaContent() {
   const auto runtimeDir = Filesystem::GetRuntimeDirectory();
   const auto rootDir = runtimeDir.parent_path();
   return std::format(
-    R"EOF(--[[ OpenKneeboard Hook - @{} ]]--
-local okb_path = "{}"
+    R"EOF(--[[ VDXROVR Hook - @{} ]]--
+local vdxrovr_path = "{}"
 --[[ Path for DLL ]]--
-package.cpath = okb_path.."/{}/?.dll;"..package.cpath
---[[ Load the actual LUA hook; ignore failures (e.g. OKB uninstalled) ]]--
-pcall(dofile, okb_path.."/{}")
+package.cpath = vdxrovr_path.."/{}/?.dll;"..package.cpath
+--[[ Load the actual LUA hook; ignore failures (e.g. VDXROVR uninstalled) ]]--
+pcall(dofile, vdxrovr_path.."/{}")
 )EOF",
     "generated",
     weakly_canonical(rootDir).generic_string(),
@@ -88,7 +88,7 @@ task<void> CheckDCSHooks(XamlRoot root, std::filesystem::path savedGamesPath) {
   std::error_code ec;
   if (!std::filesystem::exists(savedGamesPath, ec)) {
     // For example, junctions may have a pass traversal error:
-    // https://github.com/OpenKneeboard/OpenKneeboard/issues/681
+    // https://github.com/NikitaShulepov/VDXROVR/issues/681
     if (ec) {
       dprint.Warning(
         "Failed to check if DCS saved games path `{}` exists: {} ({})",
@@ -181,10 +181,7 @@ task<std::optional<std::filesystem::path>> ChooseDCSSavedGamesFolder(
   }
 
   constexpr winrt::guid thisCall {
-    0xa6605cee,
-    0x16ef,
-    0x4bbb,
-    {0x8d, 0x80, 0xf5, 0x73, 0xac, 0x5b, 0x0c, 0x95}};
+    0xffb7a804, 0x1281, 0x43d5, {0x83, 0x5a, 0x56, 0x2f, 0x7d, 0x0c, 0x81, 0xf8}};
   FilePicker picker(gMainWindow);
   picker.SettingsIdentifier(thisCall);
   picker.SuggestedStartLocation(FOLDERID_SavedGames);
@@ -217,4 +214,4 @@ task<void> CheckAllDCSHooks(XamlRoot root) try {
   co_return;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

@@ -1,19 +1,19 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/FilePageSource.hpp>
-#include <OpenKneeboard/FolderPageSource.hpp>
+#include <VDXROVR/FilePageSource.hpp>
+#include <VDXROVR/FolderPageSource.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/dprint.hpp>
 
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Storage.h>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 FolderPageSource::FolderPageSource(
   const audited_ptr<DXResources>& dxr,
@@ -64,7 +64,7 @@ void FolderPageSource::SubscribeToChanges() {
     });
 }
 
-OpenKneeboard::fire_and_forget FolderPageSource::OnFileModified(
+VDXROVR::fire_and_forget FolderPageSource::OnFileModified(
   const std::filesystem::path directory) {
   if (mDisposal.HasStarted()) {
     co_return;
@@ -135,4 +135,4 @@ task<void> FolderPageSource::SetPath(std::filesystem::path path) {
   co_await this->Reload();
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

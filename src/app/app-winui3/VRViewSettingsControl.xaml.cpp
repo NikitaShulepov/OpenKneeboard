@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -12,18 +12,18 @@
 
 #include "Globals.h"
 
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/KneeboardView.hpp>
-#include <OpenKneeboard/TabsList.hpp>
-#include <OpenKneeboard/ViewsSettings.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/KneeboardView.hpp>
+#include <VDXROVR/TabsList.hpp>
+#include <VDXROVR/ViewsSettings.hpp>
 
-#include <OpenKneeboard/utf8.hpp>
+#include <VDXROVR/utf8.hpp>
 
-using namespace OpenKneeboard;
+using namespace VDXROVR;
 using namespace winrt::Microsoft::UI::Xaml::Controls;
 using namespace winrt::Microsoft::UI::Xaml::Data;
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 
 VRViewSettingsControl::VRViewSettingsControl() {
   this->InitializeComponent();
@@ -61,7 +61,7 @@ IInspectable VRViewSettingsControl::SelectedKind() {
   return {nullptr};
 }
 
-OpenKneeboard::fire_and_forget VRViewSettingsControl::SelectedKind(
+VDXROVR::fire_and_forget VRViewSettingsControl::SelectedKind(
   IInspectable item) {
   auto settings = mKneeboard->GetViewsSettings();
   auto it = std::ranges::find(settings.mViews, mViewID, &ViewSettings::mGuid);
@@ -88,7 +88,7 @@ OpenKneeboard::fire_and_forget VRViewSettingsControl::SelectedKind(
   } else if (const auto mirror = item.try_as<HorizontalMirrorVRViewUIKind>()) {
     it->mVR.SetHorizontalMirrorOf(mirror.MirrorOf());
   } else {
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
   }
 
   co_await mKneeboard->SetViewsSettings(settings);
@@ -146,7 +146,7 @@ bool VRViewSettingsControl::IsEnabledInVR() {
   return it->mVR.mEnabled;
 }
 
-OpenKneeboard::fire_and_forget VRViewSettingsControl::IsEnabledInVR(
+VDXROVR::fire_and_forget VRViewSettingsControl::IsEnabledInVR(
   bool value) {
   auto settings = mKneeboard->GetViewsSettings();
   auto it = std::ranges::find(settings.mViews, mViewID, &ViewSettings::mGuid);
@@ -168,7 +168,7 @@ void VRViewSettingsControl::ViewID(const winrt::guid& guid) {
   const auto views = mKneeboard->GetViewsSettings().mViews;
   auto it = std::ranges::find(views, guid, &ViewSettings::mGuid);
   if (it == views.end()) {
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     return;
   }
 
@@ -224,7 +224,7 @@ Visibility VRViewSettingsControl::TooManyViewsVisibility() {
   return Visibility::Collapsed;
 }
 
-OpenKneeboard::fire_and_forget VRViewSettingsControl::SelectedDefaultTab(
+VDXROVR::fire_and_forget VRViewSettingsControl::SelectedDefaultTab(
   IInspectable item) {
   const auto guid =
     unbox_value_or<winrt::guid>(item.as<UIDataItem>().Tag(), {});
@@ -252,4 +252,4 @@ OpenKneeboard::fire_and_forget VRViewSettingsControl::SelectedDefaultTab(
   (*stateIt)->SetCurrentTabByRuntimeID((*tabIt)->GetRuntimeID());
 }
 
-}// namespace winrt::OpenKneeboardApp::implementation
+}// namespace winrt::VDXROVRApp::implementation

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WindowsPerformanceRecorder Version="1.0" Author="Microsoft Corporation" Copyright="Microsoft Corporation" Company="Microsoft Corporation">
+  <Profiles>
+    <EventCollector Id="EventCollector" Name="Event Collector">
+      <BufferSize Value="64" />
+      <Buffers Value="4" />
+    </EventCollector>
+
+    <EventProvider Id="EventProvider_VDXROVR.App" Name="e1486efc-302c-4151-a3d0-30163f9da347" />
+
+    <EventProvider Id="EventProvider_VDXROVR.API.C" Name="1d453b62-4afe-4cc2-a91b-0322134dce7d" />
+    <EventProvider Id="EventProvider_VDXROVR.API.Lua" Name="32de7b33-5379-4458-bee6-e3260db8208a" />
+    <EventProvider Id="EventProvider_VDXROVR.ChromiumWorker" Name="38c010c9-0fea-4fd7-b609-efdba08496b8" />
+    <EventProvider Id="EventProvider_VDXROVR.Elevation.Helper" Name="9eb5ad4b-a1de-4cc4-840f-477ff6513ed9" />
+    <EventProvider Id="EventProvider_VDXROVR.NonVR.D3D11" Name="b13b9dea-e3c0-4f81-8b63-5f9a42ec0874" />
+    <EventProvider Id="EventProvider_VDXROVR.Oculus.D3D11" Name="7e0cc7ff-61ec-462e-ac56-9a82456948cd" />
+    <EventProvider Id="EventProvider_VDXROVR.OpenXR" Name="dad1beb7-473f-41bd-a502-8153994835fc" />
+    <EventProvider Id="EventProvider_VDXROVR.OpenXR.Helper" Name="88b84e86-e559-414d-8738-c59f86dcbf08" />
+    <EventProvider Id="EventProvider_VDXROVR.PluginTabAction" Name="994c8b69-91da-4013-813b-6582e26cb144" />
+    <EventProvider Id="EventProvider_VDXROVR.RemoteControl" Name="6d66807e-e21a-4f88-bdb1-b4f0ae54ae27" />
+    <EventProvider Id="EventProvider_VDXROVR.Repair.Helper" Name="9b98cd2c-ad32-4466-92e7-43c3c8b59eb0" />
+    <EventProvider Id="EventProvider_VDXROVR.TestFeeder" Name="8fc30417-4afe-4c3c-950d-538cc5719d4c" />
+    <EventProvider Id="EventProvider_VDXROVR.Viewer" Name="fe80d5ff-361a-4a69-a917-e6848b1683bc" />
+    <EventProvider Id="EventProvider_VDXROVR.WindowCaptureHook" Name="46ec6965-f0f3-407a-8fce-0d3b13aebf9a" />
+    <EventProvider Id="EventProvider_VDXROVR.WindowCaptureHook.Helper" Name="91dbd3e1-3093-4a45-9dc9-998d12d1fa4a" />
+    <Profile Id="VDXROVR.Verbose.File" Name="VDXROVR" Description="VDXROVR" LoggingMode="File" DetailLevel="Verbose" Default="true">
+      <Collectors>
+        <EventCollectorId Value="EventCollector">
+          <EventProviders>
+            <EventProviderId Value="EventProvider_VDXROVR.App">
+              <Keywords>
+                <!-- Uncategorized - anything marked for tracing without a more specific tag -->
+                <Keyword Value="0x1" />
+                <!-- DPrint - things written to the debug log -->
+                <Keyword Value="0x2" />
+                <!-- Events - things like 'clicked the mouse'. very spammy -->
+                <!--<Keyword Value="0x4" />-->
+                <!-- TaskCoro - internal details of the coroutine implementation -->
+                <!--<Keyword Value="0x8" />-->
+              </Keywords>
+            </EventProviderId>
+            <EventProviderId Value="EventProvider_VDXROVR.API.C" />
+            <EventProviderId Value="EventProvider_VDXROVR.API.Lua" />
+            <EventProviderId Value="EventProvider_VDXROVR.ChromiumWorker" />
+            <EventProviderId Value="EventProvider_VDXROVR.Elevation.Helper" />
+            <EventProviderId Value="EventProvider_VDXROVR.NonVR.D3D11" />
+            <EventProviderId Value="EventProvider_VDXROVR.Oculus.D3D11" />
+            <EventProviderId Value="EventProvider_VDXROVR.OpenXR" />
+            <EventProviderId Value="EventProvider_VDXROVR.OpenXR.Helper" />
+            <EventProviderId Value="EventProvider_VDXROVR.PluginTabAction" />
+            <EventProviderId Value="EventProvider_VDXROVR.RemoteControl" />
+            <EventProviderId Value="EventProvider_VDXROVR.Repair.Helper" />
+            <EventProviderId Value="EventProvider_VDXROVR.TestFeeder" />
+            <EventProviderId Value="EventProvider_VDXROVR.Viewer" />
+            <EventProviderId Value="EventProvider_VDXROVR.WindowCaptureHook" />
+            <EventProviderId Value="EventProvider_VDXROVR.WindowCaptureHook.Helper" />          </EventProviders>
+        </EventCollectorId>
+      </Collectors>
+    </Profile>
+  </Profiles>
+</WindowsPerformanceRecorder>

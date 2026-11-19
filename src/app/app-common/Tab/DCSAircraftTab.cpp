@@ -1,21 +1,21 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/APIEvent.hpp>
-#include <OpenKneeboard/DCSAircraftTab.hpp>
-#include <OpenKneeboard/DCSEvents.hpp>
-#include <OpenKneeboard/Filesystem.hpp>
-#include <OpenKneeboard/FolderPageSource.hpp>
+#include <VDXROVR/APIEvent.hpp>
+#include <VDXROVR/DCSAircraftTab.hpp>
+#include <VDXROVR/DCSEvents.hpp>
+#include <VDXROVR/Filesystem.hpp>
+#include <VDXROVR/FolderPageSource.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/format/filesystem.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/format/filesystem.hpp>
 
 #include <fstream>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 namespace {
 
@@ -122,7 +122,7 @@ std::string DCSAircraftTab::GetDebugInformation() const {
   return mDebugInformation;
 }
 
-OpenKneeboard::fire_and_forget DCSAircraftTab::OnAPIEvent(
+VDXROVR::fire_and_forget DCSAircraftTab::OnAPIEvent(
   APIEvent event,
   std::filesystem::path installPath,
   std::filesystem::path savedGamesPath) {
@@ -174,4 +174,4 @@ OpenKneeboard::fire_and_forget DCSAircraftTab::OnAPIEvent(
   co_await this->SetDelegates(delegates);
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

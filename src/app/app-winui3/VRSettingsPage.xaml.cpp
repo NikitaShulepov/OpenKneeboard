@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -12,11 +12,11 @@
 
 #include "Globals.h"
 
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/OpenXRMode.hpp>
-#include <OpenKneeboard/RuntimeFiles.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/OpenXRMode.hpp>
+#include <VDXROVR/RuntimeFiles.hpp>
 
-#include <OpenKneeboard/utf8.hpp>
+#include <VDXROVR/utf8.hpp>
 
 #include <cmath>
 #include <filesystem>
@@ -25,7 +25,7 @@
 using namespace winrt::Microsoft::UI::Xaml::Controls;
 using namespace winrt::Microsoft::UI::Xaml::Data;
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 
 static const wchar_t gOpenXRLayerSubkey[] =
   L"SOFTWARE\\Khronos\\OpenXR\\1\\ApiLayers\\Implicit";
@@ -41,7 +41,7 @@ VRSettingsPage::VRSettingsPage() {
 
 VRSettingsPage::~VRSettingsPage() { this->RemoveAllEventListeners(); }
 
-OpenKneeboard::fire_and_forget VRSettingsPage::RestoreDefaults(
+VDXROVR::fire_and_forget VRSettingsPage::RestoreDefaults(
   IInspectable,
   RoutedEventArgs) noexcept {
   ContentDialog dialog;
@@ -73,7 +73,7 @@ bool VRSettingsPage::SteamVREnabled() {
   return mKneeboard->GetVRSettings().mEnableSteamVR;
 }
 
-OpenKneeboard::fire_and_forget VRSettingsPage::SteamVREnabled(bool enabled) {
+VDXROVR::fire_and_forget VRSettingsPage::SteamVREnabled(bool enabled) {
   auto config = mKneeboard->GetVRSettings();
   config.mEnableSteamVR = enabled;
   co_await mKneeboard->SetVRSettings(config);
@@ -117,7 +117,7 @@ bool VRSettingsPage::OpenXR32Enabled() noexcept {
   return IsOpenXRAPILayerEnabled(jsonPath, RRF_SUBKEY_WOW6432KEY);
 }
 
-OpenKneeboard::fire_and_forget VRSettingsPage::AddView(
+VDXROVR::fire_and_forget VRSettingsPage::AddView(
   muxc::TabView tabView,
   IInspectable) noexcept {
   auto settings = mKneeboard->GetViewsSettings();
@@ -130,7 +130,7 @@ OpenKneeboard::fire_and_forget VRSettingsPage::AddView(
     dialog.CloseButtonText(winrt::to_hstring(_("OK")));
     dialog.Content(box_value(to_hstring(
       std::format(
-        "OpenKneeboard supports up to {} views; you currently have {}, so "
+        "VDXROVR supports up to {} views; you currently have {}, so "
         " you can't add another. You might also be limited by "
         "your OpenXR runtime.",
         MaxViewCount,
@@ -226,7 +226,7 @@ OpenKneeboard::fire_and_forget VRSettingsPage::AddView(
   TabView().SelectedIndex(TabView().TabItems().Size() - 1);
 }
 
-OpenKneeboard::fire_and_forget VRSettingsPage::RemoveView(
+VDXROVR::fire_and_forget VRSettingsPage::RemoveView(
   muxc::TabView tabView,
   muxc::TabViewTabCloseRequestedEventArgs args) noexcept {
   const auto guid = unbox_value<winrt::guid>(args.Tab().Tag());
@@ -311,7 +311,7 @@ void VRSettingsPage::PopulateViews() noexcept {
   TabView().SelectedIndex(0);
 }
 
-OpenKneeboard::fire_and_forget VRSettingsPage::OpenXR64Enabled(
+VDXROVR::fire_and_forget VRSettingsPage::OpenXR64Enabled(
   bool enabled) noexcept {
   if (enabled == OpenXR64Enabled()) {
     co_return;
@@ -322,7 +322,7 @@ OpenKneeboard::fire_and_forget VRSettingsPage::OpenXR64Enabled(
   mPropertyChangedEvent(*this, PropertyChangedEventArgs(L"OpenXR64Enabled"));
 }
 
-OpenKneeboard::fire_and_forget VRSettingsPage::OpenXR32Enabled(
+VDXROVR::fire_and_forget VRSettingsPage::OpenXR32Enabled(
   bool enabled) noexcept {
   if (enabled == OpenXR32Enabled()) {
     co_return;
@@ -333,4 +333,4 @@ OpenKneeboard::fire_and_forget VRSettingsPage::OpenXR32Enabled(
   mPropertyChangedEvent(*this, PropertyChangedEventArgs(L"OpenXR32Enabled"));
 }
 
-}// namespace winrt::OpenKneeboardApp::implementation
+}// namespace winrt::VDXROVRApp::implementation

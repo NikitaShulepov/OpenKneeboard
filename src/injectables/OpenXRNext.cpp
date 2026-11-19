@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -6,7 +6,7 @@
 // OpenKneeboard repository.
 #include "OpenXRNext.hpp"
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 OpenXRNext::OpenXRNext(XrInstance instance, PFN_xrGetInstanceProcAddr getNext) {
   this->xrGetInstanceProcAddr = getNext;
@@ -15,9 +15,9 @@ OpenXRNext::OpenXRNext(XrInstance instance, PFN_xrGetInstanceProcAddr getNext) {
   getNext(instance, #func, reinterpret_cast<PFN_xrVoidFunction*>(&this->func));
 #define DEFINE_EXT_FN_PTR(ext, func) DEFINE_FN_PTR(func)
 
-  OPENKNEEBOARD_NEXT_OPENXR_FUNCS(DEFINE_FN_PTR, DEFINE_EXT_FN_PTR)
+  VDXROVR_NEXT_OPENXR_FUNCS(DEFINE_FN_PTR, DEFINE_EXT_FN_PTR)
 #undef DEFINE_FN_PTR
 #undef DEFINE_EXT_FN_PTR
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

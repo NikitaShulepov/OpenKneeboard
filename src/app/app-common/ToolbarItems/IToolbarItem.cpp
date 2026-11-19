@@ -1,13 +1,13 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/IToolbarItem.hpp>
+#include <VDXROVR/IToolbarItem.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 IToolbarItem::~IToolbarItem() = default;
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -15,7 +15,7 @@
 
 using namespace winrt::Microsoft::UI::Xaml;
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 struct InputDeviceUIData : InputDeviceUIDataT<InputDeviceUIData> {
   InputDeviceUIData() = default;
 
@@ -32,7 +32,7 @@ struct InputDeviceUIData : InputDeviceUIDataT<InputDeviceUIData> {
 struct TabletInputDeviceUIData
   : TabletInputDeviceUIDataT<
       TabletInputDeviceUIData,
-      OpenKneeboardApp::implementation::InputDeviceUIData> {
+      VDXROVRApp::implementation::InputDeviceUIData> {
   TabletInputDeviceUIData() = default;
 
   uint8_t Orientation();
@@ -59,8 +59,8 @@ struct InputDeviceUIDataTemplateSelector
   DataTemplate mTabletDevice;
 };
 
-}// namespace winrt::OpenKneeboardApp::implementation
-namespace winrt::OpenKneeboardApp::factory_implementation {
+}// namespace winrt::VDXROVRApp::implementation
+namespace winrt::VDXROVRApp::factory_implementation {
 struct InputDeviceUIData
   : InputDeviceUIDataT<InputDeviceUIData, implementation::InputDeviceUIData> {};
 struct TabletInputDeviceUIData : TabletInputDeviceUIDataT<
@@ -71,4 +71,4 @@ struct InputDeviceUIDataTemplateSelector
       InputDeviceUIDataTemplateSelector,
       implementation::InputDeviceUIDataTemplateSelector> {};
 
-}// namespace winrt::OpenKneeboardApp::factory_implementation
+}// namespace winrt::VDXROVRApp::factory_implementation

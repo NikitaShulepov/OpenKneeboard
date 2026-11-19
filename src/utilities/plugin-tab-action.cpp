@@ -1,35 +1,35 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/APIEvent.hpp>
+#include <VDXROVR/APIEvent.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/scope_exit.hpp>
-#include <OpenKneeboard/tracing.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/scope_exit.hpp>
+#include <VDXROVR/tracing.hpp>
 
-using namespace OpenKneeboard;
+using namespace VDXROVR;
 
-#include <OpenKneeboard/scope_exit.hpp>
+#include <VDXROVR/scope_exit.hpp>
 
 #include <Windows.h>
 #include <shellapi.h>
 
 #include <cstdlib>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 /* PS >
- * [System.Diagnostics.Tracing.EventSource]::new("OpenKneeboard.PluginTabAction")
- * 0d024362-97d7-5ba3-7e08-7870f0ea3357
+ * [System.Diagnostics.Tracing.EventSource]::new("VDXROVR.PluginTabAction")
+ * 994c8b69-91da-4013-813b-6582e26cb144
  */
 TRACELOGGING_DEFINE_PROVIDER(
   gTraceProvider,
-  "OpenKneeboard.PluginTabAction",
-  (0x0d024362, 0x97d7, 0x5ba3, 0x7e, 0x08, 0x78, 0x70, 0xf0, 0xea, 0x33, 0x57));
+  "VDXROVR.PluginTabAction",
+  (0x994c8b69, 0x91da, 0x4013, 0x81, 0x3b, 0x65, 0x82, 0xe2, 0x6c, 0xb1, 0x44));
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR
 
 // We only need a standard `main()` function, but using wWinMain prevents
 // a window/task bar entry from temporarily appearing
@@ -38,14 +38,14 @@ int WINAPI wWinMain(
   HINSTANCE /*hPrevInstance*/,
   PWSTR /*pCmdLine*/,
   int /*nCmdShow*/) {
-  TraceLoggingRegister(OpenKneeboard::gTraceProvider);
+  TraceLoggingRegister(VDXROVR::gTraceProvider);
   TraceLoggingWrite(
-    OpenKneeboard::gTraceProvider,
+    VDXROVR::gTraceProvider,
     "Invocation",
     TraceLoggingThisExecutable(),
     TraceLoggingValue(GetCommandLineW(), "Command Line"));
-  OpenKneeboard::scope_exit etwGuard(
-    []() { TraceLoggingUnregister(OpenKneeboard::gTraceProvider); });
+  VDXROVR::scope_exit etwGuard(
+    []() { TraceLoggingUnregister(VDXROVR::gTraceProvider); });
 
   DPrintSettings::Set({
     .prefix = "Plugin-Tab-Action",

@@ -1,20 +1,20 @@
-ok_add_library(OpenKneeboard-PDFNavigation STATIC PDFNavigation.cpp)
+vdxrovr_add_library(VDXROVR-PDFNavigation STATIC PDFNavigation.cpp)
 target_link_libraries(
-  OpenKneeboard-PDFNavigation
+  VDXROVR-PDFNavigation
   PUBLIC
-  OpenKneeboard-Lib-Headers
-  OpenKneeboard-shims
+  VDXROVR-Lib-Headers
+  VDXROVR-shims
 )
 target_link_libraries(
-  OpenKneeboard-PDFNavigation
+  VDXROVR-PDFNavigation
   PRIVATE
-  OpenKneeboard-DebugTimer
-  OpenKneeboard-UTF8
-  OpenKneeboard-dprint
+  VDXROVR-DebugTimer
+  VDXROVR-UTF8
+  VDXROVR-dprint
   ThirdParty::QPDF
 )
 target_include_directories(
-  OpenKneeboard-PDFNavigation
+  VDXROVR-PDFNavigation
   PUBLIC
   "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )

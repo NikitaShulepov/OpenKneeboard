@@ -1,4 +1,4 @@
-# OpenKneeboard
+# VDXROVR
 #
 # Copyright (C) 2025 Fred Emmott <fred@fredemmott.com>
 #
@@ -18,8 +18,8 @@ set(CEF_DOWNLOAD_ROOT "${CMAKE_BINARY_DIR}/_cef")
 set(CEF_BINARY_OUT_DIR "${BUILD_OUT_ROOT}/libexec/cef")
 set(CEF_RESOURCE_OUT_DIR "${BUILD_OUT_ROOT}/libexec/cef")
 
-include(ok_add_license_file)
-ok_add_license_file(cef/LICENSE.txt LICENSE-ThirdParty-CEF.txt)
+include(vdxrovr_add_license_file)
+vdxrovr_add_license_file(cef/LICENSE.txt LICENSE-ThirdParty-CEF.txt)
 
 include(cef/DownloadCEF.cmake)
 DownloadCEF("windows64" "${CEF_VERSION}" "${CEF_DOWNLOAD_ROOT}")
@@ -34,7 +34,7 @@ list(REMOVE_ITEM CEF_EXE_LINKER_FLAGS "/MANIFEST:NO")
 list(REMOVE_ITEM CEF_COMPILER_DEFINES "_HAS_EXCEPTIONS=0")
 # Just no, we're using C++23
 list(REMOVE_ITEM CEF_CXX_COMPILER_FLAGS "/std:c++17")
-# Exclude CEF from OKB's overall /W4 /Wx; we're not going to require dependency *implementations*
+# Exclude CEF from VDXROVR's overall /W4 /Wx; we're not going to require dependency *implementations*
 # pass the same warning requirements
 list(REMOVE_ITEM CEF_COMPILER_FLAGS /W4 /WX)
 

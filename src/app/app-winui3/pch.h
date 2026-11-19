@@ -1,4 +1,4 @@
-﻿// OpenKneeboard
+﻿// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -11,8 +11,8 @@
 // unavailable. Check for a sentinel file to figure out whether or not we're
 // actually building
 #if __has_include( \
-  "openkneeboard-build-time-marker.hpp") && !defined(OPENKNEEBOARD_PCH_H)
-#define OPENKNEEBOARD_PCH_H
+  "vdxrovr-build-time-marker.hpp") && !defined(VDXROVR_PCH_H)
+#define VDXROVR_PCH_H
 
 #define NOMINMAX 1
 
@@ -34,9 +34,9 @@
 #include <ctxtcall.h>
 // clang-format on
 
-#include <OpenKneeboard/bindline.hpp>
-#include <OpenKneeboard/task.hpp>
-#include <OpenKneeboard/weak_refs.hpp>
+#include <VDXROVR/bindline.hpp>
+#include <VDXROVR/task.hpp>
+#include <VDXROVR/weak_refs.hpp>
 
 #include <shims/winrt/base.h>
 
@@ -60,8 +60,8 @@
 
 #include <wil/cppwinrt_helpers.h>
 
-namespace winrt::OpenKneeboardApp {
-using namespace ::OpenKneeboard::task_ns;
+namespace winrt::VDXROVRApp {
+using namespace ::VDXROVR::task_ns;
 }
 
 #endif

@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -13,17 +13,17 @@
 #include "HelpPage.g.h"
 #include "WithPropertyChangedEvent.h"
 
-#include <OpenKneeboard/Events.hpp>
+#include <VDXROVR/Events.hpp>
 
 #include <filesystem>
 #include <string>
 
 using namespace winrt::Microsoft::UI::Xaml;
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 struct HelpPage : HelpPageT<HelpPage>,
-                  private OpenKneeboard::EventReceiver,
-                  public OpenKneeboard::WithPropertyChangedEvent {
+                  private VDXROVR::EventReceiver,
+                  public VDXROVR::WithPropertyChangedEvent {
   HelpPage();
   ~HelpPage();
 
@@ -31,11 +31,11 @@ struct HelpPage : HelpPageT<HelpPage>,
     const IInspectable&,
     const RoutedEventArgs&) noexcept;
   void OnAgreeClick(const IInspectable&, const RoutedEventArgs&) noexcept;
-  OpenKneeboard::fire_and_forget OnExportClick(
+  VDXROVR::fire_and_forget OnExportClick(
     IInspectable,
     RoutedEventArgs) noexcept;
 
-  OpenKneeboard::fire_and_forget OnCheckForUpdatesClick(
+  VDXROVR::fire_and_forget OnCheckForUpdatesClick(
     IInspectable,
     RoutedEventArgs) noexcept;
 
@@ -58,7 +58,7 @@ struct HelpPage : HelpPageT<HelpPage>,
 
   static bool mAgreedToPrivacyWarning;
 };
-}// namespace winrt::OpenKneeboardApp::implementation
-namespace winrt::OpenKneeboardApp::factory_implementation {
+}// namespace winrt::VDXROVRApp::implementation
+namespace winrt::VDXROVRApp::factory_implementation {
 struct HelpPage : HelpPageT<HelpPage, implementation::HelpPage> {};
-}// namespace winrt::OpenKneeboardApp::factory_implementation
+}// namespace winrt::VDXROVRApp::factory_implementation

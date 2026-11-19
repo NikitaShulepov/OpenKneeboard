@@ -17,8 +17,8 @@ If the game supports OpenXR without using OpenComposite, use OpenXR instead. Ope
 Restart the game after each step to see if it's fixed.
 
 1. Do not run the game or any launchers (e.g. SkateZilla) as administrator/elevated.
-2. Do not run OpenKneeboard as administrator/elevated.
-3. Make sure that the game is in OpenKneeboard's games list, and the path is correct.
+2. Do not run VDXROVR as administrator/elevated.
+3. Make sure that the game is in VDXROVR's games list, and the path is correct.
 4. If using RivaTuner Statistics Server or the MSI Afterburner overlay, turn on 'Use Microsoft Detours API hooking' at the bottom of the overlay profile's setup page in RTSS/Afterburner
 5. For the legacy Oculus API, try turning on "discard depth information" under "Compatibility Quirks" in advanced settings; this may fix the problem, but will significantly reduce the potential quality of reprojection
 6. **Also try everything in the 'Game Crashes' section below**, even if the game is not crashing
@@ -27,7 +27,7 @@ Restart the game after each step to see if it's fixed.
 
 Restart the game after each step to see if it's fixed.
 
-1. Try setting the Rendering API explicitly instead of 'Auto-detect' in OpenKneeboard's game settings; as of 2024-05-21, you most likely want "Direct3D 11 (Non-VR)"
+1. Try setting the Rendering API explicitly instead of 'Auto-detect' in VDXROVR's game settings; as of 2024-05-21, you most likely want "Direct3D 11 (Non-VR)"
 2. Remove any `dxgi.dll` or `d3d11.dll` from the same folder as the game executable, e.g. DCS's `bin` or `bin-mt` folders. **Do not remove these from any other location**. These are often used for shader or performance modifications.
 3. If that doesn't work, disable/close any other programs that can draw in the game window. This includes any other in-game overlays, both VR and non-VR, for example in Discord, Steam (the normal in-game overlay, not SteamVR), Oculus Tray Tool, Virtual Kneeboard, NVidia GeForce Experience, RivaTuna Statistics Server, MSI Afterburner
 

@@ -1,20 +1,20 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/GetMainHWND.hpp>
+#include <VDXROVR/GetMainHWND.hpp>
 
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/scope_exit.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/scope_exit.hpp>
 
 #include <shims/winrt/base.h>
 
 #include <format>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 static struct {
   std::optional<MainWindowInfo> mInfo {};
@@ -31,7 +31,7 @@ std::optional<MainWindowInfo> GetMainWindowInfo() {
   const scope_exit updateCacheTime([&]() { gCache.mCacheTime = now; });
 
   auto name =
-    std::format(L"Local\\{}.hwnd", OpenKneeboard::ProjectReverseDomainW);
+    std::format(L"Local\\{}.hwnd", VDXROVR::ProjectReverseDomainW);
   winrt::handle hwndFile {OpenFileMapping(PAGE_READWRITE, FALSE, name.c_str())};
   if (!hwndFile) {
     return {};
@@ -75,4 +75,4 @@ std::optional<HWND> GetMainHWND() {
   return {};
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

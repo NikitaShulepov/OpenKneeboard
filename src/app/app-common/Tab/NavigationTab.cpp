@@ -1,15 +1,15 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 
-#include <OpenKneeboard/NavigationTab.hpp>
+#include <VDXROVR/NavigationTab.hpp>
 
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/scope_exit.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/scope_exit.hpp>
 
 #include <felly/numeric_cast.hpp>
 
@@ -17,7 +17,7 @@
 
 using felly::numeric_cast;
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 bool NavigationTab::Button::operator==(
   const NavigationTab::Button& other) const noexcept {
@@ -32,7 +32,7 @@ NavigationTab::NavigationTab(
     mDXR(dxr),
     mRootTab(rootTab),
     mPreferredSize(ErrorPixelSize) {
-  OPENKNEEBOARD_TraceLoggingScope("NavigationTab::NavigationTab()");
+  VDXROVR_TraceLoggingScope("NavigationTab::NavigationTab()");
   const auto columns = entries.size() >= 10
     ? std::max(
         1ui32,
@@ -194,7 +194,7 @@ task<void> NavigationTab::RenderPage(
   RenderContext rc,
   PageID pageID,
   PixelRect canvasRect) {
-  OPENKNEEBOARD_TraceLoggingScope("NavigationTab::RenderPage()");
+  VDXROVR_TraceLoggingScope("NavigationTab::RenderPage()");
   auto ctx = rc.d2d();
 
   const auto scale = canvasRect.Height<float>() / mPreferredSize.mHeight;
@@ -334,7 +334,7 @@ task<void> NavigationTab::RenderPreviewLayer(
   PageID pageID,
   RenderTarget* rt,
   const PixelSize& size) {
-  OPENKNEEBOARD_TraceLoggingScope("NavigationTab::RenderPreviewLayer()");
+  VDXROVR_TraceLoggingScope("NavigationTab::RenderPreviewLayer()");
   const auto& m = mPreviewMetrics.at(pageID);
   const auto buttons = mButtonTrackers.at(pageID)->GetButtons();
 
@@ -354,4 +354,4 @@ task<void> NavigationTab::RenderPreviewLayer(
 
 task<void> NavigationTab::Reload() { co_return; }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

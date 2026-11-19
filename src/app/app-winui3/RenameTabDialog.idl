@@ -1,4 +1,4 @@
-namespace OpenKneeboardApp
+namespace VDXROVRApp
 {
     [default_interface]
     runtimeclass RenameTabDialog: Microsoft.UI.Xaml.Controls.ContentDialog,

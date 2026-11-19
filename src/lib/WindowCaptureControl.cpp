@@ -1,17 +1,17 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/RuntimeFiles.hpp>
-#include <OpenKneeboard/WindowCaptureControl.hpp>
+#include <VDXROVR/RuntimeFiles.hpp>
+#include <VDXROVR/WindowCaptureControl.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/dprint.hpp>
 
 #include <Windows.h>
 
-namespace OpenKneeboard::WindowCaptureControl {
+namespace VDXROVR::WindowCaptureControl {
 
 Handles InstallHooks(HWND hwnd) {
   DWORD processID {};
@@ -72,4 +72,4 @@ bool Handles::IsValid() const {
   return mLibrary && mMessageHook && mWindowProcHook;
 }
 
-}// namespace OpenKneeboard::WindowCaptureControl
+}// namespace VDXROVR::WindowCaptureControl

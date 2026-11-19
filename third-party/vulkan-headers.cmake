@@ -22,8 +22,8 @@ target_compile_definitions(vulkan-headers INTERFACE VK_USE_PLATFORM_WIN32_KHR)
 
 add_library(ThirdParty::VulkanHeaders ALIAS vulkan-headers)
 
-include(ok_add_license_file)
-ok_add_license_file(
+include(vdxrovr_add_license_file)
+vdxrovr_add_license_file(
   "${SOURCE_DIR}/LICENSE.txt"
   "LICENSE-ThirdParty-Vulkan-SDK.txt"
   DEPENDS vulkanHeadersEP-update

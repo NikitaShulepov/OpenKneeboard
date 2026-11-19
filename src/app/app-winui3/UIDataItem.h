@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -12,7 +12,7 @@
 
 using namespace winrt::Windows::Foundation;
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 struct UIDataItem : UIDataItemT<UIDataItem> {
   UIDataItem() = default;
 
@@ -30,8 +30,8 @@ struct UIDataItem : UIDataItemT<UIDataItem> {
   winrt::hstring mLabel;
   IInspectable mTag;
 };
-}// namespace winrt::OpenKneeboardApp::implementation
+}// namespace winrt::VDXROVRApp::implementation
 
-namespace winrt::OpenKneeboardApp::factory_implementation {
+namespace winrt::VDXROVRApp::factory_implementation {
 struct UIDataItem : UIDataItemT<UIDataItem, implementation::UIDataItem> {};
-}// namespace winrt::OpenKneeboardApp::factory_implementation
+}// namespace winrt::VDXROVRApp::factory_implementation

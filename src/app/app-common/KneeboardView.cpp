@@ -1,33 +1,33 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/BookmarksUILayer.hpp>
-#include <OpenKneeboard/CursorEvent.hpp>
-#include <OpenKneeboard/CursorRenderer.hpp>
-#include <OpenKneeboard/D2DErrorRenderer.hpp>
-#include <OpenKneeboard/FooterUILayer.hpp>
-#include <OpenKneeboard/HeaderUILayer.hpp>
-#include <OpenKneeboard/ITab.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/KneeboardView.hpp>
-#include <OpenKneeboard/PluginTab.hpp>
-#include <OpenKneeboard/SHM/ActiveConsumers.hpp>
-#include <OpenKneeboard/TabView.hpp>
-#include <OpenKneeboard/TabViewUILayer.hpp>
-#include <OpenKneeboard/ToolbarAction.hpp>
-#include <OpenKneeboard/UserAction.hpp>
-#include <OpenKneeboard/UserActionHandler.hpp>
+#include <VDXROVR/BookmarksUILayer.hpp>
+#include <VDXROVR/CursorEvent.hpp>
+#include <VDXROVR/CursorRenderer.hpp>
+#include <VDXROVR/D2DErrorRenderer.hpp>
+#include <VDXROVR/FooterUILayer.hpp>
+#include <VDXROVR/HeaderUILayer.hpp>
+#include <VDXROVR/ITab.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/KneeboardView.hpp>
+#include <VDXROVR/PluginTab.hpp>
+#include <VDXROVR/SHM/ActiveConsumers.hpp>
+#include <VDXROVR/TabView.hpp>
+#include <VDXROVR/TabViewUILayer.hpp>
+#include <VDXROVR/ToolbarAction.hpp>
+#include <VDXROVR/UserAction.hpp>
+#include <VDXROVR/UserActionHandler.hpp>
 
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/dprint.hpp>
 
 #include <algorithm>
 #include <ranges>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 KneeboardView::KneeboardView(
   const audited_ptr<DXResources>& dxr,
@@ -241,7 +241,7 @@ std::shared_ptr<TabView> KneeboardView::GetTabViewByID(
     }
   }
   dprint("Failed to find tab by ID");
-  OPENKNEEBOARD_BREAK;
+  VDXROVR_BREAK;
   return {};
 }
 
@@ -375,7 +375,7 @@ task<void> KneeboardView::RenderWithChrome(
   RenderTarget* rt,
   const PixelRect& rect,
   bool isActiveForInput) noexcept {
-  OPENKNEEBOARD_TraceLoggingScope(
+  VDXROVR_TraceLoggingScope(
     "KneeboardView::RenderWithChrome()",
     TraceLoggingHexUInt64(rt->GetID().GetTemporaryValue(), "RenderTargetID"));
   const RenderContext rc {rt, this};
@@ -388,7 +388,7 @@ task<void> KneeboardView::RenderWithChrome(
 
   auto [first, rest] = this->GetUILayers();
   {
-    OPENKNEEBOARD_TraceLoggingScope("RenderWithChrome/RenderUILayers");
+    VDXROVR_TraceLoggingScope("RenderWithChrome/RenderUILayers");
     co_await first->Render(
       rc,
       rest,
@@ -448,7 +448,7 @@ task<void> KneeboardView::PostUserAction(UserAction action) {
       dprint(
         "No KneeboardView action handler for action {}",
         static_cast<int>(action));
-      OPENKNEEBOARD_BREAK;
+      VDXROVR_BREAK;
       co_return;
     case UserAction::CYCLE_ACTIVE_VIEW:
     case UserAction::DECREASE_BRIGHTNESS:
@@ -468,7 +468,7 @@ task<void> KneeboardView::PostUserAction(UserAction action) {
       // Handled by KneeboardState
       co_return;
   }
-  OPENKNEEBOARD_BREAK;
+  VDXROVR_BREAK;
 }
 
 std::optional<D2D1_POINT_2F> KneeboardView::GetCursorCanvasPoint() const {
@@ -557,7 +557,7 @@ std::optional<Bookmark> KneeboardView::AddBookmarkForCurrentPage() {
 
   auto view = this->GetCurrentTabView();
   if (view->GetTabMode() != TabMode::Normal) {
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     return {};
   }
 
@@ -575,7 +575,7 @@ std::optional<Bookmark> KneeboardView::AddBookmarkForCurrentPage() {
   const auto pageIt = std::ranges::find(pageIDs, ret.mPageID);
   if (pageIt == pageIDs.end()) {
     // Should be impossible - current page ID must be in page IDs set
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     return ret;
   }
   const auto pageIndex = pageIt - pageIDs.begin();
@@ -830,4 +830,4 @@ std::vector<winrt::guid> KneeboardView::GetTabIDs() const noexcept {
   return ret;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

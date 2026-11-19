@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -10,10 +10,10 @@
 
 #include "Globals.h"
 
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/TroubleshootingStore.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/TroubleshootingStore.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 HWND gMainWindow {};
 std::weak_ptr<TroubleshootingStore> gTroubleshootingStore;
@@ -23,4 +23,4 @@ winrt::handle gMutex {};
 RenderTargetID gGUIRenderTargetID;
 bool gShuttingDown = false;
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

@@ -15,7 +15,7 @@ OpenTabletDriver is *strongly* recommended instead of your manufacturer's driver
    pen', and 'tablet'. There may be multiple entries for your tablet - remove them all.
 2. Use [TabletDriverCleanup](https://github.com/OpenTabletDriver/TabletDriverCleanup) to remove left-over traces
 3. Install [OpenTabletDriver](https://opentabletdriver.net/)
-4. Install [OTD-IPC](https://go.openkneeboard.com/otd-ipc)
+4. Install [OTD-IPC](https://github.com/NikitaShulepov/VDXROVR)
 
 OpenTabletDriver is only active while it is running;
 see [OpenTabletDriver's FAQ](https://opentabletdriver.net/Wiki/FAQ/Windows#startup) for advise on starting it
@@ -27,16 +27,16 @@ you install it when it is not needed, it will stop your tablet from working.
 ## Using your manufacturer's drivers
 
 Use OpenTabletDriver instead if at all possible. If you use your manufacturer's drivers, you should expect to be unable
-to bind buttons or erase in OpenKneeboard. This is a limitation of the manufacturer drivers, and can only be fixed by
+to bind buttons or erase in VDXROVR. This is a limitation of the manufacturer drivers, and can only be fixed by
 the manufacturer.
 
-If you must use vendor drivers, [wintab-adapter](https://github.com/OpenKneeboard/wintab-adapter/blob/master/README.md)
-is the best way to use vendor drivers with OpenKneeboard, instead of OpenKneeboard's built-in WinTab support.
-OpenKneeboard's built-in WinTab support will be removed in a future version.
+If you must use vendor drivers, [wintab-adapter](https://github.com/VDXROVR/wintab-adapter/blob/master/README.md)
+is the best way to use vendor drivers with VDXROVR, instead of VDXROVR's built-in WinTab support.
+VDXROVR's built-in WinTab support will be removed in a future version.
 
 If your manufacturer driver supports setting the buttons to launch programs, you may find
 the [remote controls](remote-controls.md) useful.
 
-## The WinTab option in OpenKneeboard
+## The WinTab option in VDXROVR
 
 This remains in v1.12 as I won't usually remove features in bugfix releases. If you encounter *any* issues while using it, follow the updated advice above. It remains functional, depending on the quality of the manufacturer's wintab driver.

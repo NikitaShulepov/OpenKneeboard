@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -14,7 +14,7 @@
 
 using Visibility = winrt::Microsoft::UI::Xaml::Visibility;
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 winrt::Windows::Foundation::IInspectable BooleanToVisibilityConverter::Convert(
   winrt::Windows::Foundation::IInspectable const& value,
   winrt::Windows::UI::Xaml::Interop::TypeName const& /*targetType*/,
@@ -32,4 +32,4 @@ BooleanToVisibilityConverter::ConvertBack(
   hstring const& /*language*/) {
   throw hresult_not_implemented();
 }
-}// namespace winrt::OpenKneeboardApp::implementation
+}// namespace winrt::VDXROVRApp::implementation

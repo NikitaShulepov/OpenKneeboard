@@ -1,16 +1,16 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/ConsoleLoopCondition.hpp>
-#include <OpenKneeboard/Win32.hpp>
+#include <VDXROVR/ConsoleLoopCondition.hpp>
+#include <VDXROVR/Win32.hpp>
 
 #include <Windows.h>
 #include <objbase.h>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 namespace {
 auto& ExitEvent() {
@@ -68,4 +68,4 @@ bool ConsoleLoopCondition::Sleep(
   return true;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

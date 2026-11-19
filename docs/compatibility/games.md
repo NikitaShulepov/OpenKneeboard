@@ -56,11 +56,11 @@ Support for other APIs is blocked by the anti-cheat software.
 
 - Support for other APIs is blocked by the anti-cheat software.
 - The game does not natively support OpenXR.
-- The game is reported to work with OpenKneeboard via OpenComposite, however [see below](#OpenComposite).
+- The game is reported to work with VDXROVR via OpenComposite, however [see below](#OpenComposite).
 
 ## OpenComposite
 
-OpenKneeboard usually works with OpenComposite, however, no help is available when using OpenComposite with *any game*, and any issues reported will be closed/ignored.
+VDXROVR usually works with OpenComposite, however, no help is available when using OpenComposite with *any game*, and any issues reported will be closed/ignored.
 
 For assistance when using OpenComposite, try the support channels for OpenComposite itself, or community resources for the game, such as the game's Discord, subreddit, or forum.
 
@@ -74,10 +74,10 @@ Usually, problems are caused by OpenComposite not being installed or configured 
 
 ## Anti-Cheat
 
-While OpenKneeboard is not a cheat, it does hook into the games rendering and input pipelines, which over-eager anti-cheat systems may consider ban-worthy. While this is similar to how other overlays work (e.g. Steam and Discord), it is possible that using OpenKneeboard may lead to an anti-cheat ban.
+While VDXROVR is not a cheat, it does hook into the games rendering and input pipelines, which over-eager anti-cheat systems may consider ban-worthy. While this is similar to how other overlays work (e.g. Steam and Discord), it is possible that using VDXROVR may lead to an anti-cheat ban.
 
 As of February 8th, 2026, the developers have not received any reports of any users receiving any bans in any games, but this remains a theoretical possibility in the future.
 
-IL2 have issued permanent *forum* bans for *discussing this warning*, but are not known to have issued any *game* bans for using OpenKneeboard.
+IL2 have issued permanent *forum* bans for *discussing this warning*, but are not known to have issued any *game* bans for using VDXROVR.
 
-Note that OpenKneeboard has **NO WARRANTY**; see [the LICENSE file](https://raw.githubusercontent.com/OpenKneeboard/OpenKneeboard/master/LICENSE) and [full text of the GPLv2](https://raw.githubusercontent.com/OpenKneeboard/OpenKneeboard/master/gpl-2.0.txt) for details.
+Note that VDXROVR has **NO WARRANTY**; see [the LICENSE file](https://raw.githubusercontent.com/NikitaShulepov/VDXROVR/master/LICENSE) and [full text of the GPLv2](https://raw.githubusercontent.com/NikitaShulepov/VDXROVR/master/gpl-2.0.txt) for details.

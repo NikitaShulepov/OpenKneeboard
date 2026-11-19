@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -10,7 +10,7 @@
 #include "PercentValueConverter.g.h"
 // clang-format on
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 struct PercentValueConverter : PercentValueConverterT<PercentValueConverter> {
   PercentValueConverter() = default;
 
@@ -25,9 +25,9 @@ struct PercentValueConverter : PercentValueConverterT<PercentValueConverter> {
     winrt::Windows::Foundation::IInspectable const& parameter,
     hstring const& language);
 };
-}// namespace winrt::OpenKneeboardApp::implementation
-namespace winrt::OpenKneeboardApp::factory_implementation {
+}// namespace winrt::VDXROVRApp::implementation
+namespace winrt::VDXROVRApp::factory_implementation {
 struct PercentValueConverter : PercentValueConverterT<
                                  PercentValueConverter,
                                  implementation::PercentValueConverter> {};
-}// namespace winrt::OpenKneeboardApp::factory_implementation
+}// namespace winrt::VDXROVRApp::factory_implementation

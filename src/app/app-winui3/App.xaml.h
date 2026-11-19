@@ -1,4 +1,4 @@
-﻿// OpenKneeboard
+﻿// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -8,18 +8,18 @@
 
 #include "App.xaml.g.h"
 
-#include <OpenKneeboard/task.hpp>
+#include <VDXROVR/task.hpp>
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 struct App : AppT<App> {
   App();
 
-  OpenKneeboard::fire_and_forget OnLaunched(
+  VDXROVR::fire_and_forget OnLaunched(
     Microsoft::UI::Xaml::LaunchActivatedEventArgs) noexcept;
 
-  ::OpenKneeboard::task<void> CleanupAndExitAsync();
+  ::VDXROVR::task<void> CleanupAndExitAsync();
 
  private:
   winrt::Microsoft::UI::Xaml::Window mWindow {nullptr};
 };
-}// namespace winrt::OpenKneeboardApp::implementation
+}// namespace winrt::VDXROVRApp::implementation

@@ -1,8 +1,8 @@
 ﻿<Page
-  x:Class="OpenKneeboardApp.AdvancedSettingsPage"
+  x:Class="VDXROVRApp.AdvancedSettingsPage"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:local="using:OpenKneeboardApp"
+  xmlns:local="using:VDXROVRApp"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   mc:Ignorable="d"
@@ -52,7 +52,7 @@
           The app window can show and control the active in-game view
           (for VR, this is whichever you looked at most recently), or it can
           be independent. This changes the behavior of tab/page changes,
-          including button bindings if the OpenKneeboard window is the
+          including button bindings if the VDXROVR window is the
           foreground window.
         </TextBlock>
         <TextBlock
@@ -294,7 +294,7 @@
         <ToggleSwitch
           Header="Frame counter in footer"
           OffContent="Frame counter is not shown"
-          OnContent="The number of OpenKneeboard frames is shown"
+          OnContent="The number of VDXROVR frames is shown"
           IsOn="{x:Bind InGameFooterFrameCount}"
           IsEnabled="{x:Bind InGameFooter,Mode=OneWay}"/>
       </StackPanel>
@@ -326,14 +326,14 @@
           This will be untrue and should be re-worded once/if
           XR_META_recommended_layer_resolution is adopted.
 
-          https://github.com/OpenKneeboard/OpenKneeboard/issues/503
+          https://github.com/NikitaShulepov/VDXROVR/issues/503
         -->
         <TextBlock
           Style="{ThemeResource CaptionTextBlockStyle}"
           Foreground="{ThemeResource TextFillColorSecondary}">
           Increases the resolution of content before passing to the OpenXR
           runtime; runtimes are theoretically able to produce better results
-          than OpenKneeboard can, but in practice OpenKneeboard produces better
+          than VDXROVR can, but in practice VDXROVR produces better
           results than some vendors.
         </TextBlock>
       </StackPanel>

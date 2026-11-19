@@ -1,16 +1,16 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 
-#include <OpenKneeboard/DirectInputDevice.hpp>
-#include <OpenKneeboard/DirectInputKeyboardListener.hpp>
+#include <VDXROVR/DirectInputDevice.hpp>
+#include <VDXROVR/DirectInputKeyboardListener.hpp>
 
-#include <OpenKneeboard/scope_exit.hpp>
+#include <VDXROVR/scope_exit.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 DirectInputKeyboardListener::DirectInputKeyboardListener(
   const std::stop_token& stop,
@@ -52,4 +52,4 @@ void DirectInputKeyboardListener::OnAcquired() noexcept {
   }
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

@@ -1,17 +1,17 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/TabletInputDevice.hpp>
-#include <OpenKneeboard/UserInputButtonBinding.hpp>
+#include <VDXROVR/TabletInputDevice.hpp>
+#include <VDXROVR/UserInputButtonBinding.hpp>
 
-#include <OpenKneeboard/utf8.hpp>
+#include <VDXROVR/utf8.hpp>
 
 #include <format>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 TabletInputDevice::TabletInputDevice(
   const std::string& name,
@@ -65,4 +65,4 @@ void TabletInputDevice::SetOrientation(TabletOrientation value) {
   evOrientationChangedEvent.Emit(value);
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

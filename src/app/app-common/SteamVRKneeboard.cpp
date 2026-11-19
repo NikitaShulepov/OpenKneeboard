@@ -1,21 +1,21 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/D3D11.hpp>
-#include <OpenKneeboard/DXResources.hpp>
-#include <OpenKneeboard/EnumerateProcesses.hpp>
-#include <OpenKneeboard/RayIntersectsRect.hpp>
-#include <OpenKneeboard/SHM.hpp>
-#include <OpenKneeboard/SHM/ActiveConsumers.hpp>
-#include <OpenKneeboard/SteamVRKneeboard.hpp>
+#include <VDXROVR/D3D11.hpp>
+#include <VDXROVR/DXResources.hpp>
+#include <VDXROVR/EnumerateProcesses.hpp>
+#include <VDXROVR/RayIntersectsRect.hpp>
+#include <VDXROVR/SHM.hpp>
+#include <VDXROVR/SHM/ActiveConsumers.hpp>
+#include <VDXROVR/SteamVRKneeboard.hpp>
 
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/hresult.hpp>
-#include <OpenKneeboard/task/resume_after.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/hresult.hpp>
+#include <VDXROVR/task/resume_after.hpp>
 
 #include <shims/winrt/base.h>
 
@@ -34,11 +34,11 @@
 
 using namespace DirectX::SimpleMath;
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 SteamVRKneeboard::SteamVRKneeboard()
   : mSHM(SHM::ConsumerKind::OpenVR, mDXR.mD3D11Device.get()) {
-  OPENKNEEBOARD_TraceLoggingScope("SteamVRKneeboard::SteamVRKneeboard()");
+  VDXROVR_TraceLoggingScope("SteamVRKneeboard::SteamVRKneeboard()");
   auto d3d = mDXR.mD3D11Device.get();
   {
     DXGI_ADAPTER_DESC desc;
@@ -85,12 +85,12 @@ SteamVRKneeboard::SteamVRKneeboard()
 }
 
 SteamVRKneeboard::~SteamVRKneeboard() {
-  OPENKNEEBOARD_TraceLoggingScope("SteamVRKneeboard::~SteamVRKneeboard()");
+  VDXROVR_TraceLoggingScope("SteamVRKneeboard::~SteamVRKneeboard()");
   this->Reset();
 }
 
 void SteamVRKneeboard::Reset() {
-  OPENKNEEBOARD_TraceLoggingScope("SteamVRKneeboard::Reset()");
+  VDXROVR_TraceLoggingScope("SteamVRKneeboard::Reset()");
   if (!mIVRSystem) {
     return;
   }
@@ -155,7 +155,7 @@ bool SteamVRKneeboard::InitializeOpenVR() {
       L"OpenVR requested adapter '{}' (LUID {:#x})", desc.Description, luid);
     if (luid != mDXR.mAdapterLUID) {
       dprint.Warning(
-        "SteamVR adapter {:#x} != OKB adapter {:#x}", luid, mDXR.mAdapterLUID);
+        "SteamVR adapter {:#x} != VDXROVR adapter {:#x}", luid, mDXR.mAdapterLUID);
     }
   }
 
@@ -183,7 +183,7 @@ static bool IsOtherVRActive() {
 }
 
 void SteamVRKneeboard::Tick() {
-  OPENKNEEBOARD_TraceLoggingScope("SteamVRKneeboard::Tick()");
+  VDXROVR_TraceLoggingScope("SteamVRKneeboard::Tick()");
   vr::VREvent_t event;
   for (const auto& layerState: mLayers) {
     if (!layerState.mOverlay) {
@@ -305,7 +305,7 @@ void SteamVRKneeboard::Tick() {
     winrt::check_hresult(mFence->SetEventOnCompletion(
       layerState.mFenceValue, mGPUFlushEvent.get()));
     {
-      OPENKNEEBOARD_TraceLoggingScopedActivity(
+      VDXROVR_TraceLoggingScopedActivity(
         waitActivity, "SteamVRKneeboard::Tick()/WaitForSingleObject");
       const auto result = WaitForSingleObject(mGPUFlushEvent.get(), INFINITE);
       if (result != WAIT_OBJECT_0) {
@@ -316,7 +316,7 @@ void SteamVRKneeboard::Tick() {
           TraceLoggingValue(result, "Result"),
           TraceLoggingValue(error, "Error"));
         waitActivity.CancelAutoStop();
-        OPENKNEEBOARD_BREAK;
+        VDXROVR_BREAK;
       }
     }
 
@@ -420,11 +420,11 @@ std::optional<SteamVRKneeboard::Pose> SteamVRKneeboard::GetHMDPose(
   };
   sCacheKey = mFrameCounter;
   return sCache;
-}// namespace OpenKneeboard
+}// namespace VDXROVR
 
 static bool IsSteamVRRunning() {
   static bool sIsRunning = false;
-  OPENKNEEBOARD_TraceLoggingScope("IsSteamVRRunning()");
+  VDXROVR_TraceLoggingScope("IsSteamVRRunning()");
   // We 'should' just call `vr::VR_Init()` and check the result, but it leaks:
   // https://github.com/ValveSoftware/openvr/issues/310
   //
@@ -501,7 +501,7 @@ void SteamVRKneeboard::InitializeLayer(size_t layerIndex) {
 
   auto& layerState = mLayers.at(layerIndex);
   auto key = std::format("{}.{}", ProjectReverseDomainA, layerIndex);
-  auto name = std::format("OpenKneeboard {}", layerIndex + 1);
+  auto name = std::format("VDXROVR {}", layerIndex + 1);
 
   OVERLAY_CHECK(CreateOverlay, key.c_str(), name.c_str(), &layerState.mOverlay);
 
@@ -521,4 +521,4 @@ void SteamVRKneeboard::InitializeLayer(size_t layerIndex) {
     SHM::SHARED_TEXTURE_IS_PREMULTIPLIED);
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

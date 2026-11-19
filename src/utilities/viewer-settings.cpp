@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -6,16 +6,16 @@
 // OpenKneeboard repository.
 #include "viewer-settings.hpp"
 
-#include <OpenKneeboard/Filesystem.hpp>
+#include <VDXROVR/Filesystem.hpp>
 
-#include <OpenKneeboard/json.hpp>
-#include <OpenKneeboard/utf8.hpp>
+#include <VDXROVR/json.hpp>
+#include <VDXROVR/utf8.hpp>
 
 #include <algorithm>
 #include <format>
 #include <fstream>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 ViewerSettings ViewerSettings::Load() {
   ViewerSettings ret;
 
@@ -50,7 +50,7 @@ void ViewerSettings::Save() {
 }
 
 #define IT(x) {ViewerAlignment::x, #x},
-NLOHMANN_JSON_SERIALIZE_ENUM(ViewerAlignment, {OPENKNEEBOARD_VIEWER_ALIGNMENTS})
+NLOHMANN_JSON_SERIALIZE_ENUM(ViewerAlignment, {VDXROVR_VIEWER_ALIGNMENTS})
 #undef IT
 
 NLOHMANN_JSON_SERIALIZE_ENUM(
@@ -61,7 +61,7 @@ NLOHMANN_JSON_SERIALIZE_ENUM(
     {ViewerFillMode::Transparent, "Transparent"},
   })
 
-OPENKNEEBOARD_DEFINE_SPARSE_JSON(
+VDXROVR_DEFINE_SPARSE_JSON(
   ViewerSettings,
   mWindowWidth,
   mWindowHeight,
@@ -72,4 +72,4 @@ OPENKNEEBOARD_DEFINE_SPARSE_JSON(
   mStreamerMode,
   mAlignment)
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

@@ -1,21 +1,21 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 
-#include <OpenKneeboard/Coordinates.hpp>
+#include <VDXROVR/Coordinates.hpp>
 
 #include <GeographicLib/DMS.hpp>
 #include <GeographicLib/GeoCoords.hpp>
 
 #include <format>
 
-namespace OpenKneeboard::Coordinates {
+namespace VDXROVR::Coordinates {
 
 static_assert(
-  std::is_same_v<GeographicLib::Math::real, OpenKneeboard::GeoReal>);
+  std::is_same_v<GeographicLib::Math::real, VDXROVR::GeoReal>);
 
 std::string DMSFormat(GeoReal angle, char pos, char neg) {
   GeoReal degrees {}, minutes {}, seconds {};
@@ -54,4 +54,4 @@ std::string MGRSFormat(GeoReal latitude, GeoReal longitude) {
     view.substr(view.size() - 5, 5));
 }
 
-}// namespace OpenKneeboard::Coordinates
+}// namespace VDXROVR::Coordinates

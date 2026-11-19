@@ -1,14 +1,14 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/UserInputButtonBinding.hpp>
-#include <OpenKneeboard/UserInputButtonEvent.hpp>
-#include <OpenKneeboard/UserInputDevice.hpp>
+#include <VDXROVR/UserInputButtonBinding.hpp>
+#include <VDXROVR/UserInputButtonEvent.hpp>
+#include <VDXROVR/UserInputDevice.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 UserInputButtonBinding::UserInputButtonBinding(
   std::shared_ptr<UserInputDevice> device,
@@ -30,4 +30,4 @@ std::unordered_set<uint64_t> UserInputButtonBinding::GetButtonIDs() const {
 
 UserAction UserInputButtonBinding::GetAction() const { return mAction; }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

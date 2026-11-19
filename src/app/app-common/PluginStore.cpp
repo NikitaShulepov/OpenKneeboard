@@ -1,19 +1,19 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 
-#include <OpenKneeboard/Elevation.hpp>
-#include <OpenKneeboard/Filesystem.hpp>
-#include <OpenKneeboard/PluginStore.hpp>
-#include <OpenKneeboard/Registry.hpp>
+#include <VDXROVR/Elevation.hpp>
+#include <VDXROVR/Filesystem.hpp>
+#include <VDXROVR/PluginStore.hpp>
+#include <VDXROVR/Registry.hpp>
 
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/format/filesystem.hpp>
-#include <OpenKneeboard/json.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/format/filesystem.hpp>
+#include <VDXROVR/json.hpp>
 
 #include <wil/registry.h>
 
@@ -23,10 +23,10 @@
 #include <fstream>
 #include <ranges>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 PluginStore::PluginStore() {
-  if (OpenKneeboard::IsElevated() || OpenKneeboard::IsShellElevated()) {
-    dprint.Warning("not loading any plugins because OpenKneeboard is elevated");
+  if (VDXROVR::IsElevated() || VDXROVR::IsShellElevated()) {
+    dprint.Warning("not loading any plugins because VDXROVR is elevated");
     return;
   }
   this->LoadPluginsFromFilesystem();
@@ -135,4 +135,4 @@ void PluginStore::Append(const Plugin& plugin) {
     plugin.mMetadata.mPluginReadableVersion,
     plugin.mJSONPath);
 }
-}// namespace OpenKneeboard
+}// namespace VDXROVR

@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -12,7 +12,7 @@
 
 #include <format>
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 winrt::Windows::Foundation::IInspectable MultiplierValueConverter::Convert(
   winrt::Windows::Foundation::IInspectable const& value,
   winrt::Windows::UI::Xaml::Interop::TypeName const& /*targetType*/,
@@ -29,4 +29,4 @@ winrt::Windows::Foundation::IInspectable MultiplierValueConverter::ConvertBack(
   hstring const& /*language*/) {
   throw hresult_not_implemented();
 }
-}// namespace winrt::OpenKneeboardApp::implementation
+}// namespace winrt::VDXROVRApp::implementation

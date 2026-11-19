@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -12,24 +12,24 @@
 
 #include "Globals.h"
 
-#include <OpenKneeboard/CreateTabActions.hpp>
-#include <OpenKneeboard/CursorEvent.hpp>
-#include <OpenKneeboard/CursorRenderer.hpp>
-#include <OpenKneeboard/D2DErrorRenderer.hpp>
-#include <OpenKneeboard/ICheckableToolbarItem.hpp>
-#include <OpenKneeboard/ITab.hpp>
-#include <OpenKneeboard/IToolbarFlyout.hpp>
-#include <OpenKneeboard/IToolbarItemWithConfirmation.hpp>
-#include <OpenKneeboard/IToolbarItemWithVisibility.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/KneeboardView.hpp>
-#include <OpenKneeboard/TabView.hpp>
-#include <OpenKneeboard/ToolbarAction.hpp>
-#include <OpenKneeboard/ToolbarSeparator.hpp>
-#include <OpenKneeboard/ToolbarToggleAction.hpp>
+#include <VDXROVR/CreateTabActions.hpp>
+#include <VDXROVR/CursorEvent.hpp>
+#include <VDXROVR/CursorRenderer.hpp>
+#include <VDXROVR/D2DErrorRenderer.hpp>
+#include <VDXROVR/ICheckableToolbarItem.hpp>
+#include <VDXROVR/ITab.hpp>
+#include <VDXROVR/IToolbarFlyout.hpp>
+#include <VDXROVR/IToolbarItemWithConfirmation.hpp>
+#include <VDXROVR/IToolbarItemWithVisibility.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/KneeboardView.hpp>
+#include <VDXROVR/TabView.hpp>
+#include <VDXROVR/ToolbarAction.hpp>
+#include <VDXROVR/ToolbarSeparator.hpp>
+#include <VDXROVR/ToolbarToggleAction.hpp>
 
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/scope_exit.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/scope_exit.hpp>
 
 #include <winrt/Microsoft.UI.Xaml.Controls.h>
 #include <winrt/Windows.Foundation.Collections.h>
@@ -40,12 +40,12 @@
 #include <ranges>
 #include <source_location>
 
-using namespace ::OpenKneeboard;
+using namespace ::VDXROVR;
 
 namespace muxc = winrt::Microsoft::UI::Xaml::Controls;
 namespace muxcp = winrt::Microsoft::UI::Xaml::Controls::Primitives;
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 
 std::unordered_map<TabView::RuntimeID, std::weak_ptr<RenderTarget>>
   TabPage::sRenderTarget;
@@ -80,7 +80,7 @@ std::shared_ptr<RenderTarget> TabPage::GetRenderTarget(
 
 TabPage::TabPage() {
   InitializeComponent();
-  OPENKNEEBOARD_TraceLoggingScope("TabPage::TabPage()");
+  VDXROVR_TraceLoggingScope("TabPage::TabPage()");
   mDXR.copy_from(gDXResources);
   mKneeboard = gKneeboard.lock();
 
@@ -120,11 +120,11 @@ TabPage::TabPage() {
     });
 }
 
-TabPage::~TabPage() { OPENKNEEBOARD_TraceLoggingScope("TabPage::~TabPage()"); }
+TabPage::~TabPage() { VDXROVR_TraceLoggingScope("TabPage::~TabPage()"); }
 
-OpenKneeboard::fire_and_forget TabPage::final_release(
+VDXROVR::fire_and_forget TabPage::final_release(
   std::unique_ptr<TabPage> instance) {
-  OPENKNEEBOARD_TraceLoggingCoro("TabPage::final_release()");
+  VDXROVR_TraceLoggingCoro("TabPage::final_release()");
   instance->RemoveAllEventListeners();
   co_await instance->mUIThread;
 }
@@ -137,7 +137,7 @@ void TabPage::InitializePointerSource() {
       return;
     }
     SetThreadDescription(
-      GetCurrentThread(), L"OKB TabPage IndependentInputSource");
+      GetCurrentThread(), L"VDXROVR TabPage IndependentInputSource");
 
     auto& ips = self->mInputPointerSource;
     ips = self->Canvas().CreateCoreIndependentInputSource(
@@ -214,7 +214,7 @@ muxc::ICommandBarElement TabPage::CreateCommandBarElement(
     return CreateAppBarFlyout(flyout);
   }
 
-  OPENKNEEBOARD_BREAK;
+  VDXROVR_BREAK;
   return {nullptr};
 }
 
@@ -309,7 +309,7 @@ muxc::MenuFlyoutItemBase TabPage::CreateMenuFlyoutItem(
   const std::shared_ptr<IToolbarItem>& item) {
   const auto action = std::dynamic_pointer_cast<ToolbarAction>(item);
   if (!action) {
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     return nullptr;
   }
 
@@ -384,7 +384,7 @@ void TabPage::SetTab(const std::shared_ptr<TabView>& state) {
   this->UpdateToolbar();
 }
 
-OpenKneeboard::fire_and_forget TabPage::UpdateToolbar() {
+VDXROVR::fire_and_forget TabPage::UpdateToolbar() {
   co_await mUIThread;
 
   auto primary = CommandBar().PrimaryCommands();
@@ -445,7 +445,7 @@ void TabPage::OnCanvasSizeChanged(
   const IInspectable&,
   const SizeChangedEventArgs& args) noexcept {
   auto size = args.NewSize();
-  OPENKNEEBOARD_TraceLoggingScopedActivity(
+  VDXROVR_TraceLoggingScopedActivity(
     activity,
     "TabPage::OnCanvasSizeChanged()",
     TraceLoggingPointer(this, "this"),
@@ -465,7 +465,7 @@ void TabPage::OnCanvasSizeChanged(
 }
 
 void TabPage::ResizeSwapChain() {
-  OPENKNEEBOARD_TraceLoggingScope("TabPage::ResizeSwapChain()");
+  VDXROVR_TraceLoggingScope("TabPage::ResizeSwapChain()");
 
   // Can't resize swapchain if there are any reference to its' members
   mCanvas = {};
@@ -486,7 +486,7 @@ void TabPage::ResizeSwapChain() {
 }
 
 void TabPage::InitializeSwapChain() {
-  OPENKNEEBOARD_TraceLoggingScope(
+  VDXROVR_TraceLoggingScope(
     "TabPage::InitializeSwapChain()",
     TraceLoggingPointer(this, "this"),
     TraceLoggingValue(mPanelDimensions.mWidth, "Width"),
@@ -505,7 +505,7 @@ void TabPage::InitializeSwapChain() {
   // frame will stall until that has completed.
   //
   // We could avoid this by using frame pacing, but we want to decouple the
-  // frame rates - if you're on a 30hz or 60hz monitor, OpenKneeboard should
+  // frame rates - if you're on a 30hz or 60hz monitor, VDXROVR should
   // still be able to push VR frames at 90hz
   //
   // So, triple-buffer
@@ -535,22 +535,22 @@ void TabPage::PaintLater() {
 
 task<void> TabPage::PaintNow(std::source_location loc) noexcept {
   if (!mTabView) {
-    OPENKNEEBOARD_TraceLoggingWrite("TabPage::PaintNow()/NoTabView");
+    VDXROVR_TraceLoggingWrite("TabPage::PaintNow()/NoTabView");
     co_return;
   }
   const auto rootTab = mTabView->GetRootTab().lock();
   if (!rootTab) {
-    OPENKNEEBOARD_TraceLoggingWrite("TabPage::PaintNow()/StaleTab");
+    VDXROVR_TraceLoggingWrite("TabPage::PaintNow()/StaleTab");
     co_return;
   }
-  OPENKNEEBOARD_TraceLoggingCoro(
+  VDXROVR_TraceLoggingCoro(
     /*activity,*/
     "TabPage::PaintNow()",
     TraceLoggingPointer(this, "this"),
     TraceLoggingValue(rootTab->GetTitle().c_str(), "TabTitle"),
     TraceLoggingValue(
       to_hstring(rootTab->GetPersistentID()).c_str(), "TabGUID"),
-    OPENKNEEBOARD_TraceLoggingSourceLocation(loc));
+    VDXROVR_TraceLoggingSourceLocation(loc));
   // TODO: support 'stop with result' for coros
   if (!mPanelDimensions) {
     co_return;
@@ -569,7 +569,7 @@ task<void> TabPage::PaintNow(std::source_location loc) noexcept {
 
   const std::unique_lock lock(*mDXR);
   const auto cleanup = scope_exit([this]() {
-    OPENKNEEBOARD_TraceLoggingScope("TabPage/Present()");
+    VDXROVR_TraceLoggingScope("TabPage/Present()");
     mSwapChain->Present(0, 0);
     mNeedsFrame = false;
   });
@@ -619,7 +619,7 @@ task<void> TabPage::PaintNow(std::source_location loc) noexcept {
     co_return;
   }
   if (tab->GetPageCount()) {
-    OPENKNEEBOARD_TraceLoggingCoro("TabPage/RenderPage");
+    VDXROVR_TraceLoggingCoro("TabPage/RenderPage");
     co_await tab->RenderPage(
       RenderContext {
         mRenderTarget.get(),
@@ -659,7 +659,7 @@ task<void> TabPage::PaintNow(std::source_location loc) noexcept {
 }
 
 TabPage::PageMetrics TabPage::GetPageMetrics() {
-  OPENKNEEBOARD_ASSERT(
+  VDXROVR_ASSERT(
     mTabView, "Attempt to fetch Page Metrics without a TabView");
 
   const auto preferredSize =
@@ -761,4 +761,4 @@ void TabPage::EnqueueCursorEvent(const CursorEvent& ev) {
   mHaveCursorEvents = true;
 }
 
-}// namespace winrt::OpenKneeboardApp::implementation
+}// namespace winrt::VDXROVRApp::implementation

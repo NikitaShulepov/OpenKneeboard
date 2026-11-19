@@ -1,20 +1,20 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 
-#include <OpenKneeboard/DCSMagneticModel.hpp>
+#include <VDXROVR/DCSMagneticModel.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/dprint.hpp>
 
 #include <felly/numeric_cast.hpp>
 #include <felly/unique_any.hpp>
 
 using felly::numeric_cast;
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 DCSMagneticModel::DCSMagneticModel(
   const std::filesystem::path& dcsInstallation) {
@@ -116,4 +116,4 @@ float DCSMagneticModel::GetMagneticVariation(
   return numeric_cast<float>(geoElements.Decl);
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

@@ -1,17 +1,17 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/APIEvent.hpp>
-#include <OpenKneeboard/DCSEvents.hpp>
-#include <OpenKneeboard/DCSTab.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
+#include <VDXROVR/APIEvent.hpp>
+#include <VDXROVR/DCSEvents.hpp>
+#include <VDXROVR/DCSTab.hpp>
+#include <VDXROVR/KneeboardState.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/dprint.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 DCSTab::DCSTab(KneeboardState* kbs) {
   mAPIEventToken = AddEventListener(
@@ -58,4 +58,4 @@ std::filesystem::path DCSTab::ToAbsolutePath(
   return maybeRelative;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

@@ -12,7 +12,7 @@ redirect_from:
 ## General advice
 
 - use OpenTabletDriver unless it is completely impossible for you
-- if you absolutely must use manufacturer's drivers, use [wintab-adapter] instead of OpenKneeboard's built-in wintab
+- if you absolutely must use manufacturer's drivers, use [wintab-adapter] instead of VDXROVR's built-in wintab
   support (under Settings -> Input)
 - check if the steps in the [how-to](../how-to/graphics-tablets.md) have changed, and go through them again
 
@@ -35,10 +35,10 @@ Wacom intentionally removed this feature from later versions of their driver.
 If your manufacturer's driver supports launching programs when buttons are pressed, you might find the [remote controls]
 useful
 
-## Tablet only works properly when OpenKneeboard is the active window
+## Tablet only works properly when VDXROVR is the active window
 
 - Use OpenTabletDriver
-- If you *cannot* use OpenTabletDriver, use [wintab-adapter] instead of OpenKneeboard's built-in wintab support
+- If you *cannot* use OpenTabletDriver, use [wintab-adapter] instead of VDXROVR's built-in wintab support
 - If that is not enough, ask your tablet manufacturer to fix `WTOverlap()` and `WT_CTXOVERLAP` in their driver
 
 ## The tablet doesn't work when the game is the active window
@@ -51,5 +51,5 @@ useful
 
 Use OpenTabletDriver. If you *cannot* use OpenTabletDriver, follow the [wintab-adapter] instructions for configuring your tablet.
 
-[wintab-adapter]: https://github.com/OpenKneeboard/wintab-adapter
+[wintab-adapter]: https://github.com/VDXROVR/wintab-adapter
 [remote controls]: ../features/remote-controls.md

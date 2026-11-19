@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -7,13 +7,13 @@
 
 #include "viewer-d3d11.hpp"
 
-#include <OpenKneeboard/D3D11.hpp>
+#include <VDXROVR/D3D11.hpp>
 
-#include <OpenKneeboard/hresult.hpp>
+#include <VDXROVR/hresult.hpp>
 
 #include <directxtk/ScreenGrab.h>
 
-namespace OpenKneeboard::Viewer {
+namespace VDXROVR::Viewer {
 
 D3D11Renderer::D3D11Renderer(const winrt::com_ptr<ID3D11Device>& device) {
   dprint(__FUNCSIG__);
@@ -42,7 +42,7 @@ uint64_t D3D11Renderer::Render(
   const PixelRect& destRect,
   [[maybe_unused]] HANDLE fence,
   uint64_t fenceValueIn) {
-  OPENKNEEBOARD_TraceLoggingScope("Viewer::D3D11Renderer::Render");
+  VDXROVR_TraceLoggingScope("Viewer::D3D11Renderer::Render");
   if (mDestDimensions != destTextureDimensions) {
     mDestHandle = {};
   }
@@ -84,4 +84,4 @@ void D3D11Renderer::SaveToDDSFile(
       mD3D11ImmediateContext.get(), frame.mTexture, path.wstring().c_str()));
 }
 
-}// namespace OpenKneeboard::Viewer
+}// namespace VDXROVR::Viewer

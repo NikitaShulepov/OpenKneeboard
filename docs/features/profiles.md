@@ -23,11 +23,11 @@ Profiles are frequently used to:
 
 ## Enabling profiles
 
-Enable support for multiple profiles in OpenKneeboard Settings -> Advanced.
+Enable support for multiple profiles in VDXROVR Settings -> Advanced.
 
 ## Adding or deleting profiles
 
-Click on the profile switcher in the top left of the OpenKneeboard window, then click 'edit profiles'.
+Click on the profile switcher in the top left of the VDXROVR window, then click 'edit profiles'.
 
 Renaming is not currently supported.
 
@@ -35,13 +35,13 @@ Renaming is not currently supported.
 
 You can switch profiles with:
 
-- the profile switcher in the top left of the OpenKneeboard window
+- the profile switcher in the top left of the VDXROVR window
 - [remote controls](../features/remote-controls.md), e.g. from Voice Attack or a StreamDeck
-- the in-game menu if you are using OpenKneeboard [with a graphics tablet](./graphics-tablets.md)
+- the in-game menu if you are using VDXROVR [with a graphics tablet](./graphics-tablets.md)
 
 ### Automatically switching profiles
 
-OpenKneeboard does not currently have built-in support for this, however it is possible to script this via [OpenKneeboard's API](../api/index.md).
+VDXROVR does not currently have built-in support for this, however it is possible to script this via [VDXROVR's API](../api/index.md).
 
 ## The 'Default' profile
 

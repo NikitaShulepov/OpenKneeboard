@@ -1,22 +1,22 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/CursorEvent.hpp>
-#include <OpenKneeboard/IPageSourceWithCursorEvents.hpp>
-#include <OpenKneeboard/IPageSourceWithNavigation.hpp>
-#include <OpenKneeboard/ITab.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/NavigationTab.hpp>
-#include <OpenKneeboard/TabView.hpp>
+#include <VDXROVR/CursorEvent.hpp>
+#include <VDXROVR/IPageSourceWithCursorEvents.hpp>
+#include <VDXROVR/IPageSourceWithNavigation.hpp>
+#include <VDXROVR/ITab.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/NavigationTab.hpp>
+#include <VDXROVR/TabView.hpp>
 
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/scope_exit.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/scope_exit.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 TabView::TabView(
   const audited_ptr<DXResources>& dxr,
@@ -240,7 +240,7 @@ bool TabView::SupportsTabMode(TabMode mode) const {
     }
   }
   // above switch should be exhaustive
-  OPENKNEEBOARD_BREAK;
+  VDXROVR_BREAK;
   return false;
 }
 
@@ -263,7 +263,7 @@ bool TabView::SetTabMode(TabMode mode) {
     case TabMode::Normal:
       break;
     case TabMode::Navigation: {
-      OPENKNEEBOARD_TraceLoggingScope(
+      VDXROVR_TraceLoggingScope(
         "TabView::SetTabMode(TabMode::Navigation)");
       auto tab = mRootTab.lock();
       if (!tab) {
@@ -300,7 +300,7 @@ bool TabView::SetTabMode(TabMode mode) {
 
   if (mode != TabMode::Normal && !mActiveSubTab) {
     // Switch should have been exhaustive
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
   }
 
   evPageChangedEvent.Emit();
@@ -311,4 +311,4 @@ bool TabView::SetTabMode(TabMode mode) {
   return true;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

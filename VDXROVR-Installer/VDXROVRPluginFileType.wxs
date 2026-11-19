@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+    <Fragment>
+        <DirectoryRef Id="INSTALLDIR">
+            <Component Id="VDXROVRPlugin_FileType" Guid="{9c97e541-6551-4d35-88f3-76e7404f1aed}">
+                <RegistryValue
+                    Root="HKLM"
+                    Key="SOFTWARE\Classes\VDXROVR.Plugin"
+                    Name="FriendlyTypeName"
+                    Value="VDXROVR Plugin"
+                    Type="string"
+                    KeyPath="yes"
+                />
+                <RegistryValue
+                    Root="HKLM"
+                    Key="SOFTWARE\Classes\VDXROVR.Plugin\shell\open"
+                    Name="FriendlyAppName"
+                    Value="VDXROVR"
+                    Type="string"
+                />
+                <ProgId
+                    Id="VDXROVR"
+                    Icon="File_Bin_VDXROVRApp_exe"
+                    IconIndex="0">
+                    <ProgId Id="VDXROVR.Plugin">
+                        <Extension
+                            Id="OpenKneeboardPlugin"
+                            Advertise="no"
+                            ContentType="application/x.vdxrovr.plugin" >
+                            <Verb
+                                Id="open"
+                                Command="Open"
+                                TargetFile="File_Bin_VDXROVRApp_exe"
+                                Argument="--plugin &quot;%1&quot;"
+                            />
+                        </Extension>
+                    </ProgId>
+                </ProgId>
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+</Wix>

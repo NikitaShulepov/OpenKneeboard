@@ -4,7 +4,7 @@ parent: Features
 
 # VR Zoom
 
-By default, OpenKneeboard will make a kneeboard larger when you are looking at it; you can:
+By default, VDXROVR will make a kneeboard larger when you are looking at it; you can:
 
 - change how much larger it is in Settings -> VR
 - disable gaze-based zoom entirely in Settings -> VR

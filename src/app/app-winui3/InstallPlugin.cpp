@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -12,20 +12,20 @@
 
 #include "Globals.h"
 
-#include <OpenKneeboard/Elevation.hpp>
-#include <OpenKneeboard/Filesystem.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/LaunchURI.hpp>
-#include <OpenKneeboard/Plugin.hpp>
-#include <OpenKneeboard/PluginStore.hpp>
-#include <OpenKneeboard/PluginTab.hpp>
-#include <OpenKneeboard/TabsList.hpp>
+#include <VDXROVR/Elevation.hpp>
+#include <VDXROVR/Filesystem.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/LaunchURI.hpp>
+#include <VDXROVR/Plugin.hpp>
+#include <VDXROVR/PluginStore.hpp>
+#include <VDXROVR/PluginTab.hpp>
+#include <VDXROVR/TabsList.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/format/filesystem.hpp>
-#include <OpenKneeboard/semver.hpp>
-#include <OpenKneeboard/utf8.hpp>
-#include <OpenKneeboard/version.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/format/filesystem.hpp>
+#include <VDXROVR/semver.hpp>
+#include <VDXROVR/utf8.hpp>
+#include <VDXROVR/version.hpp>
 
 #include <shims/winrt/base.h>
 
@@ -101,7 +101,7 @@ using unique_zip_error = felly::basic_unique_any<unique_zip_error_traits>;
 using unique_zip_file = felly::unique_any<zip_file_t*, &zip_fclose>;
 }// namespace
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 static task<void> ShowPluginInstallationError(
   XamlRoot xamlRoot,
   std::filesystem::path path,
@@ -199,7 +199,7 @@ static task<void> InstallPlugin(
   CHECK(PluginName)
   CHECK(PluginReadableVersion)
   CHECK(PluginSemanticVersion)
-  CHECK(OKBMinimumVersion)
+  CHECK(VDXROVRMinimumVersion)
 #undef CHECK
   if (plugin.mTabTypes.empty()) {
     co_await ShowPluginInstallationError(
@@ -233,17 +233,17 @@ static task<void> InstallPlugin(
   }
 
   if (
-    CompareVersions(plugin.mMetadata.mOKBMinimumVersion, Version::ReleaseName)
+    CompareVersions(plugin.mMetadata.mVDXROVRMinimumVersion, Version::ReleaseName)
     == ThreeWayCompareResult::GreaterThan) {
     co_await ShowPluginInstallationError(
-      xamlRoot, path, "This plugin requires a newer version of OpenKneeboard.");
+      xamlRoot, path, "This plugin requires a newer version of VDXROVR.");
     co_return;
   }
 
   auto kneeboard = weakKneeboard.lock();
   if (!kneeboard) {
     dprint.Error("plugin store has gone away");
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     co_return;
   }
 
@@ -332,7 +332,7 @@ static task<void> InstallPlugin(
       constexpr auto requiredValid = ZIP_STAT_NAME | ZIP_STAT_SIZE;
       if ((stat.valid & requiredValid) != requiredValid) {
         dprint.Error("Entry {} in zip does not have required metadata", i);
-        OPENKNEEBOARD_BREAK;
+        VDXROVR_BREAK;
         co_return;
       }
 
@@ -362,7 +362,7 @@ static task<void> InstallPlugin(
             "Failed to read chunk from file in zip: {} ({})",
             zip_error_strerror(zipError),
             zip_error_code_zip(zipError));
-          OPENKNEEBOARD_BREAK;
+          VDXROVR_BREAK;
           co_return;
         }
         f << std::string_view(buffer, bytesReadThisChunk);
@@ -410,13 +410,13 @@ static task<void> InstallPlugin(
     }
     co_return;
   }
-  OPENKNEEBOARD_ASSERT(action == PluginInstallAction::Install);
+  VDXROVR_ASSERT(action == PluginInstallAction::Install);
 
   plugin.mJSONPath = extractRoot / "v1.json";
   auto store = kneeboard->GetPluginStore();
   if (!store) {
     dprint.Error("plugin store has gone away");
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     co_return;
   }
   store->Append(plugin);
@@ -508,7 +508,7 @@ static task<void> InstallPluginFromPath(
     co_await ShowPluginInstallationError(
       xamlRoot,
       path,
-      _("Plugins can not be installed while OpenKneeboard is running as "
+      _("Plugins can not be installed while VDXROVR is running as "
         "administrator."));
     co_return;
   }
@@ -623,7 +623,7 @@ static task<void> InstallPluginFromPath(
         "{}",
         j.dump(2),
         roundTripJSON.dump(2));
-      OPENKNEEBOARD_BREAK;
+      VDXROVR_BREAK;
       parseResult = std::unexpected {"JSON <=> Plugin had lossy round-trip."};
     }
   } catch (const nlohmann::json::exception& e) {
@@ -653,7 +653,7 @@ task<void> InstallPlugin(
     }
     if (i == argc - 1) {
       dprint.Error("`--plugin` passed, but no plugin specified.");
-      OPENKNEEBOARD_BREAK;
+      VDXROVR_BREAK;
       co_return;
     }
     co_await InstallPluginFromPath(kneeboard, xamlRoot, argv[i + 1]);
@@ -662,4 +662,4 @@ task<void> InstallPlugin(
 
   co_return;
 }
-}// namespace OpenKneeboard
+}// namespace VDXROVR

@@ -16,9 +16,9 @@ if (NOT "${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
   file(WRITE "${CMAKE_BINARY_DIR}/CMakePresets.json" "${PRESETS}")
 endif ()
 
-set(PROJECT_REVERSE_DOMAIN "com.openkneeboard" CACHE STRING "Project reverse domain, e.g. com.example; used for IPC")
-set(PROJECT_OPENXR_API_LAYER_NAME "XR_APILAYER_FREDEMMOTT_OpenKneeboard" CACHE STRING "OpenXR API layer name")
-set(PROJECT_OPENXR_API_LAYER_DESCRIPTION "OpenKneeboard - https://github.com/OpenKneeboard/OpenKneeboard" CACHE STRING "Project description for API layer JSON")
+set(PROJECT_REVERSE_DOMAIN "io.github.nikitashulepov.vdxrovr" CACHE STRING "Project reverse domain, e.g. com.example; used for IPC")
+set(PROJECT_OPENXR_API_LAYER_NAME "XR_APILAYER_NIKITASHULEPOV_VDXROVR" CACHE STRING "OpenXR API layer name")
+set(PROJECT_OPENXR_API_LAYER_DESCRIPTION "VDXROVR - https://github.com/NikitaShulepov/VDXROVR" CACHE STRING "Project description for API layer JSON")
 
 # Win10 19H1 runtime-required for:
 # - AF_UNIX (OTD-IPC v2)
@@ -128,7 +128,7 @@ endif ()
 
 set(CMAKE_CONFIGURATION_TYPES Debug RelWithDebInfo)
 
-project(OpenKneeboard VERSION 1.13.0.${VERSION_BUILD} LANGUAGES CXX C)
+project(VDXROVR VERSION 1.13.0.${VERSION_BUILD} LANGUAGES CXX C)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(smol_binaries)
 
@@ -153,7 +153,7 @@ set(BUILD_OUT_PDBDIR "${BUILD_OUT_ROOT}/pdb")
 math(EXPR OPENXR_API_LAYER_IMPLEMENTATION_VERSION "(${CMAKE_PROJECT_VERSION_MAJOR} << 24) | ${CMAKE_PROJECT_VERSION_MINOR}")
 message(STATUS "OpenXR API layer implementation version: ${OPENXR_API_LAYER_IMPLEMENTATION_VERSION}")
 
-message(STATUS "Building OpenKneeboard v${CMAKE_PROJECT_VERSION}")
+message(STATUS "Building VDXROVR v${CMAKE_PROJECT_VERSION}")
 
 message(STATUS "CMake Generator: ${CMAKE_GENERATOR}")
 
@@ -249,8 +249,8 @@ endif ()
 add_subdirectory("src")
 
 # MUST be set in this CMakeLists.txt to work, not a subfolder
-set_property(GLOBAL PROPERTY VS_STARTUP_PROJECT OpenKneeboard-App-WinUI3)
+set_property(GLOBAL PROPERTY VS_STARTUP_PROJECT VDXROVR-App-WinUI3)
 
-ok_add_license_file(LICENSE LICENSE.txt)
+vdxrovr_add_license_file(LICENSE LICENSE.txt)
 
-add_subdirectory(OpenKneeboard-Installer)
+add_subdirectory(VDXROVR-Installer)

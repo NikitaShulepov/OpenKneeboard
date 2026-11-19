@@ -1,19 +1,19 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/CachedLayer.hpp>
-#include <OpenKneeboard/D3D11.hpp>
-#include <OpenKneeboard/SHM.hpp>
+#include <VDXROVR/CachedLayer.hpp>
+#include <VDXROVR/D3D11.hpp>
+#include <VDXROVR/SHM.hpp>
 
-#include <OpenKneeboard/audited_ptr.hpp>
-#include <OpenKneeboard/scope_exit.hpp>
+#include <VDXROVR/audited_ptr.hpp>
+#include <VDXROVR/scope_exit.hpp>
 
 #include <DirectXColors.h>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 CachedLayer::CachedLayer(const audited_ptr<DXResources>& dxr) : mDXR(dxr) {}
 
@@ -31,7 +31,7 @@ task<void> CachedLayer::Render(
     providedCacheDimensions ? *providedCacheDimensions : destRect.mSize;
 
   if (cacheDimensions.IsEmpty()) [[unlikely]] {
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     co_return;
   }
 
@@ -89,4 +89,4 @@ void CachedLayer::Reset() {
   mCacheSRV = nullptr;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

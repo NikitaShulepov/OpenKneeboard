@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -12,16 +12,16 @@
 
 #include "Globals.h"
 
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/TabletInputAdapter.hpp>
-#include <OpenKneeboard/TabletInputDevice.hpp>
-#include <OpenKneeboard/UserInputDevice.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/TabletInputAdapter.hpp>
+#include <VDXROVR/TabletInputDevice.hpp>
+#include <VDXROVR/UserInputDevice.hpp>
 
-#include <OpenKneeboard/utf8.hpp>
+#include <VDXROVR/utf8.hpp>
 
-using namespace OpenKneeboard;
+using namespace VDXROVR;
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 
 InputSettingsPage::InputSettingsPage() {
   InitializeComponent();
@@ -35,7 +35,7 @@ InputSettingsPage::InputSettingsPage() {
 
 InputSettingsPage::~InputSettingsPage() { this->RemoveAllEventListeners(); }
 
-OpenKneeboard::fire_and_forget InputSettingsPage::RestoreDefaults(
+VDXROVR::fire_and_forget InputSettingsPage::RestoreDefaults(
   IInspectable,
   RoutedEventArgs) noexcept {
   ContentDialog dialog;
@@ -61,14 +61,14 @@ OpenKneeboard::fire_and_forget InputSettingsPage::RestoreDefaults(
 IVector<IInspectable> InputSettingsPage::Devices() noexcept {
   auto devices {winrt::single_threaded_vector<IInspectable>()};
   for (const auto& device: mKneeboard->GetInputDevices()) {
-    OpenKneeboardApp::InputDeviceUIData deviceData {nullptr};
+    VDXROVRApp::InputDeviceUIData deviceData {nullptr};
     auto tablet = std::dynamic_pointer_cast<TabletInputDevice>(device);
     if (tablet) {
-      auto tabletData = OpenKneeboardApp::TabletInputDeviceUIData {};
+      auto tabletData = VDXROVRApp::TabletInputDeviceUIData {};
       tabletData.Orientation(static_cast<uint8_t>(tablet->GetOrientation()));
       deviceData = tabletData;
     } else {
-      deviceData = OpenKneeboardApp::InputDeviceUIData {};
+      deviceData = VDXROVRApp::InputDeviceUIData {};
     }
     deviceData.Name(to_hstring(device->GetName()));
     deviceData.DeviceID(to_hstring(device->GetID()));
@@ -95,4 +95,4 @@ void InputSettingsPage::OnOrientationChanged(
     static_cast<TabletOrientation>(combo.SelectedIndex()));
 }
 
-}// namespace winrt::OpenKneeboardApp::implementation
+}// namespace winrt::VDXROVRApp::implementation

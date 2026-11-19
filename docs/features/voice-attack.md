@@ -4,7 +4,7 @@ parent: Features
 
 # VoiceAttack
 
-OpenKneeboard includes [remote control executables](./remote-controls.md) in `C:\Program Files\OpenKneeboard\utilities`, which can be used with VoiceAttack:
+VDXROVR includes [remote control executables](./remote-controls.md) in `C:\Program Files\VDXROVR\utilities`, which can be used with VoiceAttack:
 
 ## Configuration
 
@@ -12,7 +12,7 @@ Select "When this command executes, do the following sequence:" -> 'Other' -> 'W
 
 ![Screenshot of the 'Windows' menu open and 'Run an Application' selected](../screenshots/voice-attack-run-an-application.png)
 
-Then, select the remote control you want from `C:\Program Files\OpenKneeboard\utilities`:
+Then, select the remote control you want from `C:\Program Files\VDXROVR\utilities`:
 
 ![Screenshot of the HIDE exe selected](../screenshots/voice-attack-no-args.png)
 

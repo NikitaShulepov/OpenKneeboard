@@ -1,19 +1,19 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/GetDirectInputDevices.hpp>
+#include <VDXROVR/GetDirectInputDevices.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/utf8.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/utf8.hpp>
 
 #include <hidusage.h>
 
 using DeviceInstances = std::vector<DIDEVICEINSTANCE>;
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 static bool IsGameController(LPCDIDEVICEINSTANCE inst) {
   switch (inst->wUsagePage) {
@@ -79,4 +79,4 @@ DeviceInstances GetDirectInputDevices(IDirectInput8W* di, bool includeMice) {
   return ctx.mDeviceInstances;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

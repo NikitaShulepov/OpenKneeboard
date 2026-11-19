@@ -1,30 +1,30 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/AppSettings.hpp>
-#include <OpenKneeboard/Filesystem.hpp>
+#include <VDXROVR/AppSettings.hpp>
+#include <VDXROVR/Filesystem.hpp>
 
-#include <OpenKneeboard/json.hpp>
+#include <VDXROVR/json.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
-OPENKNEEBOARD_DEFINE_SPARSE_JSON(
+VDXROVR_DEFINE_SPARSE_JSON(
   AutoUpdateSettings::Testing,
   mBaseURI,
   mFakeCurrentVersion,
   mFakeUpdateVersion,
   mAlwaysCheck)
-OPENKNEEBOARD_DEFINE_SPARSE_JSON(
+VDXROVR_DEFINE_SPARSE_JSON(
   AutoUpdateSettings,
   mDisabledUntil,
   mSkipVersion,
   mChannel,
   mTesting)
 
-OPENKNEEBOARD_DEFINE_SPARSE_JSON(
+VDXROVR_DEFINE_SPARSE_JSON(
   AppSettings::Deprecated::DualKneeboardSettings,
   mEnabled)
 
@@ -75,10 +75,10 @@ void to_json_postprocess<AppSettings>(
 }
 
 // mWindowRect is handled by `*_json_postprocess` functions above
-OPENKNEEBOARD_DEFINE_SPARSE_JSON(
+VDXROVR_DEFINE_SPARSE_JSON(
   AppSettings,
   mAutoUpdate,
   mLastRunVersion,
   mAlwaysShowDeveloperTools)
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

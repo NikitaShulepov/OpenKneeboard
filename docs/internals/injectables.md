@@ -5,7 +5,7 @@ parent: Internals
 # Injectables
 
 OpenVR (SteamVR) has built-in support for 3rd-party overlays - like
-OpenKneeboard - but none of the other supported APIs do.
+VDXROVR - but none of the other supported APIs do.
 
 Applications using these APIs are supported by injecting a DLL into them which
 hooks/intercepts calls from the application to these APIs (e.g. Direct3D,
@@ -24,7 +24,7 @@ While eventually, implementations must be tested with real games and the main
 app, this is a bit slow and awkward while developing/debugging. My
 recommendations are:
 
-- do not run the main OpenKneeboard application when working on a new injectables.
+- do not run the main VDXROVR application when working on a new injectables.
 - use https://github.com/nefarius/Injector to load/unload specific DLLs
   explicitly.
 - for Oculus, the various `OculusRoomTiny` examples from the SDK instead of
@@ -38,8 +38,8 @@ recommendations are:
 - when developing, run the target applications in a debugger, e.g. https://www.microsoft.com/en-us/p/windbg-preview/9pgjgd53tn86
 
 **Exception**: while it is generally more efficient not to use the
-OpenKneeboard app, there often issues that only occur if the DLL is loaded
-very shortly after the target application/game starts. The OpenKneeboard app
+VDXROVR app, there often issues that only occur if the DLL is loaded
+very shortly after the target application/game starts. The VDXROVR app
 autoinjection is very useful for testing this, as it tends to inject within
 10s of milliseconds.
 
@@ -53,7 +53,7 @@ There are two ways we can do this:
   OpenXR in the future.
 - Detours: replace the first few instructions in the target function to call
   our code. [Microsoft Detours](https://github.com/microsoft/Detours)
-  is used for the low-level implementation, and OpenKneeboard includes
+  is used for the low-level implementation, and VDXROVR includes
   [additional abstractions and conventions](detours-and-hooks.md) to address
   multithreading issues.
 
@@ -107,7 +107,7 @@ the inheritance in the vtable structs.
 As this is essentially the same problem - and same solution - that other
 overlays face, they can interfere.
 
-For example, both OpenKneeboard-nonvr-d3d11 and the Steam Overlay need to
+For example, both VDXROVR-nonvr-d3d11 and the Steam Overlay need to
 intercept calls to `IDXGISwapChain::Present`, however the Steam Overlay -code
 gets very unhappy if we do it first - or if we replace their modification.
 

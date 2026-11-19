@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -8,15 +8,15 @@
 
 #include "viewer.hpp"
 
-#include <OpenKneeboard/D3D12.hpp>
-#include <OpenKneeboard/SHM/D3D12.hpp>
+#include <VDXROVR/D3D12.hpp>
+#include <VDXROVR/SHM/D3D12.hpp>
 
 #include <shims/winrt/base.h>
 
 #include <directxtk12/DescriptorHeap.h>
 #include <directxtk12/GraphicsMemory.h>
 
-namespace OpenKneeboard::Viewer {
+namespace VDXROVR::Viewer {
 
 class D3D12Renderer final : public Renderer {
  public:
@@ -62,4 +62,4 @@ class D3D12Renderer final : public Renderer {
   uint64_t mFenceValue {};
 };
 
-}// namespace OpenKneeboard::Viewer
+}// namespace VDXROVR::Viewer

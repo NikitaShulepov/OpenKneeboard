@@ -1,16 +1,16 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/ReloadTabAction.hpp>
-#include <OpenKneeboard/TabNextPageAction.hpp>
-#include <OpenKneeboard/TabPreviousPageAction.hpp>
-#include <OpenKneeboard/ToggleBookmarkAction.hpp>
-#include <OpenKneeboard/UserActionHandler.hpp>
+#include <VDXROVR/ReloadTabAction.hpp>
+#include <VDXROVR/TabNextPageAction.hpp>
+#include <VDXROVR/TabPreviousPageAction.hpp>
+#include <VDXROVR/ToggleBookmarkAction.hpp>
+#include <VDXROVR/UserActionHandler.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 UserActionHandler::~UserActionHandler() = default;
 
@@ -32,4 +32,4 @@ std::unique_ptr<UserActionHandler> UserActionHandler::Create(
   }
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

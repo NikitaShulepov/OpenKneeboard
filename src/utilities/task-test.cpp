@@ -1,14 +1,14 @@
 // Copyright 2026 Fred Emmott <fred@fredemmott.com>
 // SPDX-License-Identifier: MIT
 
-#define OPENKNEEBOARD_TASK_TRACE(EVENT_NAME, ...) \
+#define VDXROVR_TASK_TRACE(EVENT_NAME, ...) \
   TraceLoggingWrite(gTraceProvider, EVENT_NAME, ##__VA_ARGS__);
 
-#include <OpenKneeboard/task.hpp>
-#include <OpenKneeboard/task/resume_in_context.hpp>
-#include <OpenKneeboard/task/resume_on_signal.hpp>
-#include <OpenKneeboard/task/resume_on_thread_pool.hpp>
-#include <OpenKneeboard/tracing.hpp>
+#include <VDXROVR/task.hpp>
+#include <VDXROVR/task/resume_in_context.hpp>
+#include <VDXROVR/task/resume_on_signal.hpp>
+#include <VDXROVR/task/resume_on_thread_pool.hpp>
+#include <VDXROVR/tracing.hpp>
 
 #include <wil/com.h>
 #include <wil/resource.h>
@@ -16,17 +16,17 @@
 #include <print>
 #include <ranges>
 
-namespace OpenKneeboard {
-/* PS > [System.Diagnostics.Tracing.EventSource]::new("OpenKneeboard.App")
- * cc76597c-1041-5d57-c8ab-92cf9437104a
+namespace VDXROVR {
+/* PS > [System.Diagnostics.Tracing.EventSource]::new("VDXROVR.App")
+ * e1486efc-302c-4151-a3d0-30163f9da347
  */
 TRACELOGGING_DEFINE_PROVIDER(
   gTraceProvider,
-  "OpenKneeboard.App",
-  (0xcc76597c, 0x1041, 0x5d57, 0xc8, 0xab, 0x92, 0xcf, 0x94, 0x37, 0x10, 0x4a));
-}// namespace OpenKneeboard
+  "VDXROVR.App",
+  (0xe1486efc, 0x302c, 0x4151, 0xa3, 0xd0, 0x30, 0x16, 0x3f, 0x9d, 0xa3, 0x47));
+}// namespace VDXROVR
 
-using namespace OpenKneeboard;
+using namespace VDXROVR;
 
 struct timers {
   using clock = std::chrono::steady_clock;
@@ -93,19 +93,19 @@ winrt::fire_and_forget do_test() {
       const scope_exit guard {std::bind_front(&SetEvent, setAtScopeExit)};
       co_return;
     }(e.SetEvent_scope_exit(), f.get());
-    OPENKNEEBOARD_ASSERT(
+    VDXROVR_ASSERT(
       WaitForSingleObject(f.get(), 0) == WAIT_OBJECT_0,
       "destructors are destroyed at coro completion");
-    OPENKNEEBOARD_ASSERT(
+    VDXROVR_ASSERT(
       WaitForSingleObject(e.get(), 0) == WAIT_OBJECT_0,
       "parameters are destroyed at coro completion");
     e.ResetEvent();
     f.ResetEvent();
-    OPENKNEEBOARD_ASSERT(std::this_thread::get_id() == originalThread);
+    VDXROVR_ASSERT(std::this_thread::get_id() == originalThread);
     co_await winrt::resume_background();
-    OPENKNEEBOARD_ASSERT(std::this_thread::get_id() != originalThread);
+    VDXROVR_ASSERT(std::this_thread::get_id() != originalThread);
     co_await std::move(coro);
-    OPENKNEEBOARD_ASSERT(
+    VDXROVR_ASSERT(
       std::this_thread::get_id() == originalThread,
       "task<void> only bounces back to the original thread when awaited");
   }
@@ -120,13 +120,13 @@ winrt::fire_and_forget do_test() {
     auto context = this_thread::get_task_context();
 
     co_await resume_on_thread_pool();
-    OPENKNEEBOARD_ASSERT(std::this_thread::get_id() != originalThread);
+    VDXROVR_ASSERT(std::this_thread::get_id() != originalThread);
     co_await resume_in_context(context);
-    OPENKNEEBOARD_ASSERT(std::this_thread::get_id() == originalThread);
+    VDXROVR_ASSERT(std::this_thread::get_id() == originalThread);
     co_await resume_on_thread_pool();
-    OPENKNEEBOARD_ASSERT(std::this_thread::get_id() != originalThread);
+    VDXROVR_ASSERT(std::this_thread::get_id() != originalThread);
     co_await resume_in_context(context);
-    OPENKNEEBOARD_ASSERT(std::this_thread::get_id() == originalThread);
+    VDXROVR_ASSERT(std::this_thread::get_id() == originalThread);
   }
   testTimers.mark("explicit thread switching");
   std::println("Switch back from empty coroutine");
@@ -137,9 +137,9 @@ winrt::fire_and_forget do_test() {
     const auto originalThread = std::this_thread::get_id();
     auto resumeOriginal = [] -> task<void> { co_return; }();
     co_await winrt::resume_background();
-    OPENKNEEBOARD_ASSERT(std::this_thread::get_id() != originalThread);
+    VDXROVR_ASSERT(std::this_thread::get_id() != originalThread);
     co_await std::move(resumeOriginal);
-    OPENKNEEBOARD_ASSERT(std::this_thread::get_id() == originalThread);
+    VDXROVR_ASSERT(std::this_thread::get_id() == originalThread);
   }
   testTimers.mark("Switch back from empty coroutine");
 
@@ -152,7 +152,7 @@ winrt::fire_and_forget do_test() {
     std::atomic<std::size_t> count;
     co_await
       [](auto) -> task<void> { co_return; }(scope_exit([&count] { ++count; }));
-    OPENKNEEBOARD_ASSERT(count == 1);
+    VDXROVR_ASSERT(count == 1);
   }
   testTimers.mark("Coro parameter destructors");
 
@@ -168,7 +168,7 @@ winrt::fire_and_forget do_test() {
       co_return;
     }(&deleteCount);
     const auto count = deleteCount.load();
-    OPENKNEEBOARD_ASSERT(count == 1);
+    VDXROVR_ASSERT(count == 1);
   }
   testTimers.mark("resume_background");
 
@@ -186,7 +186,7 @@ winrt::fire_and_forget do_test() {
     std::this_thread::yield();
     co_await std::move(coro);
     const auto count = deleteCount.load();
-    OPENKNEEBOARD_ASSERT(count == 1);
+    VDXROVR_ASSERT(count == 1);
   }
   testTimers.mark("resume_background with delay move");
 
@@ -205,7 +205,7 @@ winrt::fire_and_forget do_test() {
     e.SetEvent();
     co_await std::move(coro);
     const auto count = deleteCount.load();
-    OPENKNEEBOARD_ASSERT(count == 1);
+    VDXROVR_ASSERT(count == 1);
     e.ResetEvent();
   }
   testTimers.mark("delayed ready");
@@ -228,9 +228,9 @@ winrt::fire_and_forget do_test() {
       fatal("exception not rethrown");
     } catch (const std::runtime_error& ex) {
       const auto count = deleteCount.load();
-      OPENKNEEBOARD_ASSERT(count == 1);
+      VDXROVR_ASSERT(count == 1);
       const auto msg = ex.what();
-      OPENKNEEBOARD_ASSERT(msg == std::format("testy mctestface {}", i));
+      VDXROVR_ASSERT(msg == std::format("testy mctestface {}", i));
     }
     e.ResetEvent();
   }
@@ -253,7 +253,7 @@ winrt::fire_and_forget do_test() {
 
     ULONG_PTR tokenAfter {};
     CoGetContextToken(&tokenAfter);
-    OPENKNEEBOARD_ASSERT(
+    VDXROVR_ASSERT(
       tokenBefore == tokenAfter,
       "COM context token must be identical after IContextCallback round-trip: "
       "before={:#x} after={:#x}",

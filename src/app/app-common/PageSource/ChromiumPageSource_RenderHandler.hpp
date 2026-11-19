@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -6,11 +6,11 @@
 // OpenKneeboard repository.
 #pragma once
 
-#include <OpenKneeboard/ChromiumPageSource.hpp>
+#include <VDXROVR/ChromiumPageSource.hpp>
 
 #include <include/cef_base.h>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 class ChromiumPageSource::RenderHandler final : public CefRenderHandler {
  public:
   struct Frame {
@@ -55,4 +55,4 @@ class ChromiumPageSource::RenderHandler final : public CefRenderHandler {
   PixelSize mSize {};
 };
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

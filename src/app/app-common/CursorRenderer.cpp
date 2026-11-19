@@ -1,15 +1,15 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/CursorRenderer.hpp>
-#include <OpenKneeboard/DXResources.hpp>
+#include <VDXROVR/CursorRenderer.hpp>
+#include <VDXROVR/DXResources.hpp>
 
-#include <OpenKneeboard/config.hpp>
+#include <VDXROVR/config.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 CursorRenderer::CursorRenderer(const audited_ptr<DXResources>& dxr) {
   mInnerBrush = dxr->mCursorInnerBrush;
@@ -30,4 +30,4 @@ void CursorRenderer::Render(
   ctx->DrawEllipse(elipse, mInnerBrush.get(), cursorStroke);
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

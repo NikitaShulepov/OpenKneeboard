@@ -13,7 +13,7 @@ Ideally, don't :) Check 'When to use it' below.
 
 ### Make all constructors private
 
-Add a public static factory method that returns an `std::shared_ptr<T>` instead. In OpenKneeboard, these static methods are usually called `T::Create()`.
+Add a public static factory method that returns an `std::shared_ptr<T>` instead. In VDXROVR, these static methods are usually called `T::Create()`.
 
 It is an error to call `this->shared_from_this()` or `this->weak_from_this()`, unless the object lifetime is managed by an `std::shared_ptr<T>`. Making the constructors private guarantees that callers *must* use the factory method, making it safe to use the new methods.
 
@@ -27,7 +27,7 @@ You may need to move some initialization to your factory method, or a (private) 
 
 In traditional procedural code, it is usually an antipattern: code shouldn't care how its' memory is managed.
 
-Two common techniques in OpenKneeboard (and C++/WinRT) change this:
+Two common techniques in VDXROVR (and C++/WinRT) change this:
 
 - async callbacks
 - coroutines
@@ -43,7 +43,7 @@ foo.OnSomeEvent(std::bind_front(&MyClass::SomeMethod, this));
 
 ```C++
 // Coroutines
-OpenKneeboard::fire_and_forget MyClass::MyCoroutineMethod() {
+VDXROVR::fire_and_forget MyClass::MyCoroutineMethod() {
   // Safe, as long as:
   // - liveness was guaranteed when `MyCoroutineMethod` was called
   // - the coroutine type's `initial_suspend()` returns an `std::suspend_never`
@@ -76,7 +76,7 @@ foo.OnSomeEvent(
 ```
 
 ```C++
-OpenKneeboard::fire_and_forget MyClass::MyCoroutineMethod() {
+VDXROVR::fire_and_forget MyClass::MyCoroutineMethod() {
   // Safe, as long as:
   // - liveness was guaranteed when `MyCoroutineMethod` was called
   // - the coroutine type's `initial_suspend()` returns an `std::suspend_never`
@@ -92,7 +92,7 @@ OpenKneeboard::fire_and_forget MyClass::MyCoroutineMethod() {
 ## Tangent: captures in coroutine lambdas
 
 ```C++
-auto lambda = [this, bar] () -> OpenKneeboard::fire_and_forget {
+auto lambda = [this, bar] () -> VDXROVR::fire_and_forget {
   // Only safe *IF* the coroutine's `initial_suspend()` returns
   // an `std::suspend_never`:
   this->DoStuff();
@@ -113,7 +113,7 @@ Lambda captures are only guaranteed to be valid for the lifetime of the lambda -
 
 ```C++
 auto lambda = [this, bar] () {
-  return [](auto& weakThis, auto bar) -> OpenKneeboard::fire_and_forget {
+  return [](auto& weakThis, auto bar) -> VDXROVR::fire_and_forget {
     // ...
   }(weak_from_this(), bar);
 }();

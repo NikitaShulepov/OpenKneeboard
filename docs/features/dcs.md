@@ -4,14 +4,14 @@ parent: Features
 
 # DCS Integration
 
-OpenKneeboard supports integration with DCS, including:
+VDXROVR supports integration with DCS, including:
 
-- a clock in OpenKneeboard's footer showing the current mission time, both in local time and zulu time
+- a clock in VDXROVR's footer showing the current mission time, both in local time and zulu time
 - various tabs showing files or data related to the current mission
 
 ## Supported Files (Pages)
 
-OpenKneeboard aims to look for kneeboard files in the same location as DCS's built-in kneeboard, however *it is only able to display image files*; it is not able to display any kneeboard pages written in Lua; for example, these **are not supported**, and are unlikely to be supported in any future version:
+VDXROVR aims to look for kneeboard files in the same location as DCS's built-in kneeboard, however *it is only able to display image files*; it is not able to display any kneeboard pages written in Lua; for example, these **are not supported**, and are unlikely to be supported in any future version:
 
 - generated charts
 - carrier landing grading
@@ -19,9 +19,9 @@ OpenKneeboard aims to look for kneeboard files in the same location as DCS's bui
 
 ## Configuration
 
-DCS must be listed in OpenKneeboard Settings -> Games, and the 'Saved Games' path must be correct. If you have any trouble, check [the troubleshooting guide](../troubleshooting/dcs-tabs.md); if the steps there don't resolve your problems, check out [Getting Help](../getting-help.md).
+DCS must be listed in VDXROVR Settings -> Games, and the 'Saved Games' path must be correct. If you have any trouble, check [the troubleshooting guide](../troubleshooting/dcs-tabs.md); if the steps there don't resolve your problems, check out [Getting Help](../getting-help.md).
 
-The clock and DCS tabs are shown by default; if you have removed the DCS tabs, you can re-add them by opening OpenKneeboard Settings -> Tabs, then either:
+The clock and DCS tabs are shown by default; if you have removed the DCS tabs, you can re-add them by opening VDXROVR Settings -> Tabs, then either:
 
 - restore the default tabs
 - click 'add tab', and pick the tab type you want to add
@@ -72,4 +72,4 @@ This will show any *image files* from:
 
 **Most DCS maps do not include any kneeboard images**.
 
-DCS's built-in kneeboard will only load kneeboard images for maps from the DCS installation path; OpenKneeboard also will load any from saved games for convenience.
+DCS's built-in kneeboard will only load kneeboard images for maps from the DCS installation path; VDXROVR also will load any from saved games for convenience.

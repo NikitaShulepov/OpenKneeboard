@@ -1,16 +1,16 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 
-#include <OpenKneeboard/EnumerateProcesses.hpp>
+#include <VDXROVR/EnumerateProcesses.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/tracing.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/tracing.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 ProcessList::ProcessList() : ProcessList(nullptr, 0) {}
 
@@ -48,7 +48,7 @@ std::expected<ProcessList, HRESULT> EnumerateProcesses() {
   while (true) {
     ret.Release();
 
-    OPENKNEEBOARD_TraceLoggingScope("WTSEnumerateProcessesExW()");
+    VDXROVR_TraceLoggingScope("WTSEnumerateProcessesExW()");
     if (WTSEnumerateProcessesExW(
           WTS_CURRENT_SERVER_HANDLE,
           &level,
@@ -68,4 +68,4 @@ std::expected<ProcessList, HRESULT> EnumerateProcesses() {
   return ret;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

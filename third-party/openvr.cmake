@@ -28,5 +28,5 @@ set_target_properties(
   INTERFACE_LINK_OPTIONS "/DELAYLOAD:openvr_api.dll"
 )
 
-include(ok_add_runtime_files)
-ok_add_runtime_files(copy-openvr-dll "${OPENVR_DLL}")
+include(vdxrovr_add_runtime_files)
+vdxrovr_add_runtime_files(copy-openvr-dll "${OPENVR_DLL}")

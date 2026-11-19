@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -17,7 +17,7 @@
 using namespace winrt::Microsoft::UI::Xaml::Media::Imaging;
 struct IWICImagingFactory;
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 ExecutableIconFactory::ExecutableIconFactory() {
   mWIC = winrt::create_instance<IWICImagingFactory>(CLSID_WICImagingFactory);
@@ -53,4 +53,4 @@ BitmapSource ExecutableIconFactory::CreateXamlBitmapSource(
     reinterpret_cast<BYTE*>(xamlBitmap.PixelBuffer().data()));
   return xamlBitmap;
 };
-}// namespace OpenKneeboard
+}// namespace VDXROVR

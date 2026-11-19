@@ -25,5 +25,5 @@ target_link_libraries(
 
 add_library(ThirdParty::bindline ALIAS bindline_unified)
 
-include(ok_add_license_file)
-ok_add_license_file("${bindline_SOURCE_DIR}/LICENSE" "LICENSE-ThirdParty-bindline.txt")
+include(vdxrovr_add_license_file)
+vdxrovr_add_license_file("${bindline_SOURCE_DIR}/LICENSE" "LICENSE-ThirdParty-bindline.txt")

@@ -1,21 +1,21 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/CachedLayer.hpp>
-#include <OpenKneeboard/DoodleRenderer.hpp>
-#include <OpenKneeboard/PageSourceWithDelegates.hpp>
+#include <VDXROVR/CachedLayer.hpp>
+#include <VDXROVR/DoodleRenderer.hpp>
+#include <VDXROVR/PageSourceWithDelegates.hpp>
 
-#include <OpenKneeboard/bindline.hpp>
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/scope_exit.hpp>
+#include <VDXROVR/bindline.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/scope_exit.hpp>
 
 #include <algorithm>
 #include <numeric>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 PageSourceWithDelegates::PageSourceWithDelegates(
   const audited_ptr<DXResources>& dxr,
@@ -40,7 +40,7 @@ PageSourceWithDelegates::PageSourceWithDelegates(
 }
 
 PageSourceWithDelegates::~PageSourceWithDelegates() {
-  OPENKNEEBOARD_TraceLoggingScope(
+  VDXROVR_TraceLoggingScope(
     "PageSourceWithDelegates::~PageSourceWithDelegates()");
   for (auto& event: mDelegateEvents) {
     this->RemoveEventListener(event);
@@ -51,7 +51,7 @@ PageSourceWithDelegates::~PageSourceWithDelegates() {
 }
 
 task<void> PageSourceWithDelegates::DisposeAsync() noexcept {
-  OPENKNEEBOARD_TraceLoggingCoro("PageSourceWithDelegates::DisposeAsync()");
+  VDXROVR_TraceLoggingCoro("PageSourceWithDelegates::DisposeAsync()");
   const auto disposing = co_await mDisposal.StartOnce();
   if (!disposing) {
     co_return;
@@ -63,7 +63,7 @@ task<void> PageSourceWithDelegates::DisposeAsync() noexcept {
 task<void> PageSourceWithDelegates::SetDelegates(
   std::vector<std::shared_ptr<IPageSource>> delegates) {
   winrt::apartment_context thread;
-  OPENKNEEBOARD_TraceLoggingCoro("PageSourceWithDelegates::SetDelegates()");
+  VDXROVR_TraceLoggingCoro("PageSourceWithDelegates::SetDelegates()");
 
   auto keepAlive = shared_from_this();
 
@@ -352,4 +352,4 @@ std::optional<PageID> PageSourceWithDelegates::GetPageIDFromPersistentID(
   return std::nullopt;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

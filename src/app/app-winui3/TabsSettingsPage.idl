@@ -1,4 +1,4 @@
-namespace OpenKneeboardApp {
+namespace VDXROVRApp {
 [default_interface] runtimeclass TabsSettingsPage
   : Microsoft.UI.Xaml.Controls.Page,
   Microsoft.UI.Xaml.Data.INotifyPropertyChanged {
@@ -35,7 +35,7 @@ namespace OpenKneeboardApp {
 
 [default_interface] runtimeclass BrowserTabUIData: TabUIData {
   BrowserTabUIData();
-  Boolean AreOpenKneeboardAPIsEnabled;
+  Boolean AreVDXROVRAPIsEnabled;
   Boolean IsSimHubIntegrationEnabled;
   Boolean IsBackgroundTransparent;
 }
@@ -48,4 +48,4 @@ namespace OpenKneeboardApp {
   Microsoft.UI.Xaml.DataTemplate DCSRadioLog;
   Microsoft.UI.Xaml.DataTemplate WindowCapture;
 }
-}// namespace OpenKneeboardApp
+}// namespace VDXROVRApp

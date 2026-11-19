@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -8,11 +8,11 @@
 
 #include "OpenXRKneeboard.hpp"
 
-#include <OpenKneeboard/D3D12.hpp>
-#include <OpenKneeboard/D3D12/Renderer.hpp>
-#include <OpenKneeboard/SHM/D3D12.hpp>
+#include <VDXROVR/D3D12.hpp>
+#include <VDXROVR/D3D12/Renderer.hpp>
+#include <VDXROVR/SHM/D3D12.hpp>
 
-#include <OpenKneeboard/config.hpp>
+#include <VDXROVR/config.hpp>
 
 #include <d3d12.h>
 
@@ -21,7 +21,7 @@
 
 struct XrGraphicsBindingD3D12KHR;
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 class OpenXRD3D12Kneeboard final : public OpenXRKneeboard {
  public:
@@ -60,4 +60,4 @@ class OpenXRD3D12Kneeboard final : public OpenXRKneeboard {
   std::unique_ptr<D3D12::Renderer> mRenderer;
 };
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

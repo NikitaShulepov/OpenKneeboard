@@ -1,20 +1,20 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/CursorEvent.hpp>
-#include <OpenKneeboard/D2DErrorRenderer.hpp>
-#include <OpenKneeboard/DXResources.hpp>
-#include <OpenKneeboard/ITab.hpp>
-#include <OpenKneeboard/TabView.hpp>
-#include <OpenKneeboard/TabViewUILayer.hpp>
+#include <VDXROVR/CursorEvent.hpp>
+#include <VDXROVR/D2DErrorRenderer.hpp>
+#include <VDXROVR/DXResources.hpp>
+#include <VDXROVR/ITab.hpp>
+#include <VDXROVR/TabView.hpp>
+#include <VDXROVR/TabViewUILayer.hpp>
 
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/utf8.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/utf8.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 TabViewUILayer::TabViewUILayer(const audited_ptr<DXResources>& dxr) {
   mErrorRenderer = std::make_unique<D2DErrorRenderer>(dxr);
@@ -80,7 +80,7 @@ task<void> TabViewUILayer::Render(
     tab = tabView->GetTab().lock();
   }
 
-  OPENKNEEBOARD_TraceLoggingScope(
+  VDXROVR_TraceLoggingScope(
     "TabViewUILayer::Render()",
     TraceLoggingHexUInt64(
       rc.GetRenderTarget()->GetID().GetTemporaryValue(), "RenderTargetID"),
@@ -117,4 +117,4 @@ std::optional<D2D1_POINT_2F> TabViewUILayer::GetCursorPoint() const {
   return mCursorPoint;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

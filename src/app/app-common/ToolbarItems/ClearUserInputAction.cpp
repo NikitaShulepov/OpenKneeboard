@@ -1,16 +1,16 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/ClearUserInputAction.hpp>
-#include <OpenKneeboard/IPageSourceWithCursorEvents.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/TabView.hpp>
-#include <OpenKneeboard/TabsList.hpp>
+#include <VDXROVR/ClearUserInputAction.hpp>
+#include <VDXROVR/IPageSourceWithCursorEvents.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/TabView.hpp>
+#include <VDXROVR/TabsList.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 ClearUserInputAction::ClearUserInputAction(
   KneeboardState* kbs,
@@ -154,4 +154,4 @@ std::string_view ClearUserInputAction::GetCancelButtonLabel() const {
   return _("Cancel");
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

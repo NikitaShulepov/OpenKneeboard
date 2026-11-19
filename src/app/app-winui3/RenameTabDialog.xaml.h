@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -16,9 +16,9 @@ using namespace winrt::Microsoft::UI::Xaml;
 using namespace winrt::Microsoft::UI::Xaml::Controls;
 using namespace winrt::Microsoft::UI::Xaml::Media::Imaging;
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 struct RenameTabDialog : RenameTabDialogT<RenameTabDialog>,
-                         OpenKneeboard::WithPropertyChangedEvent {
+                         VDXROVR::WithPropertyChangedEvent {
   RenameTabDialog();
   ~RenameTabDialog();
 
@@ -32,9 +32,9 @@ struct RenameTabDialog : RenameTabDialogT<RenameTabDialog>,
   winrt::hstring mPrompt;
 };
 
-}// namespace winrt::OpenKneeboardApp::implementation
-namespace winrt::OpenKneeboardApp::factory_implementation {
+}// namespace winrt::VDXROVRApp::implementation
+namespace winrt::VDXROVRApp::factory_implementation {
 struct RenameTabDialog
   : RenameTabDialogT<RenameTabDialog, implementation::RenameTabDialog> {};
 
-}// namespace winrt::OpenKneeboardApp::factory_implementation
+}// namespace winrt::VDXROVRApp::factory_implementation

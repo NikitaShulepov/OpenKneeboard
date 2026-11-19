@@ -1,31 +1,31 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/ClearUserInputAction.hpp>
-#include <OpenKneeboard/CreateTabActions.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/NextTabAction.hpp>
-#include <OpenKneeboard/PreviousTabAction.hpp>
-#include <OpenKneeboard/ReloadTabAction.hpp>
-#include <OpenKneeboard/SwitchProfileFlyout.hpp>
-#include <OpenKneeboard/SwitchTabFlyout.hpp>
-#include <OpenKneeboard/TabDeveloperToolsAction.hpp>
-#include <OpenKneeboard/TabFirstPageAction.hpp>
-#include <OpenKneeboard/TabNavigationAction.hpp>
-#include <OpenKneeboard/TabNextPageAction.hpp>
-#include <OpenKneeboard/TabPreviousPageAction.hpp>
-#include <OpenKneeboard/TabView.hpp>
-#include <OpenKneeboard/ToggleBookmarkAction.hpp>
-#include <OpenKneeboard/ToolbarAction.hpp>
-#include <OpenKneeboard/ToolbarFlyout.hpp>
-#include <OpenKneeboard/ToolbarSeparator.hpp>
+#include <VDXROVR/ClearUserInputAction.hpp>
+#include <VDXROVR/CreateTabActions.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/NextTabAction.hpp>
+#include <VDXROVR/PreviousTabAction.hpp>
+#include <VDXROVR/ReloadTabAction.hpp>
+#include <VDXROVR/SwitchProfileFlyout.hpp>
+#include <VDXROVR/SwitchTabFlyout.hpp>
+#include <VDXROVR/TabDeveloperToolsAction.hpp>
+#include <VDXROVR/TabFirstPageAction.hpp>
+#include <VDXROVR/TabNavigationAction.hpp>
+#include <VDXROVR/TabNextPageAction.hpp>
+#include <VDXROVR/TabPreviousPageAction.hpp>
+#include <VDXROVR/TabView.hpp>
+#include <VDXROVR/ToggleBookmarkAction.hpp>
+#include <VDXROVR/ToolbarAction.hpp>
+#include <VDXROVR/ToolbarFlyout.hpp>
+#include <VDXROVR/ToolbarSeparator.hpp>
 
 #include <ranges>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 namespace {
 using ItemPtr = std::shared_ptr<IToolbarItem>;
@@ -116,4 +116,4 @@ InAppActions InAppActions::Create(
   };
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

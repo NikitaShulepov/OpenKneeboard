@@ -6,14 +6,14 @@ function(add_helper_executable TARGET)
   set(multiValueArgs)
   cmake_parse_arguments(HELPER_ARG "${options}" "${valueArgs}" "${multiValueArgs}" ${ARGN})
 
-  ok_add_executable(${TARGET} EXCLUDE_FROM_ALL RUNTIME_DEPENDENCY ${ARGN})
+  vdxrovr_add_executable(${TARGET} EXCLUDE_FROM_ALL RUNTIME_DEPENDENCY ${ARGN})
   if (HELPER_ARG_32BIT_ONLY AND NOT BUILD_IS_32BIT)
     return()
   endif ()
 endfunction()
 
 function(add_utility_executable TARGET)
-  ok_add_executable(
+  vdxrovr_add_executable(
     ${TARGET}
     RUNTIME_EXE
     OUTPUT_SUBDIR "utilities"
@@ -24,48 +24,48 @@ endfunction()
 include(remote-control.cmake)
 
 add_utility_executable(
-  OpenKneeboard-Plugin-Tab-Action
+  VDXROVR-Plugin-Tab-Action
   WIN32
   plugin-tab-action.cpp
 )
 target_link_libraries(
-  OpenKneeboard-Plugin-Tab-Action
+  VDXROVR-Plugin-Tab-Action
   PRIVATE
-  OpenKneeboard-dprint
-  OpenKneeboard-APIEvent
-  OpenKneeboard-tracing
+  VDXROVR-dprint
+  VDXROVR-APIEvent
+  VDXROVR-tracing
 )
 
 add_utility_executable(
-  OpenKneeboard-RemoteControl-SET_TAB
+  VDXROVR-RemoteControl-SET_TAB
   WIN32
   set-tab-remote.cpp
   remote-traceprovider.cpp
 )
 target_link_libraries(
-  OpenKneeboard-RemoteControl-SET_TAB
+  VDXROVR-RemoteControl-SET_TAB
   PRIVATE
-  OpenKneeboard-dprint
-  OpenKneeboard-APIEvent
-  OpenKneeboard-tracing
+  VDXROVR-dprint
+  VDXROVR-APIEvent
+  VDXROVR-tracing
 )
 
 add_utility_executable(
-  OpenKneeboard-RemoteControl-SET_PROFILE
+  VDXROVR-RemoteControl-SET_PROFILE
   WIN32
   set-profile-remote.cpp
   remote-traceprovider.cpp
 )
 target_link_libraries(
-  OpenKneeboard-RemoteControl-SET_PROFILE
+  VDXROVR-RemoteControl-SET_PROFILE
   PRIVATE
-  OpenKneeboard-APIEvent
-  OpenKneeboard-dprint
-  OpenKneeboard-tracing
+  VDXROVR-APIEvent
+  VDXROVR-dprint
+  VDXROVR-tracing
 )
 
 add_utility_executable(
-  OpenKneeboard-Viewer
+  VDXROVR-Viewer
   WIN32
   viewer.cpp
   viewer-settings.cpp
@@ -76,26 +76,26 @@ add_utility_executable(
   icon.rc
 )
 target_link_libraries(
-  OpenKneeboard-Viewer
+  VDXROVR-Viewer
   PRIVATE
-  OpenKneeboard-fatal
-  OpenKneeboard-config
-  OpenKneeboard-chrono
-  OpenKneeboard-D2DErrorRenderer
-  OpenKneeboard-D3D11
-  OpenKneeboard-D3D12
-  OpenKneeboard-Vulkan
-  OpenKneeboard-DXResources
-  OpenKneeboard-Filesystem
-  OpenKneeboard-APIEvent
-  OpenKneeboard-GetSystemColor
-  OpenKneeboard-RenderDoc
-  OpenKneeboard-SHM
-  OpenKneeboard-SHM-Client-D3D11
-  OpenKneeboard-SHM-Client-D3D12
-  OpenKneeboard-SHM-Client-Vulkan
-  OpenKneeboard-Viewer-Shaders
-  OpenKneeboard-scope_exit
+  VDXROVR-fatal
+  VDXROVR-config
+  VDXROVR-chrono
+  VDXROVR-D2DErrorRenderer
+  VDXROVR-D3D11
+  VDXROVR-D3D12
+  VDXROVR-Vulkan
+  VDXROVR-DXResources
+  VDXROVR-Filesystem
+  VDXROVR-APIEvent
+  VDXROVR-GetSystemColor
+  VDXROVR-RenderDoc
+  VDXROVR-SHM
+  VDXROVR-SHM-Client-D3D11
+  VDXROVR-SHM-Client-D3D12
+  VDXROVR-SHM-Client-Vulkan
+  VDXROVR-Viewer-Shaders
+  VDXROVR-scope_exit
   System::D2d1
   System::D3d11
   System::Dcomp
@@ -104,31 +104,31 @@ target_link_libraries(
 )
 
 add_helper_executable(
-  OpenKneeboard-OpenXR-Helper
+  VDXROVR-OpenXR-Helper
   WIN32
   openxr-helper.cpp
   icon.rc
 )
 target_link_libraries(
-  OpenKneeboard-OpenXR-Helper
+  VDXROVR-OpenXR-Helper
   PRIVATE
-  OpenKneeboard-RuntimeFiles
-  OpenKneeboard-dprint
+  VDXROVR-RuntimeFiles
+  VDXROVR-dprint
 )
 
 add_helper_executable(
-  OpenKneeboard-WindowCaptureHook-Helper
+  VDXROVR-WindowCaptureHook-Helper
   WIN32
   32BIT_ONLY
   WindowCaptureHook-helper.cpp
 )
 target_link_libraries(
-  OpenKneeboard-WindowCaptureHook-Helper
+  VDXROVR-WindowCaptureHook-Helper
   PRIVATE
-  OpenKneeboard-WindowCaptureControl
-  OpenKneeboard-consolelib
-  OpenKneeboard-dprint
-  OpenKneeboard-shims
+  VDXROVR-WindowCaptureControl
+  VDXROVR-consolelib
+  VDXROVR-dprint
+  VDXROVR-shims
   System::Shell32
 )
 
@@ -136,16 +136,16 @@ add_executable(capi-test capi-test.cpp)
 target_include_directories(
   capi-test
   PRIVATE
-  "$<TARGET_PROPERTY:OpenKneeboard-c-api,INTERFACE_INCLUDE_DIRECTORIES>")
+  "$<TARGET_PROPERTY:VDXROVR-c-api,INTERFACE_INCLUDE_DIRECTORIES>")
 set_property(
   TARGET capi-test
   PROPERTY CXX_STANDARD 17)
 
-ok_add_executable(symbolize-traces symbolize-traces.cpp)
+vdxrovr_add_executable(symbolize-traces symbolize-traces.cpp)
 target_link_libraries(
   symbolize-traces
   PRIVATE
-  OpenKneeboard-shims
+  VDXROVR-shims
   ThirdParty::DIA
   ThirdParty::WIL
 )
@@ -171,5 +171,5 @@ target_link_libraries(
   task-test
   PRIVATE
   ThirdParty::WIL
-  OpenKneeboard-task
+  VDXROVR-task
 )

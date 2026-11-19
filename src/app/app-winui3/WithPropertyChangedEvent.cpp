@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -9,7 +9,7 @@
 #include "WithPropertyChangedEvent.h"
 // clang-format on
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 winrt::event_token WithPropertyChangedEvent::PropertyChanged(
   winrt::Microsoft::UI::Xaml::Data::PropertyChangedEventHandler const&
     handler) {
@@ -21,4 +21,4 @@ void WithPropertyChangedEvent::PropertyChanged(
   mPropertyChangedEvent.remove(token);
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

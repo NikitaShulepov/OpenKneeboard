@@ -1,16 +1,16 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/APIEvent.hpp>
-#include <OpenKneeboard/Win32.hpp>
+#include <VDXROVR/APIEvent.hpp>
+#include <VDXROVR/Win32.hpp>
 
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/json.hpp>
-#include <OpenKneeboard/tracing.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/json.hpp>
+#include <VDXROVR/tracing.hpp>
 
 #include <shims/winrt/base.h>
 
@@ -52,8 +52,8 @@ static bool OpenMailslotHandle() {
   }
   sLastAttempt = now;
 
-  MailslotHandle() = OpenKneeboard::Win32::or_default::CreateFile(
-    OpenKneeboard::APIEvent::GetMailslotPath(),
+  MailslotHandle() = VDXROVR::Win32::or_default::CreateFile(
+    VDXROVR::APIEvent::GetMailslotPath(),
     GENERIC_WRITE,
     FILE_SHARE_READ,
     nullptr,
@@ -64,7 +64,7 @@ static bool OpenMailslotHandle() {
   return static_cast<bool>(MailslotHandle());
 }
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 #define CHECK_PACKET(condition) \
   if (!(condition)) { \
@@ -162,7 +162,7 @@ const wchar_t* APIEvent::GetMailslotPath() {
   static std::wstring sPath;
   if (sPath.empty()) {
     sPath = std::format(
-      L"\\\\.\\mailslot\\{}.events.v1.3", OpenKneeboard::ProjectReverseDomainW);
+      L"\\\\.\\mailslot\\{}.events.v1.3", VDXROVR::ProjectReverseDomainW);
   }
   return sPath.c_str();
 }
@@ -220,11 +220,11 @@ void RequireKnownEnumValue(
 
 }// namespace
 
-OPENKNEEBOARD_DEFINE_JSON(SetTabByIDEvent, mID, mPageNumber, mKneeboard);
-OPENKNEEBOARD_DEFINE_JSON(SetTabByNameEvent, mName, mPageNumber, mKneeboard);
-OPENKNEEBOARD_DEFINE_JSON(SetTabByIndexEvent, mIndex, mPageNumber, mKneeboard);
-OPENKNEEBOARD_DEFINE_JSON(SetProfileByGUIDEvent, mGUID);
-OPENKNEEBOARD_DEFINE_JSON(SetProfileByNameEvent, mName);
+VDXROVR_DEFINE_JSON(SetTabByIDEvent, mID, mPageNumber, mKneeboard);
+VDXROVR_DEFINE_JSON(SetTabByNameEvent, mName, mPageNumber, mKneeboard);
+VDXROVR_DEFINE_JSON(SetTabByIndexEvent, mIndex, mPageNumber, mKneeboard);
+VDXROVR_DEFINE_JSON(SetProfileByGUIDEvent, mGUID);
+VDXROVR_DEFINE_JSON(SetProfileByNameEvent, mName);
 
 NLOHMANN_JSON_SERIALIZE_ENUM(
   SetBrightnessEvent::Mode,
@@ -242,9 +242,9 @@ void from_json_postprocess<SetBrightnessEvent>(
   RequireKnownEnumValue(j, "Mode", v.mMode);
 }
 
-OPENKNEEBOARD_DEFINE_JSON(SetBrightnessEvent, mBrightness, mMode);
+VDXROVR_DEFINE_JSON(SetBrightnessEvent, mBrightness, mMode);
 
-OPENKNEEBOARD_DEFINE_JSON(
+VDXROVR_DEFINE_JSON(
   NudgeVRViewEvent,
   mKneeboard,
   mX,
@@ -277,9 +277,9 @@ void from_json_postprocess<ToggleVRViewVisibilityEvent>(
   RequireFields(j, {"Kneeboard"});
 }
 
-OPENKNEEBOARD_DEFINE_JSON(ShowVRViewEvent, mKneeboard);
-OPENKNEEBOARD_DEFINE_JSON(HideVRViewEvent, mKneeboard);
-OPENKNEEBOARD_DEFINE_JSON(ToggleVRViewVisibilityEvent, mKneeboard);
+VDXROVR_DEFINE_JSON(ShowVRViewEvent, mKneeboard);
+VDXROVR_DEFINE_JSON(HideVRViewEvent, mKneeboard);
+VDXROVR_DEFINE_JSON(ToggleVRViewVisibilityEvent, mKneeboard);
 
 NLOHMANN_JSON_SERIALIZE_ENUM(
   SetVRViewOpacityEvent::Action,
@@ -304,13 +304,13 @@ void from_json_postprocess<SetVRViewOpacityEvent>(
   RequireKnownEnumValue(j, "Target", v.mTarget);
 }
 
-OPENKNEEBOARD_DEFINE_JSON(
+VDXROVR_DEFINE_JSON(
   SetVRViewOpacityEvent,
   mKneeboard,
   mAction,
   mTarget,
   mValue);
 
-OPENKNEEBOARD_DEFINE_JSON(PluginTabCustomActionEvent, mActionID, mExtraData);
+VDXROVR_DEFINE_JSON(PluginTabCustomActionEvent, mActionID, mExtraData);
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

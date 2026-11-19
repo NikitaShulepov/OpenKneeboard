@@ -3,24 +3,24 @@ title: Internals
 has_children: true
 ---
 
-# OpenKneeboard Internals
+# VDXROVR Internals
 
 ## Overview
 
-OpenKneeboard is a C++23 app built using CMake; it has 3 main components:
+VDXROVR is a C++23 app built using CMake; it has 3 main components:
 
 * the main Win32 GUI app: primarily intended for configuration, and can be used
   as a non-VR view.
-* 'injectables': OpenKneeboard does several things that there is no API for,
+* 'injectables': VDXROVR does several things that there is no API for,
   such as rendering an overlay (unless using SteamVR), and accessing graphics
   tablets when another process (such as the game) owns the active window. To
-  provide these features, OpenKneeboard injects DLLs into other processes.
+  provide these features, VDXROVR injects DLLs into other processes.
 * a DCS Lua script and corresponding DLL: exports data from DCS World, such as
   the current mission, theater, and aircraft
 
 The C API example targets C++17 in order to be accessible to a wider audience.
 
-OpenKneeboard currently only targets Visual Studio 2022 - not clang - due to limitations in the WinUI3 components - however it aims to be clean with `clang-tidy`. Specifically, OpenKneeboard aims to be buildable both with the latest version of Visual Studio 2022, and whichever version is currently in the GitHub Actions runner, which is often a few releases behind. As of 2024-07-07, this compilers' C++23 support is not complete, but does include some useful features over C++20, especially in the standard library.
+VDXROVR currently only targets Visual Studio 2022 - not clang - due to limitations in the WinUI3 components - however it aims to be clean with `clang-tidy`. Specifically, VDXROVR aims to be buildable both with the latest version of Visual Studio 2022, and whichever version is currently in the GitHub Actions runner, which is often a few releases behind. As of 2024-07-07, this compilers' C++23 support is not complete, but does include some useful features over C++20, especially in the standard library.
 
 ## Building
 
@@ -73,11 +73,11 @@ I have made test builds with Visual Studio 2026, however I will not be targettin
 
 ## Distribution
 
-OpenKneeboard has additional license requirements for changing names and other unique identifiers. Make sure that you read the license before distributing OpenKneeboard.
+VDXROVR has additional license requirements for changing names and other unique identifiers. Make sure that you read the license before distributing VDXROVR.
 
 ## IPC
 
-### OpenKneeboard app -> renderers
+### VDXROVR app -> renderers
 
 The main app renders the kneeboard to shared buffers
 (`ID3D11Texture2D`/`IDXGISurface`), and maintains the other necessary data for
@@ -89,18 +89,18 @@ renderers in shared memory. This information includes:
 
 For details, see:
 
-* `OpenKneeboard::SHM::Config`
-* `OpenKneeboard::SHM::Header`
-* `OpenKneeboard::SHM::Reader` and `OpenKneeboard::SHM::Writer`
+* `VDXROVR::SHM::Config`
+* `VDXROVR::SHM::Header`
+* `VDXROVR::SHM::Reader` and `VDXROVR::SHM::Writer`
 * the `test-viewer` and `test-feeder` utilities
 
-### Games -> OpenKneeboard app
+### Games -> VDXROVR app
 
 This is used for events like "mission loaded", passing data like mission file,
 current aircraft, and current theater.
 
-The `OpenKneeboard::APIEvent` class should be used for this. Internally, the
-`OpenKneeboard::APIEvent` class uses
+The `VDXROVR::APIEvent` class should be used for this. Internally, the
+`VDXROVR::APIEvent` class uses
 [Mailslots](https://docs.microsoft.com/en-us/windows/win32/ipc/mailslots), which can be thought of as similar to UDP, or POSIX or System V message queues.
 
 Unlike socket-based approaches, there is no need to obtain an unused port, communicate that port number to the game, or set firewall rules. Essentially,
@@ -126,12 +126,12 @@ A tab is responsible for loading and drawing its' content (including graphics
 tablet drawings), serializing its' settings as JSON, restoring settings
 from JSON, and producing a settings UI.
 
-By default, any pen input to an `OpenKneeboard::ITab` will be treated as a
+By default, any pen input to an `VDXROVR::ITab` will be treated as a
 drawing/annotation; you can replace or extend this behavior by overriding
 the `OnCursorEvent` method.
 
 To make a new tab type available in Setttings -> Tabs, add it to the
-`OPENKNEEBOARD_TAB_TYPES` macro in `src/app/okTabsList/TabTypes.h`.
+`VDXROVR_TAB_TYPES` macro in `src/app/okTabsList/TabTypes.h`.
 
 ### Rendering
 
@@ -148,7 +148,7 @@ complete, it copies the canvas to the next shared buffer, and updates the
 shared memory configuration to let renderers know there is a new frame.
 
 All objects involved in rendering use the same DirectX device/factory/context
-instances, shared by passing an `OpenKneeboard::DXResources` struct to their
+instances, shared by passing an `VDXROVR::DXResources` struct to their
 constructors. This allows all render paths (to screen and to shared texture) to
 share resources like brushes and bitmaps, reducing CPU and GPU memory usage,
 and the need for CPU `<->` GPU and GPU `<->` GPU copies.
@@ -169,11 +169,11 @@ See [injectables.md](injectables.md) for details.
 
 ## DCS Hook: `src/dcs-hook`
 
-A C++ DLL Lua extension (`OpenKneeboard_LuaAPI.cpp`/`.dll`) is used to give
-DCS Lua scripts the ability to send `OpenKneeboard::APIEvent`s via the
-mailslot. `OpenKneeboardDCSExt.lua` loads the DLL, and uses the usual DCS
+A C++ DLL Lua extension (`VDXROVR_LuaAPI.cpp`/`.dll`) is used to give
+DCS Lua scripts the ability to send `VDXROVR::APIEvent`s via the
+mailslot. `VDXROVRDCSExt.lua` loads the DLL, and uses the usual DCS
 Lua APIs to observe events, and passes them to the DLL which in turn passes
-them on to `OpenKneeboard`.
+them on to `VDXROVR`.
 
 If possible, new features should be added to the Lua code without extending
 the functionality of the Dll: this is part of a general principle of doing as
@@ -189,34 +189,34 @@ Automatic configuration information for known games.
 ## Libraries: `src/lib`
 
 This is generally stuff that is needed by both the main app, and by injectables
-or utilitites. This includes `OpenKneeboard::APIEvent`, `OpenKneeboard::SHM`,
+or utilitites. This includes `VDXROVR::APIEvent`, `VDXROVR::SHM`,
 and various smaller components.
 
 ## Utilities: `src/utilities`
 
-These are tools intended to help develop or debug OpenKneeboard:
+These are tools intended to help develop or debug VDXROVR:
 
-* `fake-dcs`: send DCS API events to the main OpenKneeboard app, populating
+* `fake-dcs`: send DCS API events to the main VDXROVR app, populating
   the radio log, theater, and aircraft kneeboard tabs.
-* `test-apievent-feeder`: feed fake radio log messages to OpenKneeboard once
+* `test-apievent-feeder`: feed fake radio log messages to VDXROVR once
   a second. Useful to test the APIEvent code, and that it handles the app
   not running, or being closed, or being restarted.
 * `test-feeder`: populate the shared memory and textures with a cycling test
-  pattern, without the OpenKneeboard app running.
+  pattern, without the VDXROVR app running.
 * `test-viewer`: display the contents of the shared memory and textures.
 
 ## General Principles
 
-It is **much** better for OpenKneeboard to crash or for OpenKneeboard's
+It is **much** better for VDXROVR to crash or for VDXROVR's
 Lua to silently fail - in which case, the DCS-specific Kneeboard tabs stop
-automatically updating - than for OpenKneeboard's injectables to crash another
+automatically updating - than for VDXROVR's injectables to crash another
 process - especially if someone's hours into a flight/mission.
 
 As of writing there are no known crashes, but the idea is to structure code so
 that there is as little risk to the game processes:
 
 * Do as little as possible in other processes: e.g. prefer to put code in the 
-  OpenKneeboard app than in injectables
+  VDXROVR app than in injectables
 * Do as little as possible in DLLs in other processes: e.g. if you need more
   data from DCS, put as much code as possible in the Lua code rather than in
   the dll

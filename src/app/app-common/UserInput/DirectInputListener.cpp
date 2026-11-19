@@ -1,23 +1,23 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/DirectInputDevice.hpp>
-#include <OpenKneeboard/DirectInputJoystickListener.hpp>
-#include <OpenKneeboard/DirectInputKeyboardListener.hpp>
-#include <OpenKneeboard/DirectInputListener.hpp>
-#include <OpenKneeboard/DirectInputMouseListener.hpp>
-#include <OpenKneeboard/UserInputButtonEvent.hpp>
-#include <OpenKneeboard/Win32.hpp>
+#include <VDXROVR/DirectInputDevice.hpp>
+#include <VDXROVR/DirectInputJoystickListener.hpp>
+#include <VDXROVR/DirectInputKeyboardListener.hpp>
+#include <VDXROVR/DirectInputListener.hpp>
+#include <VDXROVR/DirectInputMouseListener.hpp>
+#include <VDXROVR/UserInputButtonEvent.hpp>
+#include <VDXROVR/Win32.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/scope_exit.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/scope_exit.hpp>
 
 #include <array>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 DirectInputListener::DirectInputListener(
   const std::stop_token& stopToken,
@@ -140,4 +140,4 @@ winrt::com_ptr<IDirectInputDevice8W> DirectInputListener::GetDIDevice() const {
   return mDIDevice;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

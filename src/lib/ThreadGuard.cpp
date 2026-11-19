@@ -1,15 +1,15 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 
-#include <OpenKneeboard/ThreadGuard.hpp>
+#include <VDXROVR/ThreadGuard.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/dprint.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 ThreadGuard::ThreadGuard(const std::source_location& loc) : mLocation(loc) {
 #ifdef DEBUG
@@ -31,10 +31,10 @@ void ThreadGuard::CheckThread(const std::source_location& loc) const {
       thisThread);
     dprint("Created at {}", mLocation);
     dprint("Checking at {}", loc);
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
   }
 }
 
 ThreadGuard::~ThreadGuard() { this->CheckThread(); }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

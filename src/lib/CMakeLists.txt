@@ -1,432 +1,432 @@
-ok_add_library(OpenKneeboard-Lib-Headers INTERFACE)
-target_include_directories(OpenKneeboard-Lib-Headers INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+vdxrovr_add_library(VDXROVR-Lib-Headers INTERFACE)
+target_include_directories(VDXROVR-Lib-Headers INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/include/OpenKneeboard/config.in.hpp"
-  "${CMAKE_CURRENT_BINARY_DIR}/include/OpenKneeboard/config.hpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/include/VDXROVR/config.in.hpp"
+  "${CMAKE_CURRENT_BINARY_DIR}/include/VDXROVR/config.hpp"
   @ONLY
 )
 file(
   GENERATE
   OUTPUT
-  "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/include/OpenKneeboard/detail/config.hpp"
+  "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/include/VDXROVR/detail/config.hpp"
   CONTENT "\
-namespace OpenKneeboard::detail::Config {
+namespace VDXROVR::detail::Config {
   constexpr auto BuildType = \"$<CONFIG>\";
 }"
 )
-ok_add_library(OpenKneeboard-config INTERFACE)
+vdxrovr_add_library(VDXROVR-config INTERFACE)
 target_include_directories(
-  OpenKneeboard-config
+  VDXROVR-config
   INTERFACE
   "${CMAKE_CURRENT_BINARY_DIR}/include"
   "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/include"
 )
-target_link_libraries(OpenKneeboard-config INTERFACE OpenKneeboard-Lib-Headers)
+target_link_libraries(VDXROVR-config INTERFACE VDXROVR-Lib-Headers)
 
 include(Geometry2D.cmake)
 
-ok_add_library(OpenKneeboard-ThreadGuard STATIC ThreadGuard.cpp)
-target_link_libraries(OpenKneeboard-ThreadGuard PUBLIC OpenKneeboard-Lib-Headers)
-target_link_libraries(OpenKneeboard-ThreadGuard PRIVATE OpenKneeboard-dprint)
+vdxrovr_add_library(VDXROVR-ThreadGuard STATIC ThreadGuard.cpp)
+target_link_libraries(VDXROVR-ThreadGuard PUBLIC VDXROVR-Lib-Headers)
+target_link_libraries(VDXROVR-ThreadGuard PRIVATE VDXROVR-dprint)
 
-ok_add_library(
-  OpenKneeboard-inplace_vector
+vdxrovr_add_library(
+  VDXROVR-inplace_vector
   INTERFACE
   HEADERS
-  include/OpenKneeboard/inplace_vector.hpp
+  include/VDXROVR/inplace_vector.hpp
   INCLUDE_DIRECTORIES
   include
 )
-target_link_libraries(OpenKneeboard-inplace_vector INTERFACE OpenKneeboard-fatal)
+target_link_libraries(VDXROVR-inplace_vector INTERFACE VDXROVR-fatal)
 
-ok_add_library(
-  OpenKneeboard-SpriteAtlas
+vdxrovr_add_library(
+  VDXROVR-SpriteAtlas
   STATIC
   SpriteAtlas.cpp
   HEADERS
-  include/OpenKneeboard/SpriteAtlas.hpp
+  include/VDXROVR/SpriteAtlas.hpp
   INCLUDE_DIRECTORIES
   include
 )
 target_link_libraries(
-  OpenKneeboard-SpriteAtlas
+  VDXROVR-SpriteAtlas
   PUBLIC
-  OpenKneeboard-config
-  OpenKneeboard-inplace_vector
+  VDXROVR-config
+  VDXROVR-inplace_vector
   ThirdParty::RectangleBinPack
 )
 
 
-ok_add_library(
-  OpenKneeboard-fatal
+vdxrovr_add_library(
+  VDXROVR-fatal
   STATIC
   fatal.cpp
   HEADERS
-  include/OpenKneeboard/fatal.hpp
+  include/VDXROVR/fatal.hpp
   INCLUDE_DIRECTORIES
   include
 )
 target_link_libraries(
-  OpenKneeboard-fatal
+  VDXROVR-fatal
   PUBLIC
-  OpenKneeboard-config
+  VDXROVR-config
   PRIVATE
-  OpenKneeboard-Elevation
-  OpenKneeboard-dprint
-  OpenKneeboard-shims
-  OpenKneeboard-Filesystem
-  OpenKneeboard-version
+  VDXROVR-Elevation
+  VDXROVR-dprint
+  VDXROVR-shims
+  VDXROVR-Filesystem
+  VDXROVR-version
   ThirdParty::CppWinRT
   ThirdParty::WIL
   ThirdParty::detours
   ThirdParty::felly
 )
 
-ok_add_library(OpenKneeboard-GetMainHWND STATIC GetMainHWND.cpp)
+vdxrovr_add_library(VDXROVR-GetMainHWND STATIC GetMainHWND.cpp)
 target_link_libraries(
-  OpenKneeboard-GetMainHWND
+  VDXROVR-GetMainHWND
   PUBLIC
-  OpenKneeboard-Lib-Headers
-  OpenKneeboard-win32
+  VDXROVR-Lib-Headers
+  VDXROVR-win32
 )
 target_link_libraries(
-  OpenKneeboard-GetMainHWND
+  VDXROVR-GetMainHWND
   PRIVATE
-  OpenKneeboard-config
-  OpenKneeboard-shims
+  VDXROVR-config
+  VDXROVR-shims
 )
 
-ok_add_library(OpenKneeboard-GetSystemColor STATIC GetSystemColor.cpp)
+vdxrovr_add_library(VDXROVR-GetSystemColor STATIC GetSystemColor.cpp)
 target_link_libraries(
-  OpenKneeboard-GetSystemColor
+  VDXROVR-GetSystemColor
   PUBLIC
-  OpenKneeboard-Lib-Headers)
+  VDXROVR-Lib-Headers)
 
-ok_add_library(OpenKneeboard-handles INTERFACE)
+vdxrovr_add_library(VDXROVR-handles INTERFACE)
 target_link_libraries(
-  OpenKneeboard-handles
+  VDXROVR-handles
   INTERFACE
-  OpenKneeboard-Lib-Headers
+  VDXROVR-Lib-Headers
 )
 
-ok_add_library(OpenKneeboard-Elevation STATIC Elevation.cpp)
+vdxrovr_add_library(VDXROVR-Elevation STATIC Elevation.cpp)
 target_link_libraries(
-  OpenKneeboard-Elevation
+  VDXROVR-Elevation
   PUBLIC
-  OpenKneeboard-Lib-Headers
+  VDXROVR-Lib-Headers
 )
 target_link_libraries(
-  OpenKneeboard-Elevation
+  VDXROVR-Elevation
   PRIVATE
-  OpenKneeboard-config
-  OpenKneeboard-dprint
-  OpenKneeboard-scope_exit
+  VDXROVR-config
+  VDXROVR-dprint
+  VDXROVR-scope_exit
   ThirdParty::CppWinRT
   System::Shell32
 )
 
-ok_add_library(OpenKneeboard-UTF8 STATIC utf8.cpp)
+vdxrovr_add_library(VDXROVR-UTF8 STATIC utf8.cpp)
 target_link_libraries(
-  OpenKneeboard-UTF8
+  VDXROVR-UTF8
   PUBLIC
   ThirdParty::JSON
-  OpenKneeboard-Lib-Headers
+  VDXROVR-Lib-Headers
   PRIVATE
-  OpenKneeboard-fatal
+  VDXROVR-fatal
 )
 
-ok_add_library(OpenKneeboard-DebugTimer STATIC DebugTimer.cpp)
+vdxrovr_add_library(VDXROVR-DebugTimer STATIC DebugTimer.cpp)
 target_link_libraries(
-  OpenKneeboard-DebugTimer
+  VDXROVR-DebugTimer
   PRIVATE
-  OpenKneeboard-dprint
+  VDXROVR-dprint
 )
 target_link_libraries(
-  OpenKneeboard-DebugTimer
+  VDXROVR-DebugTimer
   PUBLIC
-  OpenKneeboard-Lib-Headers
+  VDXROVR-Lib-Headers
 )
 
-ok_add_library(OpenKneeboard-tracing STATIC tracing.cpp)
+vdxrovr_add_library(VDXROVR-tracing STATIC tracing.cpp)
 target_link_libraries(
-  OpenKneeboard-tracing
+  VDXROVR-tracing
   PRIVATE
-  OpenKneeboard-dprint
+  VDXROVR-dprint
   ThirdParty::CppWinRT
 )
 target_link_libraries(
-  OpenKneeboard-tracing
+  VDXROVR-tracing
   PUBLIC
-  OpenKneeboard-Lib-Headers
+  VDXROVR-Lib-Headers
 )
 
-ok_add_library(
-  OpenKneeboard-D3D11
+vdxrovr_add_library(
+  VDXROVR-D3D11
   STATIC
   D3D11.cpp
   D3D11/SpriteBatch.cpp
 )
 target_link_libraries(
-  OpenKneeboard-D3D11
+  VDXROVR-D3D11
   PUBLIC
   System::D3d11
-  OpenKneeboard-shims
+  VDXROVR-shims
   ThirdParty::DirectXTK
   ThirdParty::CppWinRT
-  OpenKneeboard-Lib-Headers
-  OpenKneeboard-Sprite-DXBC
+  VDXROVR-Lib-Headers
+  VDXROVR-Sprite-DXBC
   PRIVATE
-  OpenKneeboard-dprint
+  VDXROVR-dprint
   System::Dxguid
 )
 
-ok_add_library(
-  OpenKneeboard-D3D12
+vdxrovr_add_library(
+  VDXROVR-D3D12
   STATIC
   D3D12/SpriteBatch.cpp
 )
 target_link_libraries(
-  OpenKneeboard-D3D12
+  VDXROVR-D3D12
   PUBLIC
   System::D3d12
-  OpenKneeboard-shims
+  VDXROVR-shims
   ThirdParty::DirectXTK12
   ThirdParty::CppWinRT
-  OpenKneeboard-Lib-Headers
-  OpenKneeboard-SpriteBatch-DXIL
+  VDXROVR-Lib-Headers
+  VDXROVR-SpriteBatch-DXIL
   PRIVATE
-  OpenKneeboard-dprint
-  OpenKneeboard-RenderDoc
+  VDXROVR-dprint
+  VDXROVR-RenderDoc
   System::Dxguid
 )
 
-ok_add_library(
-  OpenKneeboard-Vulkan
+vdxrovr_add_library(
+  VDXROVR-Vulkan
   STATIC
   Vulkan.cpp
   Vulkan/SpriteBatch.cpp)
 target_link_libraries(
-  OpenKneeboard-Vulkan
+  VDXROVR-Vulkan
   PUBLIC
-  OpenKneeboard-dprint
+  VDXROVR-dprint
   ThirdParty::VulkanHeaders
-  OpenKneeboard-Lib-Headers
-  OpenKneeboard-SpriteBatch-SPIRV
+  VDXROVR-Lib-Headers
+  VDXROVR-SpriteBatch-SPIRV
 )
 
-ok_add_library(OpenKneeboard-DXResources STATIC DXResources.cpp)
+vdxrovr_add_library(VDXROVR-DXResources STATIC DXResources.cpp)
 target_link_libraries(
-  OpenKneeboard-DXResources
+  VDXROVR-DXResources
   PUBLIC
-  OpenKneeboard-Lib-Headers
-  OpenKneeboard-D3D11
+  VDXROVR-Lib-Headers
+  VDXROVR-D3D11
   PRIVATE
-  OpenKneeboard-dprint
+  VDXROVR-dprint
   System::Gdi32
 )
 
 set(RUNTIME_FILES_CPP "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/RuntimeFiles.cpp")
 file(GENERATE OUTPUT "${RUNTIME_FILES_CPP}" INPUT RuntimeFiles.cpp.in)
-ok_add_library(
-  OpenKneeboard-RuntimeFiles
+vdxrovr_add_library(
+  VDXROVR-RuntimeFiles
   STATIC
   "${RUNTIME_FILES_CPP}"
   RuntimeFilesGetInstallationDirectory.cpp
 )
 target_link_libraries(
-  OpenKneeboard-RuntimeFiles
+  VDXROVR-RuntimeFiles
   PUBLIC
-  OpenKneeboard-Lib-Headers
+  VDXROVR-Lib-Headers
   PRIVATE
-  OpenKneeboard-dprint
-  OpenKneeboard-Filesystem
+  VDXROVR-dprint
+  VDXROVR-Filesystem
 )
 if (ENABLE_APP)
   set(RUNTIME_FILES_APP_CPP "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/RuntimeFiles-app.cpp")
   file(GENERATE OUTPUT "${RUNTIME_FILES_APP_CPP}" INPUT RuntimeFiles-app.cpp.in)
-  target_sources(OpenKneeboard-RuntimeFiles PRIVATE "${RUNTIME_FILES_APP_CPP}")
+  target_sources(VDXROVR-RuntimeFiles PRIVATE "${RUNTIME_FILES_APP_CPP}")
 endif ()
 
-ok_add_library(
-  OpenKneeboard-SHM
+vdxrovr_add_library(
+  VDXROVR-SHM
   STATIC
   SHM.cpp
   SHM/ActiveConsumers.cpp
 )
 target_link_libraries(
-  OpenKneeboard-SHM
+  VDXROVR-SHM
   PUBLIC
-  OpenKneeboard-dprint
-  OpenKneeboard-Lib-Headers
-  OpenKneeboard-StateMachine
+  VDXROVR-dprint
+  VDXROVR-Lib-Headers
+  VDXROVR-StateMachine
   PRIVATE
-  OpenKneeboard-Elevation
-  OpenKneeboard-config
-  OpenKneeboard-fatal
-  OpenKneeboard-shims
-  OpenKneeboard-version
-  OpenKneeboard-win32
+  VDXROVR-Elevation
+  VDXROVR-config
+  VDXROVR-fatal
+  VDXROVR-shims
+  VDXROVR-version
+  VDXROVR-win32
 )
 
-ok_add_library(
-  OpenKneeboard-SHM-Client-D3D11
+vdxrovr_add_library(
+  VDXROVR-SHM-Client-D3D11
   STATIC
   SHM/D3D11.cpp
   D3D11/Renderer.cpp
 )
 target_link_libraries(
-  OpenKneeboard-SHM-Client-D3D11
+  VDXROVR-SHM-Client-D3D11
   PUBLIC
-  OpenKneeboard-shims
-  OpenKneeboard-SHM
+  VDXROVR-shims
+  VDXROVR-SHM
   System::D3d11
   ThirdParty::CppWinRT
   ThirdParty::DirectXTK
   PRIVATE
-  OpenKneeboard-dprint
+  VDXROVR-dprint
 )
 
-ok_add_library(
-  OpenKneeboard-SHM-Client-D3D12
+vdxrovr_add_library(
+  VDXROVR-SHM-Client-D3D12
   STATIC
   SHM/D3D12.cpp
   D3D12/Renderer.cpp
 )
 target_link_libraries(
-  OpenKneeboard-SHM-Client-D3D12
+  VDXROVR-SHM-Client-D3D12
   PUBLIC
-  OpenKneeboard-shims
-  OpenKneeboard-SHM
-  OpenKneeboard-D3D12
+  VDXROVR-shims
+  VDXROVR-SHM
+  VDXROVR-D3D12
   System::D3d12
   ThirdParty::CppWinRT
   ThirdParty::DirectXTK12
   PRIVATE
-  OpenKneeboard-dprint
+  VDXROVR-dprint
 )
 
-ok_add_library(
-  OpenKneeboard-SHM-Client-Vulkan
+vdxrovr_add_library(
+  VDXROVR-SHM-Client-Vulkan
   STATIC
   SHM/Vulkan.cpp
 )
 target_link_libraries(
-  OpenKneeboard-SHM-Client-Vulkan
+  VDXROVR-SHM-Client-Vulkan
   PUBLIC
-  OpenKneeboard-SHM
-  OpenKneeboard-Vulkan
-  OpenKneeboard-shims
+  VDXROVR-SHM
+  VDXROVR-Vulkan
+  VDXROVR-shims
   ThirdParty::CppWinRT
   ThirdParty::VulkanHeaders
 )
 
-ok_add_library(
-  OpenKneeboard-chrono
+vdxrovr_add_library(
+  VDXROVR-chrono
   STATIC
   chrono.cpp
   HEADERS
-  include/OpenKneeboard/chrono.hpp
+  include/VDXROVR/chrono.hpp
   INCLUDE_DIRECTORIES
   include
 )
 
-ok_add_library(
-  OpenKneeboard-dprint
+vdxrovr_add_library(
+  VDXROVR-dprint
   STATIC
   dprint.cpp
   HEADERS
-  include/OpenKneeboard/dprint.hpp
+  include/VDXROVR/dprint.hpp
   INCLUDE_DIRECTORIES
   include
 )
 
 target_link_libraries(
-  OpenKneeboard-dprint
+  VDXROVR-dprint
   PUBLIC
-  OpenKneeboard-config
-  OpenKneeboard-fatal
-  OpenKneeboard-scope_exit
+  VDXROVR-config
+  VDXROVR-fatal
+  VDXROVR-scope_exit
   ThirdParty::bindline
 )
-target_link_libraries(OpenKneeboard-dprint
+target_link_libraries(VDXROVR-dprint
   PRIVATE
-  OpenKneeboard-scope_exit
+  VDXROVR-scope_exit
 )
 
-ok_add_library(OpenKneeboard-consolelib STATIC ConsoleLoopCondition.cpp)
+vdxrovr_add_library(VDXROVR-consolelib STATIC ConsoleLoopCondition.cpp)
 target_link_libraries(
-  OpenKneeboard-consolelib
+  VDXROVR-consolelib
   PUBLIC
-  OpenKneeboard-Lib-Headers
+  VDXROVR-Lib-Headers
   PRIVATE
-  OpenKneeboard-fatal
-  OpenKneeboard-win32
+  VDXROVR-fatal
+  VDXROVR-win32
 )
 
-ok_add_library(OpenKneeboard-APIEvent STATIC APIEvent.cpp)
-target_link_libraries(OpenKneeboard-APIEvent
+vdxrovr_add_library(VDXROVR-APIEvent STATIC APIEvent.cpp)
+target_link_libraries(VDXROVR-APIEvent
   PUBLIC
-  OpenKneeboard-Lib-Headers
-  OpenKneeboard-UTF8
-  OpenKneeboard-json
+  VDXROVR-Lib-Headers
+  VDXROVR-UTF8
+  VDXROVR-json
   PRIVATE
-  OpenKneeboard-config
-  OpenKneeboard-dprint
+  VDXROVR-config
+  VDXROVR-dprint
 )
 
-ok_add_library(OpenKneeboard-D2DErrorRenderer STATIC D2DErrorRenderer.cpp)
+vdxrovr_add_library(VDXROVR-D2DErrorRenderer STATIC D2DErrorRenderer.cpp)
 target_link_libraries(
-  OpenKneeboard-D2DErrorRenderer
+  VDXROVR-D2DErrorRenderer
   PUBLIC
-  OpenKneeboard-DXResources
-  OpenKneeboard-UTF8
-  OpenKneeboard-config
+  VDXROVR-DXResources
+  VDXROVR-UTF8
+  VDXROVR-config
   System::D2d1
   System::Dwrite
-  OpenKneeboard-Lib-Headers)
+  VDXROVR-Lib-Headers)
 
-ok_add_library(OpenKneeboard-RayIntersectsRect STATIC RayIntersectsRect.cpp)
+vdxrovr_add_library(VDXROVR-RayIntersectsRect STATIC RayIntersectsRect.cpp)
 target_link_libraries(
-  OpenKneeboard-RayIntersectsRect
+  VDXROVR-RayIntersectsRect
   PUBLIC
-  OpenKneeboard-Lib-Headers
+  VDXROVR-Lib-Headers
   ThirdParty::DirectXTK)
 target_link_libraries(
-  OpenKneeboard-RayIntersectsRect
+  VDXROVR-RayIntersectsRect
   PRIVATE
-  OpenKneeboard-dprint)
+  VDXROVR-dprint)
 
-ok_add_library(OpenKneeboard-StateMachine INTERFACE)
+vdxrovr_add_library(VDXROVR-StateMachine INTERFACE)
 target_link_libraries(
-  OpenKneeboard-StateMachine
+  VDXROVR-StateMachine
   INTERFACE
-  OpenKneeboard-Lib-Headers
-  OpenKneeboard-dprint
+  VDXROVR-Lib-Headers
+  VDXROVR-dprint
   ThirdParty::magic_enum
 )
 
-ok_add_library(OpenKneeboard-scope_exit INTERFACE)
+vdxrovr_add_library(VDXROVR-scope_exit INTERFACE)
 target_link_libraries(
-  OpenKneeboard-scope_exit
+  VDXROVR-scope_exit
   INTERFACE
-  OpenKneeboard-Lib-Headers
+  VDXROVR-Lib-Headers
   ThirdParty::felly
 )
 
-ok_add_library(OpenKneeboard-VRKneeboard STATIC VRKneeboard.cpp)
+vdxrovr_add_library(VDXROVR-VRKneeboard STATIC VRKneeboard.cpp)
 target_link_libraries(
-  OpenKneeboard-VRKneeboard
+  VDXROVR-VRKneeboard
   PUBLIC
-  OpenKneeboard-Lib-Headers
+  VDXROVR-Lib-Headers
   ThirdParty::DirectXTK
-  OpenKneeboard-RayIntersectsRect
-  OpenKneeboard-SHM
+  VDXROVR-RayIntersectsRect
+  VDXROVR-SHM
 )
 
-set(VERSION_CPP_FILE "${CMAKE_CURRENT_BINARY_DIR}/include/OpenKneeboard/version.hpp")
+set(VERSION_CPP_FILE "${CMAKE_CURRENT_BINARY_DIR}/include/VDXROVR/version.hpp")
 add_custom_target(
-  OpenKneeboard-version-sources
+  VDXROVR-version-sources
   COMMAND
   ${CMAKE_COMMAND}
   -DVERSION_MAJOR=${CMAKE_PROJECT_VERSION_MAJOR}
@@ -435,7 +435,7 @@ add_custom_target(
   -DVERSION_BUILD=${CMAKE_PROJECT_VERSION_TWEAK}
   -DRELEASE_NAME=${RELEASE_NAME}
   -DOPENXR_API_LAYER_IMPLEMENTATION_VERSION=${OPENXR_API_LAYER_IMPLEMENTATION_VERSION}
-  "-DINPUT_CPP_FILE=${CMAKE_CURRENT_SOURCE_DIR}/include/OpenKneeboard/version.in.hpp"
+  "-DINPUT_CPP_FILE=${CMAKE_CURRENT_SOURCE_DIR}/include/VDXROVR/version.in.hpp"
   "-DOUTPUT_CPP_FILE=${VERSION_CPP_FILE}"
   "-P${CMAKE_CURRENT_SOURCE_DIR}/../version.cmake"
   DEPENDS
@@ -446,144 +446,144 @@ add_custom_target(
   WORKING_DIRECTORY
   "${CMAKE_SOURCE_DIR}"
 )
-ok_add_library(OpenKneeboard-version INTERFACE)
+vdxrovr_add_library(VDXROVR-version INTERFACE)
 target_include_directories(
-  OpenKneeboard-version
+  VDXROVR-version
   INTERFACE
   "${CMAKE_CURRENT_BINARY_DIR}/include"
 )
-add_dependencies(OpenKneeboard-version OpenKneeboard-version-sources)
-ok_add_library(
-  OpenKneeboard-semver
+add_dependencies(VDXROVR-version VDXROVR-version-sources)
+vdxrovr_add_library(
+  VDXROVR-semver
   STATIC
   semver.cpp
   HEADERS
-  include/OpenKneeboard/semver.hpp
+  include/VDXROVR/semver.hpp
   INCLUDE_DIRECTORIES
   include
 )
 target_link_libraries(
-  OpenKneeboard-semver
+  VDXROVR-semver
   PRIVATE
-  OpenKneeboard-dprint
+  VDXROVR-dprint
   ThirdParty::SemVer
 )
 
-ok_add_library(OpenKneeboard-shims INTERFACE)
+vdxrovr_add_library(VDXROVR-shims INTERFACE)
 target_include_directories(
-  OpenKneeboard-shims
+  VDXROVR-shims
   INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 target_link_libraries(
-  OpenKneeboard-shims
+  VDXROVR-shims
   INTERFACE
-  OpenKneeboard-dprint
-  OpenKneeboard-fatal
+  VDXROVR-dprint
+  VDXROVR-fatal
 )
 
-ok_add_library(OpenKneeboard-json STATIC json.cpp)
+vdxrovr_add_library(VDXROVR-json STATIC json.cpp)
 target_link_libraries(
-  OpenKneeboard-json
+  VDXROVR-json
   PUBLIC
-  OpenKneeboard-dprint
+  VDXROVR-dprint
   ThirdParty::JSON
-  OpenKneeboard-Lib-Headers
+  VDXROVR-Lib-Headers
 )
 
-ok_add_library(OpenKneeboard-Filesystem STATIC Filesystem.cpp)
+vdxrovr_add_library(VDXROVR-Filesystem STATIC Filesystem.cpp)
 target_link_libraries(
-  OpenKneeboard-Filesystem
+  VDXROVR-Filesystem
   PUBLIC
-  OpenKneeboard-shims
-  OpenKneeboard-config
-  OpenKneeboard-Lib-Headers
+  VDXROVR-shims
+  VDXROVR-config
+  VDXROVR-Lib-Headers
   PRIVATE
-  OpenKneeboard-StateMachine
-  OpenKneeboard-UTF8
-  OpenKneeboard-dprint
-  OpenKneeboard-fatal
+  VDXROVR-StateMachine
+  VDXROVR-UTF8
+  VDXROVR-dprint
+  VDXROVR-fatal
   System::Shlwapi
   ThirdParty::CppWinRT
   ThirdParty::WIL
 )
 
-ok_add_library(OpenKneeboard-WindowCaptureControl STATIC WindowCaptureControl.cpp)
+vdxrovr_add_library(VDXROVR-WindowCaptureControl STATIC WindowCaptureControl.cpp)
 target_link_libraries(
-  OpenKneeboard-WindowCaptureControl
+  VDXROVR-WindowCaptureControl
   PRIVATE
-  OpenKneeboard-RuntimeFiles
-  OpenKneeboard-dprint
-  OpenKneeboard-shims
+  VDXROVR-RuntimeFiles
+  VDXROVR-dprint
+  VDXROVR-shims
 )
 target_link_libraries(
-  OpenKneeboard-WindowCaptureControl
+  VDXROVR-WindowCaptureControl
   PUBLIC
-  OpenKneeboard-handles
-  OpenKneeboard-Lib-Headers
+  VDXROVR-handles
+  VDXROVR-Lib-Headers
 )
 
-ok_add_library(
-  OpenKneeboard-RenderDoc
+vdxrovr_add_library(
+  VDXROVR-RenderDoc
   STATIC
   RenderDoc.cpp
 )
 target_link_libraries(
-  OpenKneeboard-RenderDoc
+  VDXROVR-RenderDoc
   PUBLIC
-  OpenKneeboard-Lib-Headers
+  VDXROVR-Lib-Headers
   PRIVATE
-  OpenKneeboard-fatal
+  VDXROVR-fatal
   ThirdParty::RenderDoc
 )
-ok_add_library(
-  OpenKneeboard-EnumerateProcesses
+vdxrovr_add_library(
+  VDXROVR-EnumerateProcesses
   STATIC
   EnumerateProcesses.cpp
   HEADERS
-  include/OpenKneeboard/EnumerateProcesses.hpp
+  include/VDXROVR/EnumerateProcesses.hpp
   INCLUDE_DIRECTORIES
   include
 )
 target_link_libraries(
-  OpenKneeboard-EnumerateProcesses
+  VDXROVR-EnumerateProcesses
   PRIVATE
-  OpenKneeboard-dprint
-  OpenKneeboard-tracing
+  VDXROVR-dprint
+  VDXROVR-tracing
 )
 
-ok_add_library(
-  OpenKneeboard-win32
+vdxrovr_add_library(
+  VDXROVR-win32
   INTERFACE
   HEADERS
-  include/OpenKneeboard/Win32.hpp
+  include/VDXROVR/Win32.hpp
   INCLUDE_DIRECTORIES
   include
 )
 target_link_libraries(
-  OpenKneeboard-win32
+  VDXROVR-win32
   INTERFACE
-  OpenKneeboard-fatal
-  OpenKneeboard-shims
+  VDXROVR-fatal
+  VDXROVR-shims
   ThirdParty::bindline
   ThirdParty::CppWinRT
 )
 
-add_library(OpenKneeboard-task INTERFACE)
+add_library(VDXROVR-task INTERFACE)
 target_link_libraries(
-  OpenKneeboard-task
+  VDXROVR-task
   INTERFACE
-  OpenKneeboard-StateMachine
-  OpenKneeboard-dprint
-  OpenKneeboard-fatal
-  OpenKneeboard-shims
+  VDXROVR-StateMachine
+  VDXROVR-dprint
+  VDXROVR-fatal
+  VDXROVR-shims
   ThirdParty::CppWinRT
   ThirdParty::magic_enum
 )
 
-ok_add_library(
-  OpenKneeboard-UserAction
+vdxrovr_add_library(
+  VDXROVR-UserAction
   INTERFACE
-  HEADERS include/OpenKneeboard/UserAction.hpp
+  HEADERS include/VDXROVR/UserAction.hpp
   INCLUDE_DIRECTORIES include
 )

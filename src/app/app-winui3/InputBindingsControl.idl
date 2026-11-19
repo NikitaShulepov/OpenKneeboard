@@ -1,4 +1,4 @@
-namespace OpenKneeboardApp
+namespace VDXROVRApp
 {
     [default_interface]
     runtimeclass InputBindingsControl: Microsoft.UI.Xaml.Controls.UserControl

@@ -4,13 +4,13 @@ nav_order: 9998
 
 # Release History
 
-Only the latest of OpenKneeboard is supported, and downgrading is not supported. If you install outdated, development, or test versions, you may need to reset your settings with [the Fresh Start tool](https://github.com/OpenKneeboard/Fresh-Start/releases/latest).
+Only the latest of VDXROVR is supported, and downgrading is not supported. If you install outdated, development, or test versions, you may need to reset your settings with [the Fresh Start tool](https://github.com/VDXROVR/Fresh-Start/releases/latest).
 
 <label class="toggle-prereleases">
   <input type="checkbox" id="togglePrereleases"> Show prerelease versions
 </label>
 
-{% for release in site.data.openkneeboard_releases %}
+{% for release in site.data.vdxrovr_releases %}
 
 <details id="{{ release.tag }}" {% if release.is_latest %}open{% endif %} {% if release.is_prerelease %}class="prerelease"{% endif %}>
   <summary>

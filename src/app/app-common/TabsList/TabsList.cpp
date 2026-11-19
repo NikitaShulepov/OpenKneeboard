@@ -1,23 +1,23 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/DCSAircraftTab.hpp>
-#include <OpenKneeboard/DCSMissionTab.hpp>
-#include <OpenKneeboard/DCSRadioLogTab.hpp>
-#include <OpenKneeboard/DCSTerrainTab.hpp>
-#include <OpenKneeboard/Filesystem.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/PluginTab.hpp>
-#include <OpenKneeboard/RuntimeFiles.hpp>
-#include <OpenKneeboard/TabBase.hpp>
-#include <OpenKneeboard/TabTypes.hpp>
-#include <OpenKneeboard/TabView.hpp>
-#include <OpenKneeboard/TabsList.hpp>
+#include <VDXROVR/DCSAircraftTab.hpp>
+#include <VDXROVR/DCSMissionTab.hpp>
+#include <VDXROVR/DCSRadioLogTab.hpp>
+#include <VDXROVR/DCSTerrainTab.hpp>
+#include <VDXROVR/Filesystem.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/PluginTab.hpp>
+#include <VDXROVR/RuntimeFiles.hpp>
+#include <VDXROVR/TabBase.hpp>
+#include <VDXROVR/TabTypes.hpp>
+#include <VDXROVR/TabView.hpp>
+#include <VDXROVR/TabsList.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/dprint.hpp>
 
 #include <shims/nlohmann/json.hpp>
 
@@ -26,7 +26,7 @@
 #include <fstream>
 #include <vector>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 TabsList::TabsList(
   const audited_ptr<DXResources>& dxr,
@@ -119,7 +119,7 @@ task<std::shared_ptr<ITab>> TabsList::LoadTabFromJSON(
       result = instance; \
     } \
   }
-    OPENKNEEBOARD_TAB_TYPES
+    VDXROVR_TAB_TYPES
 #undef IT
     if (!result && type == "Plugin") {
       result = co_await PluginTab::Create(
@@ -141,7 +141,7 @@ task<std::shared_ptr<ITab>> TabsList::LoadTabFromJSON(
 
   if (!result) {
     dprint("Couldn't load tab with type {}", rawType);
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     co_return nullptr;
   }
 
@@ -208,14 +208,14 @@ nlohmann::json TabsList::GetSettings() const {
   if (type.empty() && std::dynamic_pointer_cast<it##Tab>(tab)) { \
     type = #it; \
   }
-    OPENKNEEBOARD_TAB_TYPES
+    VDXROVR_TAB_TYPES
 #undef IT
     if (type.empty() && std::dynamic_pointer_cast<PluginTab>(tab)) {
       type = "Plugin";
     }
     if (type.empty()) {
       dprint("Unknown type for tab {}", tab->GetTitle());
-      OPENKNEEBOARD_BREAK;
+      VDXROVR_BREAK;
       continue;
     }
 
@@ -299,4 +299,4 @@ task<void> TabsList::RemoveTab(TabIndex index) {
   co_await this->SetTabs(tabs);
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

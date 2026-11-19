@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -20,14 +20,14 @@
 
 #include "WithPropertyChangedEvent.h"
 
-#include <OpenKneeboard/Events.hpp>
+#include <VDXROVR/Events.hpp>
 
-#include <OpenKneeboard/audited_ptr.hpp>
-#include <OpenKneeboard/task.hpp>
+#include <VDXROVR/audited_ptr.hpp>
+#include <VDXROVR/task.hpp>
 
 #include <string>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 class ITab;
 class TabView;
 class BrowserTab;
@@ -36,38 +36,38 @@ struct DXResources;
 class KneeboardState;
 class WindowCaptureTab;
 enum class TabType;
-}// namespace OpenKneeboard
+}// namespace VDXROVR
 
 using namespace winrt::Microsoft::UI::Xaml;
 using namespace winrt::Microsoft::UI::Xaml::Controls;
 using namespace winrt::Microsoft::UI::Xaml::Controls::Primitives;
 using namespace winrt::Windows::Foundation::Collections;
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 struct TabsSettingsPage : TabsSettingsPageT<TabsSettingsPage>,
-                          OpenKneeboard::EventReceiver,
-                          OpenKneeboard::WithPropertyChangedEvent {
+                          VDXROVR::EventReceiver,
+                          VDXROVR::WithPropertyChangedEvent {
   TabsSettingsPage();
   ~TabsSettingsPage() noexcept override;
 
   IVector<IInspectable> Tabs() noexcept;
 
-  OpenKneeboard::fire_and_forget RestoreDefaults(
+  VDXROVR::fire_and_forget RestoreDefaults(
     IInspectable,
     RoutedEventArgs) noexcept;
 
-  OpenKneeboard::fire_and_forget CreateTab(
+  VDXROVR::fire_and_forget CreateTab(
     IInspectable,
     RoutedEventArgs) noexcept;
-  OpenKneeboard::fire_and_forget CreatePluginTab(
+  VDXROVR::fire_and_forget CreatePluginTab(
     IInspectable,
     RoutedEventArgs) noexcept;
-  OpenKneeboard::fire_and_forget RemoveTab(IInspectable, RoutedEventArgs);
-  OpenKneeboard::fire_and_forget ShowTabSettings(IInspectable, RoutedEventArgs);
-  OpenKneeboard::fire_and_forget ShowDebugInfo(IInspectable, RoutedEventArgs);
+  VDXROVR::fire_and_forget RemoveTab(IInspectable, RoutedEventArgs);
+  VDXROVR::fire_and_forget ShowTabSettings(IInspectable, RoutedEventArgs);
+  VDXROVR::fire_and_forget ShowDebugInfo(IInspectable, RoutedEventArgs);
   void CopyDebugInfo(const IInspectable&, const RoutedEventArgs&);
 
-  OpenKneeboard::fire_and_forget OnTabsChanged(
+  VDXROVR::fire_and_forget OnTabsChanged(
     IInspectable,
     Windows::Foundation::Collections::IVectorChangedEventArgs) noexcept;
   void OnAddBrowserAddressTextChanged(
@@ -78,26 +78,26 @@ struct TabsSettingsPage : TabsSettingsPageT<TabsSettingsPage>,
   void CreateAddTabMenu(const Button& button, FlyoutPlacementMode);
 
   template <class T>
-  OpenKneeboard::fire_and_forget CreateFileTab(
+  VDXROVR::fire_and_forget CreateFileTab(
     const std::string& pickerDialogTitle = {});
-  OpenKneeboard::fire_and_forget CreateFolderTab();
-  OpenKneeboard::fire_and_forget CreateWindowCaptureTab();
-  OpenKneeboard::fire_and_forget CreateBrowserTab();
+  VDXROVR::fire_and_forget CreateFolderTab();
+  VDXROVR::fire_and_forget CreateWindowCaptureTab();
+  VDXROVR::fire_and_forget CreateBrowserTab();
   winrt::guid GetFilePickerPersistenceGuid();
 
-  task<void> AddTabs(const std::vector<std::shared_ptr<OpenKneeboard::ITab>>&);
-  static OpenKneeboardApp::TabUIData CreateTabUIData(
-    const std::shared_ptr<OpenKneeboard::ITab>&);
+  task<void> AddTabs(const std::vector<std::shared_ptr<VDXROVR::ITab>>&);
+  static VDXROVRApp::TabUIData CreateTabUIData(
+    const std::shared_ptr<VDXROVR::ITab>&);
 
   bool mUIIsChangingTabs = false;
 
-  OpenKneeboard::audited_ptr<OpenKneeboard::DXResources> mDXR;
-  OpenKneeboard::audited_ptr<OpenKneeboard::KneeboardState> mKneeboard;
+  VDXROVR::audited_ptr<VDXROVR::DXResources> mDXR;
+  VDXROVR::audited_ptr<VDXROVR::KneeboardState> mKneeboard;
 };
 
 struct TabUIData : TabUIDataT<TabUIData>,
-                   OpenKneeboard::EventReceiver,
-                   OpenKneeboard::WithPropertyChangedEvent {
+                   VDXROVR::EventReceiver,
+                   VDXROVR::WithPropertyChangedEvent {
   TabUIData() = default;
   ~TabUIData();
 
@@ -111,30 +111,30 @@ struct TabUIData : TabUIDataT<TabUIData>,
   hstring DebugInformation() const;
 
  protected:
-  std::weak_ptr<OpenKneeboard::ITab> mTab;
+  std::weak_ptr<VDXROVR::ITab> mTab;
 };
 
 struct BrowserTabUIData : BrowserTabUIDataT<
                             BrowserTabUIData,
-                            OpenKneeboardApp::implementation::TabUIData> {
+                            VDXROVRApp::implementation::TabUIData> {
   BrowserTabUIData() = default;
 
   bool IsSimHubIntegrationEnabled() const;
-  OpenKneeboard::fire_and_forget IsSimHubIntegrationEnabled(bool);
+  VDXROVR::fire_and_forget IsSimHubIntegrationEnabled(bool);
 
-  bool AreOpenKneeboardAPIsEnabled() const;
-  OpenKneeboard::fire_and_forget AreOpenKneeboardAPIsEnabled(bool);
+  bool AreVDXROVRAPIsEnabled() const;
+  VDXROVR::fire_and_forget AreVDXROVRAPIsEnabled(bool);
 
   bool IsBackgroundTransparent() const;
-  OpenKneeboard::fire_and_forget IsBackgroundTransparent(bool);
+  VDXROVR::fire_and_forget IsBackgroundTransparent(bool);
 
  private:
-  std::shared_ptr<OpenKneeboard::BrowserTab> GetTab() const;
+  std::shared_ptr<VDXROVR::BrowserTab> GetTab() const;
 };
 
 struct DCSRadioLogTabUIData : DCSRadioLogTabUIDataT<
                                 DCSRadioLogTabUIData,
-                                OpenKneeboardApp::implementation::TabUIData> {
+                                VDXROVRApp::implementation::TabUIData> {
   DCSRadioLogTabUIData() = default;
   uint8_t MissionStartBehavior() const;
   void MissionStartBehavior(uint8_t value);
@@ -142,15 +142,15 @@ struct DCSRadioLogTabUIData : DCSRadioLogTabUIDataT<
   void TimestampsEnabled(bool value);
 
  private:
-  std::shared_ptr<OpenKneeboard::DCSRadioLogTab> GetTab() const;
+  std::shared_ptr<VDXROVR::DCSRadioLogTab> GetTab() const;
 };
 
 struct WindowCaptureTabUIData : WindowCaptureTabUIDataT<
                                   WindowCaptureTabUIData,
-                                  OpenKneeboardApp::implementation::TabUIData> {
+                                  VDXROVRApp::implementation::TabUIData> {
   WindowCaptureTabUIData() = default;
 
-  using fire_and_forget = OpenKneeboard::fire_and_forget;
+  using fire_and_forget = VDXROVR::fire_and_forget;
 
   hstring WindowTitle();
   fire_and_forget WindowTitle(hstring const& value);
@@ -170,7 +170,7 @@ struct WindowCaptureTabUIData : WindowCaptureTabUIDataT<
   fire_and_forget WindowClass(hstring);
 
  private:
-  std::shared_ptr<OpenKneeboard::WindowCaptureTab> GetTab() const;
+  std::shared_ptr<VDXROVR::WindowCaptureTab> GetTab() const;
 };
 
 struct TabUIDataTemplateSelector
@@ -196,8 +196,8 @@ struct TabUIDataTemplateSelector
   DataTemplate mWindowCapture;
 };
 
-}// namespace winrt::OpenKneeboardApp::implementation
-namespace winrt::OpenKneeboardApp::factory_implementation {
+}// namespace winrt::VDXROVRApp::implementation
+namespace winrt::VDXROVRApp::factory_implementation {
 struct TabsSettingsPage
   : TabsSettingsPageT<TabsSettingsPage, implementation::TabsSettingsPage> {};
 
@@ -216,4 +216,4 @@ struct TabUIDataTemplateSelector
       TabUIDataTemplateSelector,
       implementation::TabUIDataTemplateSelector> {};
 
-}// namespace winrt::OpenKneeboardApp::factory_implementation
+}// namespace winrt::VDXROVRApp::factory_implementation

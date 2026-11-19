@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -13,14 +13,14 @@
 
 #include "Globals.h"
 
-#include <OpenKneeboard/KneeboardState.hpp>
+#include <VDXROVR/KneeboardState.hpp>
 
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/version.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/version.hpp>
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 
-using namespace OpenKneeboard;
+using namespace VDXROVR;
 
 SettingsPage::SettingsPage() { InitializeComponent(); }
 
@@ -43,8 +43,8 @@ void SettingsPage::OnItemClick(
   IT(Advanced)
 #undef IT
 
-  OPENKNEEBOARD_BREAK;
-}// namespace winrt::OpenKneeboardApp::implementation
+  VDXROVR_BREAK;
+}// namespace winrt::VDXROVRApp::implementation
 
 hstring SettingsSubpageData::Title() { return mTitle; }
 
@@ -60,4 +60,4 @@ void SettingsSubpageData::Description(hstring const& value) {
   mDescription = value;
 }
 
-}// namespace winrt::OpenKneeboardApp::implementation
+}// namespace winrt::VDXROVRApp::implementation

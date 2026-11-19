@@ -4,7 +4,7 @@ parent: Troubleshooting
 
 # Direct3D11 is Unusable
 
-This is a Windows or GPU driver error; is is not an OpenKneeboard issue, and it can not be solved by OpenKneeboard.
+This is a Windows or GPU driver error; is is not an VDXROVR issue, and it can not be solved by VDXROVR.
 
 Unless your situation is listed below, you need to ask your GPU manufacturer for support.
 

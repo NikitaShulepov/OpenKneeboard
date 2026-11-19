@@ -1,18 +1,18 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 
-#include <OpenKneeboard/D2DErrorRenderer.hpp>
-#include <OpenKneeboard/DXResources.hpp>
-#include <OpenKneeboard/PlainTextPageSource.hpp>
-#include <OpenKneeboard/Win32.hpp>
+#include <VDXROVR/D2DErrorRenderer.hpp>
+#include <VDXROVR/DXResources.hpp>
+#include <VDXROVR/PlainTextPageSource.hpp>
+#include <VDXROVR/Win32.hpp>
 
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/scope_exit.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/scope_exit.hpp>
 
 #include <Unknwn.h>
 
@@ -26,7 +26,7 @@
 #include <dwrite.h>
 #include <icu.h>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 namespace {
 
@@ -203,7 +203,7 @@ void PopulateSourceParagraph(
   if (
     paragraph.mSourceWithoutDelimiter.mLength
     < paragraph.mSourceWithDelimiter.mLength) {
-    OPENKNEEBOARD_ASSERT(
+    VDXROVR_ASSERT(
       paragraph.mSourceWithoutDelimiter.mOffset
       == paragraph.mSourceWithDelimiter.mOffset);
     const auto offset = paragraph.mSourceWithoutDelimiter.mOffset
@@ -646,7 +646,7 @@ void PlainTextPageSource::AppendContent(const std::string_view append) {
     felly::overload {
       [=](std::monostate) { return previousSize; },
       [=](const std::size_t previousOffset) {
-        OPENKNEEBOARD_ASSERT(previousOffset <= previousSize);
+        VDXROVR_ASSERT(previousOffset <= previousSize);
         return previousOffset;
       },
       [](unknown_offset_t) { return unknown_offset; },
@@ -703,7 +703,7 @@ void PlainTextPageSource::UpdateLayout() {
   }
 
   ///// 2. Split the input into groups, paragraphs, and lines /////
-  OPENKNEEBOARD_ASSERT(mRows > 1 && mColumns > 1);
+  VDXROVR_ASSERT(mRows > 1 && mColumns > 1);
   const auto repaintAtEnd =
     scope_exit {[this] { evContentChangedEvent.Emit(); }};
   Source source {};
@@ -822,4 +822,4 @@ void PlainTextPageSource::UpdateLayout() {
   }
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

@@ -1,16 +1,16 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/ITab.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/ReloadTabAction.hpp>
-#include <OpenKneeboard/TabView.hpp>
-#include <OpenKneeboard/TabsList.hpp>
+#include <VDXROVR/ITab.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/ReloadTabAction.hpp>
+#include <VDXROVR/TabView.hpp>
+#include <VDXROVR/TabsList.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 ReloadTabAction::ReloadTabAction(
   KneeboardState* kbs,
@@ -55,13 +55,13 @@ std::string_view ReloadTabAction::GetConfirmationTitle() const {
   if (mMode == Mode::ThisTab) {
     return _("Reload this tab?");
   }
-  return _("Reload OpenKneeboard?");
+  return _("Reload VDXROVR?");
 }
 
 std::string_view ReloadTabAction::GetConfirmationDescription() const {
   return _(
     "This will erase all notes and drawings, and any information that was "
-    "added since OpenKneeboard started.");
+    "added since VDXROVR started.");
 }
 
 std::string_view ReloadTabAction::GetConfirmButtonLabel() const {
@@ -75,4 +75,4 @@ std::string_view ReloadTabAction::GetCancelButtonLabel() const {
   return _("Cancel");
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

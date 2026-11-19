@@ -1,13 +1,13 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/Plugin.hpp>
+#include <VDXROVR/Plugin.hpp>
 
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/json.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/json.hpp>
 
 #include <shims/winrt/base.h>
 
@@ -15,7 +15,7 @@
 #include <winrt/Windows.Security.Cryptography.h>
 #include <winrt/Windows.Storage.Streams.h>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 std::string Plugin::GetIDHash() const noexcept {
   using namespace winrt::Windows::Security::Cryptography::Core;
@@ -34,17 +34,17 @@ std::string Plugin::GetIDHash() const noexcept {
       EncodeToHexString(hashObj.GetValueAndReset()));
 }
 
-OPENKNEEBOARD_DEFINE_JSON(
+VDXROVR_DEFINE_JSON(
   Plugin::Metadata,
   mPluginName,
   mPluginReadableVersion,
   mPluginSemanticVersion,
-  mOKBMinimumVersion,
-  mOKBMaximumTestedVersion,
+  mVDXROVRMinimumVersion,
+  mVDXROVRMaximumTestedVersion,
   mAuthor,
   mWebsite)
 
-OPENKNEEBOARD_DEFINE_SPARSE_JSON(Plugin::CustomAction, mID, mName)
+VDXROVR_DEFINE_SPARSE_JSON(Plugin::CustomAction, mID, mName)
 
 NLOHMANN_JSON_SERIALIZE_ENUM(
   Plugin::TabType::Implementation,
@@ -54,7 +54,7 @@ NLOHMANN_JSON_SERIALIZE_ENUM(
      "WebBrowser",
    }})
 
-OPENKNEEBOARD_DEFINE_SPARSE_JSON(
+VDXROVR_DEFINE_SPARSE_JSON(
   Plugin::TabType::WebBrowserArgs,
   mURI,
   mInitialSize);
@@ -95,7 +95,7 @@ void to_json(nlohmann::json& j, const Plugin::TabType::ImplementationArgs& v) {
     return;
   }
 
-  OPENKNEEBOARD_BREAK;
+  VDXROVR_BREAK;
 }
 
 template <>
@@ -117,7 +117,7 @@ void to_json_postprocess<Plugin::TabType>(
   }
 }
 
-OPENKNEEBOARD_DEFINE_SPARSE_JSON(
+VDXROVR_DEFINE_SPARSE_JSON(
   Plugin::TabType,
   mID,
   mName,
@@ -126,6 +126,6 @@ OPENKNEEBOARD_DEFINE_SPARSE_JSON(
   mCustomActions,
   mImplementation)
 
-OPENKNEEBOARD_DEFINE_SPARSE_JSON(Plugin, mID, mMetadata, mTabTypes)
+VDXROVR_DEFINE_SPARSE_JSON(Plugin, mID, mMetadata, mTabTypes)
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

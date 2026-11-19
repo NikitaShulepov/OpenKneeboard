@@ -1,21 +1,21 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/D2DErrorRenderer.hpp>
-#include <OpenKneeboard/DXResources.hpp>
+#include <VDXROVR/D2DErrorRenderer.hpp>
+#include <VDXROVR/DXResources.hpp>
 
-#include <OpenKneeboard/audited_ptr.hpp>
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/hresult.hpp>
+#include <VDXROVR/audited_ptr.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/hresult.hpp>
 
 #include <Unknwn.h>
 
 #include <dwrite.h>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 struct D2DErrorRenderer::Impl final {
   winrt::com_ptr<IDWriteFactory> mDWrite;
@@ -75,4 +75,4 @@ void D2DErrorRenderer::Render(
   ctx->DrawTextLayout({where.left, where.top}, textLayout.get(), brush);
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

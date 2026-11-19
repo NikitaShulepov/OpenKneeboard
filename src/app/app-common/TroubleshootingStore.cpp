@@ -1,24 +1,24 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/APIEvent.hpp>
-#include <OpenKneeboard/Filesystem.hpp>
-#include <OpenKneeboard/Settings.hpp>
-#include <OpenKneeboard/TroubleshootingStore.hpp>
+#include <VDXROVR/APIEvent.hpp>
+#include <VDXROVR/Filesystem.hpp>
+#include <VDXROVR/Settings.hpp>
+#include <VDXROVR/TroubleshootingStore.hpp>
 
-#include <OpenKneeboard/bindline.hpp>
-#include <OpenKneeboard/chrono.hpp>
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/version.hpp>
+#include <VDXROVR/bindline.hpp>
+#include <VDXROVR/chrono.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/version.hpp>
 
 #include <chrono>
 #include <format>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 static auto& Store() {
   static std::weak_ptr<TroubleshootingStore> value;
@@ -40,7 +40,7 @@ std::shared_ptr<TroubleshootingStore> TroubleshootingStore::Get() {
 }
 
 class TroubleshootingStore::DPrintReceiver final
-  : public OpenKneeboard::DPrintReceiver {
+  : public VDXROVR::DPrintReceiver {
  public:
   DPrintReceiver() = default;
   ~DPrintReceiver();
@@ -111,7 +111,7 @@ void TroubleshootingStore::InitializeLogFile() {
   std::sort(existingFiles.begin(), existingFiles.end());
 
   const auto file = directory
-    / std::format(L"OpenKneeboard-{:%Y%m%dT%H%M%S}-{}.{}.{}.{}-{}.log",
+    / std::format(L"VDXROVR-{:%Y%m%dT%H%M%S}-{}.{}.{}.{}-{}.log",
                   std::chrono::time_point_cast<std::chrono::seconds>(
                     std::chrono::system_clock::now()),
                   Version::Major,
@@ -268,4 +268,4 @@ std::string TroubleshootingStore::GetDPrintDebugLogAsString() const {
   return winrt::to_string(ret);
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

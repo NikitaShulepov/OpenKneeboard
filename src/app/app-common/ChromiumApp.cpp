@@ -1,16 +1,16 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/ChromiumApp.hpp>
-#include <OpenKneeboard/DXResources.hpp>
-#include <OpenKneeboard/Filesystem.hpp>
-#include <OpenKneeboard/RuntimeFiles.hpp>
+#include <VDXROVR/ChromiumApp.hpp>
+#include <VDXROVR/DXResources.hpp>
+#include <VDXROVR/Filesystem.hpp>
+#include <VDXROVR/RuntimeFiles.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/version.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/version.hpp>
 
 #include <include/cef_app.h>
 #include <include/cef_base.h>
@@ -20,7 +20,7 @@
 #include <include/cef_sandbox_win.h>
 #endif
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 class ChromiumApp::Impl : public CefApp, public CefBrowserProcessHandler {
  public:
@@ -77,7 +77,7 @@ ChromiumApp::ChromiumApp(
   CefString(&settings.user_agent_product)
     .FromString(
       std::format(
-        "OpenKneeboard/{}.{}.{}.{} Chromium/{}.0.0.0",
+        "VDXROVR/{}.{}.{}.{} Chromium/{}.0.0.0",
         Version::Major,
         Version::Minor,
         Version::Patch,
@@ -108,4 +108,4 @@ void* ChromiumApp::GetSandbox() {
 #endif
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

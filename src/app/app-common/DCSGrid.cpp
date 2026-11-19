@@ -1,13 +1,13 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 
-#include <OpenKneeboard/DCSGrid.hpp>
+#include <VDXROVR/DCSGrid.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/dprint.hpp>
 
 #include <GeographicLib/UTMUPS.hpp>
 
@@ -17,7 +17,7 @@ const auto& UTM() {
   return value;
 }
 }// namespace
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 static_assert(std::is_same_v<GeographicLib::Math::real, GeoReal>);
 
@@ -47,4 +47,4 @@ std::tuple<GeoReal, GeoReal> DCSGrid::LatLongFromXY(GeoReal dcsX, GeoReal dcsY)
   return {retLat, retLong};
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

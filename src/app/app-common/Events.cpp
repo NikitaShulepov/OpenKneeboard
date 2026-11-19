@@ -1,17 +1,17 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/Events.hpp>
+#include <VDXROVR/Events.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/fatal.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/fatal.hpp>
 
 #include <queue>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 static uint64_t sNextUniqueID = 0x1234abcdui64 << 32;
 
@@ -24,7 +24,7 @@ EventReceiver::~EventReceiver() {
     dprint(
       "I'm in danger! ~EventReceiver() called without "
       "RemoveAllEventListeners()");
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
   }
   this->RemoveAllEventListeners();
 }
@@ -170,4 +170,4 @@ EventDelay::~EventDelay() {
   }
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

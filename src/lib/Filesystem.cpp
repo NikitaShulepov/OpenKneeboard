@@ -1,17 +1,17 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/Filesystem.hpp>
-#include <OpenKneeboard/LazyOnceValue.hpp>
-#include <OpenKneeboard/StateMachine.hpp>
+#include <VDXROVR/Filesystem.hpp>
+#include <VDXROVR/LazyOnceValue.hpp>
+#include <VDXROVR/StateMachine.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/format/filesystem.hpp>
-#include <OpenKneeboard/hresult.hpp>
-#include <OpenKneeboard/scope_exit.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/format/filesystem.hpp>
+#include <VDXROVR/hresult.hpp>
+#include <VDXROVR/scope_exit.hpp>
 
 #include <shims/winrt/base.h>
 
@@ -24,7 +24,7 @@
 #include <fstream>
 #include <mutex>
 
-namespace OpenKneeboard::Filesystem {
+namespace VDXROVR::Filesystem {
 namespace {
 using LazyPath = LazyOnceValue<std::filesystem::path>;
 
@@ -66,7 +66,7 @@ static std::filesystem::path GetTemporaryDirectoryRoot() {
     wchar_t tempDirBuf[MAX_PATH];
     auto tempDirLen = GetTempPathW(MAX_PATH, tempDirBuf);
     return std::filesystem::path {std::wstring_view {tempDirBuf, tempDirLen}}
-    / L"OpenKneeboard";
+    / L"VDXROVR";
   }};
   return sPath;
 }
@@ -167,7 +167,7 @@ std::filesystem::path GetSettingsDirectory() {
     if (base.empty()) {
       return {};
     }
-    const auto ret = base / "OpenKneeboard" / "Settings";
+    const auto ret = base / "VDXROVR" / "Settings";
     std::filesystem::create_directories(ret);
     return ret;
   }};
@@ -176,81 +176,37 @@ std::filesystem::path GetSettingsDirectory() {
 }
 
 void MigrateSettingsDirectory() {
-  const auto newPath = GetSettingsDirectory();
+  const newPath = GetSettingsDirectory();
   if (!std::filesystem::is_empty(newPath)) {
     return;
   }
-  const auto oldPath =
-    GetKnownFolderPath<FOLDERID_SavedGames>() / "OpenKneeboard";
-  if (!std::filesystem::exists(oldPath)) {
+  // Section 3.i exception: read legacy settings strictly read-only without modifying or extending legacy folders.
+  const legacyLocal = GetKnownFolderPath<FOLDERID_LocalAppData>() / "OpenKneeboard" / "Settings";
+  const legacySaved = GetKnownFolderPath<FOLDERID_SavedGames>() / "OpenKneeboard";
+  const sourceRoot = std::filesystem::exists(legacyLocal)
+    ? legacyLocal
+    : legacySaved;
+  if (!std::filesystem::exists(sourceRoot)) {
     return;
   }
-
-  dprint("🚚 moving settings from `{}` to `{}`", oldPath, newPath);
-
-  bool canDelete = true;
-
-  std::filesystem::remove(newPath);
-  for (auto&& it: std::filesystem::recursive_directory_iterator(oldPath)) {
-    if (it.is_directory()) {
+  std::error_code ec;
+  for (auto&& it : std::filesystem::recursive_directory_iterator(sourceRoot, ec)) {
+    if (ec || it.is_directory()) {
       continue;
     }
-
     const auto src = it.path();
-    if (!src.has_extension()) {
+    if (src.extension() != ".json") {
       continue;
     }
-
-    if (src.filename() == ".instance") {
-      continue;
-    }
-
-    const auto ext = src.extension();
-
-    if (ext == ".dmp" || ext == ".log") {
-      continue;
-    }
-
-    if (ext != ".json") {
-      // Some people put content in their OpenKneeboard folder :/
-      canDelete = false;
-      continue;
-    }
-
     auto dest = newPath;
-    for (auto&& part: std::filesystem::relative(src.parent_path(), oldPath)
-           / src.filename()) {
-      if (part == "profiles") {
-        dest /= "Profiles";
-      } else {
-        dest /= part;
-      }
+    for (auto&& part :
+         std::filesystem::relative(src.parent_path(), sourceRoot, ec) / src.filename()) {
+      dest /= (part == "profiles") ? std::filesystem::path("Profiles") : part;
     }
-
-    dprint("🚚 `{}` -> `{}`", src, dest);
-    std::filesystem::create_directories(dest.parent_path());
-    std::filesystem::rename(src, dest);
+    std::filesystem::create_directories(dest.parent_path(), ec);
+    std::filesystem::copy_file(
+      src, dest, std::filesystem::copy_options::skip_existing, ec);
   }
-
-  if (canDelete) {
-    std::filesystem::remove_all(oldPath);
-  }
-
-  const auto warningFile = canDelete
-    ? (oldPath.parent_path() / "OpenKneeboard-README.txt")
-    : (oldPath / "SETTINGS_HAVE_MOVED-README.txt");
-  {
-    std::ofstream f(warningFile, std::ios::binary | std::ios::trunc);
-    f << "OpenKneeboard's settings have been moved to:\n"
-      << newPath.string() << std::endl;
-
-    if (!canDelete) {
-      f << "\nThis folder has been left here in case you want to keep any "
-           "other files you may have put in it."
-        << std::endl;
-    }
-  }
-  dprint("✅ moved, and created warning file at `{}`", warningFile);
 }
 
 std::filesystem::path GetLocalAppDataDirectory() {
@@ -259,7 +215,7 @@ std::filesystem::path GetLocalAppDataDirectory() {
     if (base.empty()) {
       return {};
     }
-    const auto ret = base / "OpenKneeboard";
+    const auto ret = base / "VDXROVR";
     std::filesystem::create_directories(ret);
     return ret;
   }};
@@ -270,7 +226,7 @@ std::filesystem::path GetLogsDirectory() {
   static LazyPath sPath {[]() -> std::filesystem::path {
     const auto oldPath = GetLocalAppDataDirectory() / "Logs";
     const auto path =
-      GetKnownFolderPath<FOLDERID_LocalAppData>() / "OpenKneeboard Logs";
+      GetKnownFolderPath<FOLDERID_LocalAppData>() / "VDXROVR Logs";
 
     if (std::filesystem::exists(oldPath) && !std::filesystem::exists(path)) {
       std::filesystem::rename(oldPath, path);
@@ -310,12 +266,12 @@ std::filesystem::path GetInstalledPluginsDirectory() {
 void OpenExplorerWithSelectedFile(const std::filesystem::path& path) {
   if (!std::filesystem::exists(path)) {
     dprint("{} - path '{}' does not exist (yet?)", __FUNCTION__, path);
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     return;
   }
   if (!std::filesystem::is_regular_file(path)) {
     dprint("{} - path '{}' is not a file", __FUNCTION__, path);
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     return;
   }
   PIDLIST_ABSOLUTE pidl {nullptr};
@@ -350,4 +306,4 @@ TemporaryCopy::TemporaryCopy(
 TemporaryCopy::~TemporaryCopy() noexcept { std::filesystem::remove(mCopy); }
 
 std::filesystem::path TemporaryCopy::GetPath() const noexcept { return mCopy; }
-};// namespace OpenKneeboard::Filesystem
+};// namespace VDXROVR::Filesystem

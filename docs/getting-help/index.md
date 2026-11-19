@@ -10,4 +10,4 @@ I make this for my own use, and I share this in the hope others find it useful; 
 
 I am not able to respond to 1:1 requests for help via any means, including GitHub, Discord, Twitter, Reddit, or email.
 
-You may be able to get help in #openkneeboard-help [on Discord](https://go.openkneeboard.com/discord).
+You may be able to get help in #vdxrovr-help [on Discord](https://github.com/NikitaShulepov/VDXROVR).

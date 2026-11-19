@@ -1,0 +1,243 @@
+// VDXROVR
+//
+// Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
+//
+// This program is open source; see the LICENSE file in the root of the
+// OpenKneeboard repository.
+#pragma once
+
+#include <VDXROVR/json_fwd.hpp>
+#include <VDXROVR/utf8.hpp>
+
+#include <cstddef>
+#include <expected>
+#include <optional>
+#include <string>
+#include <vector>
+
+namespace VDXROVR {
+struct APIEvent final {
+  // These are both required to be UTF-8
+  std::string name;
+  std::string value;
+
+  template <class T>
+  T ParsedValue() const {
+    if (name != T::ID) {
+      throw std::logic_error("Parse type does not match event name");
+    }
+    return nlohmann::json::parse(this->value);
+  }
+
+  struct JSONParseError {
+    std::string what;
+  };
+
+  template <class T>
+  std::expected<T, JSONParseError> TryParsedValue() const {
+    // Intentionally not propagating the std::logic_error
+    try {
+      return ParsedValue<T>();
+    } catch (const nlohmann::json::exception& e) {
+      return std::unexpected {JSONParseError {e.what()}};
+    }
+  }
+
+  template <class T>
+  static APIEvent FromStruct(const T& v) {
+    nlohmann::json j;
+    j = v;
+    return {T::ID, j.dump()};
+  }
+
+  operator bool() const;
+
+  static APIEvent Unserialize(std::string_view packet);
+  std::vector<std::byte> Serialize() const;
+  void Send() const;
+
+  static const wchar_t* GetMailslotPath();
+
+  /// String name of VDXROVR::UserAction enum member
+  static constexpr char EVT_REMOTE_USER_ACTION[] = "RemoteUserAction";
+
+  /// struct SetTabByIDEvent
+  static constexpr char EVT_SET_TAB_BY_ID[] = "SetTabByID";
+  /// struct SetTabByNameEvent
+  static constexpr char EVT_SET_TAB_BY_NAME[] = "SetTabByName";
+  /// struct SetTabByIndexEvent
+  static constexpr char EVT_SET_TAB_BY_INDEX[] = "SetTabByIndex";
+
+  /// struct SetProfileByGUIDEvent
+  static constexpr char EVT_SET_PROFILE_BY_GUID[] = "SetProfileByGUID";
+  /// struct SetProfileByNameEvent
+  static constexpr char EVT_SET_PROFILE_BY_NAME[] = "SetProfileByName";
+  // struct SetBrightnessEvent
+  static constexpr char EVT_SET_BRIGHTNESS[] = "SetBrightness";
+
+  // struct NudgeVRViewEvent
+  static constexpr char EVT_NUDGE_VR_VIEW[] = "NudgeVRView";
+
+  // struct ShowVRViewEvent
+  static constexpr char EVT_SHOW_VR_VIEW[] = "ShowVRView";
+  // struct HideVRViewEvent
+  static constexpr char EVT_HIDE_VR_VIEW[] = "HideVRView";
+  // struct ToggleVRViewVisibilityEvent
+  static constexpr char EVT_TOGGLE_VR_VIEW_VISIBILITY[] =
+    "ToggleVRViewVisibility";
+
+  // struct SetVRViewOpacityEvent
+  static constexpr char EVT_SET_VR_VIEW_OPACITY[] = "SetVRViewOpacity";
+
+  // struct PluginTabCustomActionEvent
+  static constexpr char EVT_PLUGIN_TAB_CUSTOM_ACTION[] =
+    "Plugin/Tab/CustomAction";
+
+  /// JSON: "[ [name, value], [name, value], ... ]"
+  static constexpr char EVT_MULTI_EVENT[] = "MultiEvent";
+
+  // Triggered if a second VDXROVR process is launched
+  // Value is a string containing a copy of `GetCommandLineW()`, converted
+  // to UTF-8
+  static constexpr char EVT_VDXROVR_EXECUTABLE_LAUNCHED[] = "VDXROVRExecutableLaunched";
+
+  inline static void Send(const APIEvent& ev) { ev.Send(); }
+};
+
+struct BaseSetTabEvent {
+  // 0 = no change
+  uint64_t mPageNumber {0};
+  // 0 = 'active', 1 = primary, 2 = secondary
+  uint8_t mKneeboard {0};
+};
+
+struct SetTabByIDEvent : public BaseSetTabEvent {
+  static constexpr auto ID {APIEvent::EVT_SET_TAB_BY_ID};
+  std::string mID;
+};
+VDXROVR_DECLARE_JSON(SetTabByIDEvent);
+
+struct SetTabByNameEvent : public BaseSetTabEvent {
+  static constexpr auto ID {APIEvent::EVT_SET_TAB_BY_NAME};
+  std::string mName;
+};
+VDXROVR_DECLARE_JSON(SetTabByNameEvent);
+
+struct SetTabByIndexEvent : public BaseSetTabEvent {
+  static constexpr auto ID {APIEvent::EVT_SET_TAB_BY_INDEX};
+  uint64_t mIndex {};
+};
+VDXROVR_DECLARE_JSON(SetTabByIndexEvent);
+
+struct SetProfileByGUIDEvent {
+  static constexpr auto ID {APIEvent::EVT_SET_PROFILE_BY_GUID};
+  std::string mGUID;
+};
+VDXROVR_DECLARE_JSON(SetProfileByGUIDEvent);
+
+struct SetProfileByNameEvent {
+  static constexpr auto ID {APIEvent::EVT_SET_PROFILE_BY_NAME};
+  std::string mName;
+};
+VDXROVR_DECLARE_JSON(SetProfileByNameEvent);
+
+struct SetBrightnessEvent {
+  static constexpr auto ID {APIEvent::EVT_SET_BRIGHTNESS};
+
+  enum class Mode {
+    Absolute,
+    Relative,
+  };
+
+  float mBrightness {};
+  Mode mMode = Mode::Absolute;
+};
+VDXROVR_DECLARE_JSON(SetBrightnessEvent);
+
+/** Nudge a view's VR placement, as if the user adjusted it in the settings
+ * app.
+ *
+ * Every value is added to the current one; omitted values are left
+ * unchanged. Units and directions are those of `VRPose`: meters and radians.
+ */
+struct NudgeVRViewEvent {
+  static constexpr auto ID {APIEvent::EVT_NUDGE_VR_VIEW};
+
+  // 0 = 'active', 1 = first view, 2 = second view, ...
+  uint8_t mKneeboard {0};
+
+  std::optional<float> mX;
+  std::optional<float> mEyeY;
+  std::optional<float> mZ;
+  std::optional<float> mRX;
+  std::optional<float> mRY;
+  std::optional<float> mRZ;
+
+  std::optional<float> mMaxWidth;
+  std::optional<float> mMaxHeight;
+};
+VDXROVR_DECLARE_JSON(NudgeVRViewEvent);
+
+// Show, hide, or toggle one view in VR, as if its 'Enabled in VR' switch was
+// changed. Show and toggle need a view number: the active view is always
+// visible.
+struct ShowVRViewEvent {
+  static constexpr auto ID {APIEvent::EVT_SHOW_VR_VIEW};
+
+  // 1 = first view, 2 = second view, ...
+  uint8_t mKneeboard {0};
+};
+VDXROVR_DECLARE_JSON(ShowVRViewEvent);
+
+struct HideVRViewEvent {
+  static constexpr auto ID {APIEvent::EVT_HIDE_VR_VIEW};
+
+  // 0 = 'active', 1 = first view, 2 = second view, ...
+  uint8_t mKneeboard {0};
+};
+VDXROVR_DECLARE_JSON(HideVRViewEvent);
+
+struct ToggleVRViewVisibilityEvent {
+  static constexpr auto ID {APIEvent::EVT_TOGGLE_VR_VIEW_VISIBILITY};
+
+  // 1 = first view, 2 = second view, ...
+  uint8_t mKneeboard {0};
+};
+VDXROVR_DECLARE_JSON(ToggleVRViewVisibilityEvent);
+
+/** Change a view's VR opacity, as if its opacity sliders in the settings app
+ * were moved. `Add` lets a one-way sender step it without knowing the current
+ * value; the result is clamped to 0..1.
+ */
+struct SetVRViewOpacityEvent {
+  static constexpr auto ID {APIEvent::EVT_SET_VR_VIEW_OPACITY};
+
+  enum class Action {
+    Set,
+    Add,
+  };
+
+  // Gaze = while looking at the view, Normal = while not
+  enum class Target {
+    Both,
+    Gaze,
+    Normal,
+  };
+
+  // 0 = 'active', 1 = first view, 2 = second view, ...
+  uint8_t mKneeboard {0};
+  Action mAction {Action::Set};
+  Target mTarget {Target::Both};
+  float mValue {};
+};
+VDXROVR_DECLARE_JSON(SetVRViewOpacityEvent);
+
+struct PluginTabCustomActionEvent {
+  static constexpr auto ID {APIEvent::EVT_PLUGIN_TAB_CUSTOM_ACTION};
+
+  std::string mActionID;
+  nlohmann::json mExtraData;
+};
+VDXROVR_DECLARE_JSON(PluginTabCustomActionEvent);
+
+}// namespace VDXROVR

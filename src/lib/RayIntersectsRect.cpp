@@ -1,14 +1,14 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/RayIntersectsRect.hpp>
+#include <VDXROVR/RayIntersectsRect.hpp>
 
 using namespace DirectX::SimpleMath;
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 bool RayIntersectsRect(
   const Vector3& rayOrigin,
@@ -47,4 +47,4 @@ bool RayIntersectsRect(
   return true;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

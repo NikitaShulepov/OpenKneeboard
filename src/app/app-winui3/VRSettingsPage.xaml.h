@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -12,21 +12,21 @@
 
 #include "WithPropertyChangedEvent.h"
 
-#include <OpenKneeboard/Events.hpp>
-#include <OpenKneeboard/ViewsSettings.hpp>
+#include <VDXROVR/Events.hpp>
+#include <VDXROVR/ViewsSettings.hpp>
 
 #include <winrt/Microsoft.UI.Xaml.Controls.h>
 
 using namespace winrt::Microsoft::UI::Xaml;
 namespace muxc = winrt::Microsoft::UI::Xaml::Controls;
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 class KneeboardState;
 }
 
-using namespace OpenKneeboard;
+using namespace VDXROVR;
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 struct VRSettingsPage
   : VRSettingsPageT<VRSettingsPage>,
     WithPropertyChangedEventOnProfileChange<VRSettingsPage> {
@@ -34,32 +34,32 @@ struct VRSettingsPage
   ~VRSettingsPage();
 
   bool SteamVREnabled();
-  OpenKneeboard::fire_and_forget SteamVREnabled(bool);
+  VDXROVR::fire_and_forget SteamVREnabled(bool);
 
   bool OpenXR64Enabled() noexcept;
-  OpenKneeboard::fire_and_forget OpenXR64Enabled(bool) noexcept;
+  VDXROVR::fire_and_forget OpenXR64Enabled(bool) noexcept;
 
   bool OpenXR32Enabled() noexcept;
-  OpenKneeboard::fire_and_forget OpenXR32Enabled(bool) noexcept;
+  VDXROVR::fire_and_forget OpenXR32Enabled(bool) noexcept;
 
-  OpenKneeboard::fire_and_forget RestoreDefaults(
+  VDXROVR::fire_and_forget RestoreDefaults(
     IInspectable,
     RoutedEventArgs) noexcept;
 
-  OpenKneeboard::fire_and_forget AddView(muxc::TabView, IInspectable) noexcept;
+  VDXROVR::fire_and_forget AddView(muxc::TabView, IInspectable) noexcept;
 
-  OpenKneeboard::fire_and_forget RemoveView(
+  VDXROVR::fire_and_forget RemoveView(
     muxc::TabView,
     muxc::TabViewTabCloseRequestedEventArgs) noexcept;
 
  private:
-  OpenKneeboard::audited_ptr<KneeboardState> mKneeboard;
+  VDXROVR::audited_ptr<KneeboardState> mKneeboard;
   void PopulateViews() noexcept;
 
   void AppendViewTab(const ViewSettings& view) noexcept;
 };
-}// namespace winrt::OpenKneeboardApp::implementation
-namespace winrt::OpenKneeboardApp::factory_implementation {
+}// namespace winrt::VDXROVRApp::implementation
+namespace winrt::VDXROVRApp::factory_implementation {
 struct VRSettingsPage
   : VRSettingsPageT<VRSettingsPage, implementation::VRSettingsPage> {};
-}// namespace winrt::OpenKneeboardApp::factory_implementation
+}// namespace winrt::VDXROVRApp::factory_implementation

@@ -1,5 +1,5 @@
 set(GENERATED_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen/$<CONFIG>/include")
-set(GENERATED_HEADER_DIR "${GENERATED_INCLUDE_DIR}/OpenKneeboard/Shaders/gen")
+set(GENERATED_HEADER_DIR "${GENERATED_INCLUDE_DIR}/VDXROVR/Shaders/gen")
 make_directory("${GENERATED_HEADER_DIR}")
 
 
@@ -30,7 +30,7 @@ macro(add_fxc_shader TARGET ENTRYPOINT SOURCE)
 endmacro()
 
 add_dxc_shader(
-  OpenKneeboard-SpriteBatch-SPIRV-PS
+  VDXROVR-SpriteBatch-SPIRV-PS
   SpritePixelShader
   SpriteBatch.hlsl
   -spirv -T ps_6_0
@@ -38,100 +38,100 @@ add_dxc_shader(
 )
 
 add_dxc_shader(
-  OpenKneeboard-SpriteBatch-SPIRV-VS
+  VDXROVR-SpriteBatch-SPIRV-VS
   SpriteVertexShader
   SpriteBatch.hlsl
   -spirv -T vs_6_0
   -D VK=1
 )
 
-add_library(OpenKneeboard-SpriteBatch-SPIRV INTERFACE)
+add_library(VDXROVR-SpriteBatch-SPIRV INTERFACE)
 target_link_libraries(
-  OpenKneeboard-SpriteBatch-SPIRV
+  VDXROVR-SpriteBatch-SPIRV
   INTERFACE
-  OpenKneeboard-SpriteBatch-SPIRV-PS
-  OpenKneeboard-SpriteBatch-SPIRV-VS
+  VDXROVR-SpriteBatch-SPIRV-PS
+  VDXROVR-SpriteBatch-SPIRV-VS
 )
 target_include_directories(
-  OpenKneeboard-SpriteBatch-SPIRV
+  VDXROVR-SpriteBatch-SPIRV
   INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
 add_dxc_shader(
-  OpenKneeboard-SpriteBatch-DXIL-PS
+  VDXROVR-SpriteBatch-DXIL-PS
   SpritePixelShader
   SpriteBatch.hlsl
   -T ps_5_1
 )
 
 add_dxc_shader(
-  OpenKneeboard-SpriteBatch-DXIL-VS
+  VDXROVR-SpriteBatch-DXIL-VS
   SpriteVertexShader
   SpriteBatch.hlsl
   -T vs_5_1
 )
 
-add_library(OpenKneeboard-SpriteBatch-DXIL INTERFACE)
+add_library(VDXROVR-SpriteBatch-DXIL INTERFACE)
 target_link_libraries(
-  OpenKneeboard-SpriteBatch-DXIL
+  VDXROVR-SpriteBatch-DXIL
   INTERFACE
-  OpenKneeboard-SpriteBatch-DXIL-PS
-  OpenKneeboard-SpriteBatch-DXIL-VS
+  VDXROVR-SpriteBatch-DXIL-PS
+  VDXROVR-SpriteBatch-DXIL-VS
 )
 target_include_directories(
-  OpenKneeboard-SpriteBatch-DXIL
+  VDXROVR-SpriteBatch-DXIL
   INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
 add_fxc_shader(
-  OpenKneeboard-Sprite-DXBC-PS
+  VDXROVR-Sprite-DXBC-PS
   SpritePixelShader
   Sprite.hlsl
   -T ps_5_0
 )
 add_fxc_shader(
-  OpenKneeboard-Sprite-DXBC-VS
+  VDXROVR-Sprite-DXBC-VS
   SpriteVertexShader
   Sprite.hlsl
   -T vs_5_0
 )
-add_library(OpenKneeboard-Sprite-DXBC INTERFACE)
+add_library(VDXROVR-Sprite-DXBC INTERFACE)
 target_link_libraries(
-  OpenKneeboard-Sprite-DXBC
+  VDXROVR-Sprite-DXBC
   INTERFACE
-  OpenKneeboard-Sprite-DXBC-PS
-  OpenKneeboard-Sprite-DXBC-VS
+  VDXROVR-Sprite-DXBC-PS
+  VDXROVR-Sprite-DXBC-VS
 )
 target_include_directories(
-  OpenKneeboard-Sprite-DXBC
+  VDXROVR-Sprite-DXBC
   INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
 # Shader Model 5.0 targets D3D11.0 and above
 add_fxc_shader(
-  OpenKneeboard-Viewer-DXBC-VS
+  VDXROVR-Viewer-DXBC-VS
   ViewerVertexShader
   Viewer.hlsl
   -T vs_5_0
 )
 add_fxc_shader(
-  OpenKneeboard-Viewer-DXBC-PS
+  VDXROVR-Viewer-DXBC-PS
   ViewerPixelShader
   Viewer.hlsl
   -T ps_5_0
 )
-add_library(OpenKneeboard-Viewer-Shaders INTERFACE)
+add_library(VDXROVR-Viewer-Shaders INTERFACE)
 target_link_libraries(
-  OpenKneeboard-Viewer-Shaders
+  VDXROVR-Viewer-Shaders
   INTERFACE
-  OpenKneeboard-Viewer-DXBC-VS
-  OpenKneeboard-Viewer-DXBC-PS
+  VDXROVR-Viewer-DXBC-VS
+  VDXROVR-Viewer-DXBC-PS
 )
 target_include_directories(
-  OpenKneeboard-Viewer-Shaders
+  VDXROVR-Viewer-Shaders
   INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )

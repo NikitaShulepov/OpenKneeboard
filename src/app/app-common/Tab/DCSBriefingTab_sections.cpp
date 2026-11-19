@@ -1,33 +1,33 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 
-#include <OpenKneeboard/APIEvent.hpp>
-#include <OpenKneeboard/Coordinates.hpp>
-#include <OpenKneeboard/DCSBriefingTab.hpp>
-#include <OpenKneeboard/DCSEvents.hpp>
-#include <OpenKneeboard/DCSExtractedMission.hpp>
-#include <OpenKneeboard/DCSGrid.hpp>
-#include <OpenKneeboard/DCSMagneticModel.hpp>
-#include <OpenKneeboard/ImageFilePageSource.hpp>
-#include <OpenKneeboard/Lua.hpp>
-#include <OpenKneeboard/PlainTextPageSource.hpp>
+#include <VDXROVR/APIEvent.hpp>
+#include <VDXROVR/Coordinates.hpp>
+#include <VDXROVR/DCSBriefingTab.hpp>
+#include <VDXROVR/DCSEvents.hpp>
+#include <VDXROVR/DCSExtractedMission.hpp>
+#include <VDXROVR/DCSGrid.hpp>
+#include <VDXROVR/DCSMagneticModel.hpp>
+#include <VDXROVR/ImageFilePageSource.hpp>
+#include <VDXROVR/Lua.hpp>
+#include <VDXROVR/PlainTextPageSource.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/dprint.hpp>
 
 #include <chrono>
 #include <cmath>
 #include <format>
 
 static_assert(
-  std::same_as<OpenKneeboard::DCSEvents::GeoReal, OpenKneeboard::GeoReal>);
+  std::same_as<VDXROVR::DCSEvents::GeoReal, VDXROVR::GeoReal>);
 
-using namespace OpenKneeboard::Coordinates;
+using namespace VDXROVR::Coordinates;
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 static std::string GetCountries(const LuaRef& countries) {
   std::string ret;
@@ -326,4 +326,4 @@ void DCSBriefingTab::PushMissionObjective(
   dprint("LuaIndexError when loading mission objective: {}", e.what());
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

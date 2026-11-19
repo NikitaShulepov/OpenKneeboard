@@ -17,7 +17,7 @@ vcpkg_cmake_install()
 
 vcpkg_copy_pdbs()
 
-vcpkg_cmake_config_fixup(PACKAGE_NAME openkneeboard-lua CONFIG_PATH share/openkneeboard-lua)
+vcpkg_cmake_config_fixup(PACKAGE_NAME vdxrovr-lua CONFIG_PATH share/vdxrovr-lua)
 
 
 if (VCPKG_LIBRARY_LINKAGE STREQUAL dynamic)

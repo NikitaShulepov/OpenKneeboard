@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include <OpenKneeboard/SpriteAtlas.hpp>
-#include <OpenKneeboard/VRKneeboard.hpp>
+#include <VDXROVR/SpriteAtlas.hpp>
+#include <VDXROVR/VRKneeboard.hpp>
 
-#include <OpenKneeboard/config.hpp>
+#include <VDXROVR/config.hpp>
 
 #include <shims/openxr/openxr.h>
 
@@ -24,7 +24,7 @@
 template <class CharT>
 struct std::formatter<XrResult, CharT> : std::formatter<int, CharT> {};
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 struct OpenXRRuntimeID {
   XrVersion mVersion;
@@ -99,4 +99,4 @@ class OpenXRKneeboard : public VRKneeboard {
   [[nodiscard]]
   const SpriteAtlas& GetSpriteAtlas(const SHM::Frame& frame) noexcept;
 };
-}// namespace OpenKneeboard
+}// namespace VDXROVR

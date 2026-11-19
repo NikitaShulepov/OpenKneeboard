@@ -4,7 +4,7 @@ permalink: /download/
 nav_exclude: true
 ---
 
-{% assign release = site.data.openkneeboard_latest_release %}
+{% assign release = site.data.vdxrovr_latest_release %}
 
 {% include download_button.html release=release %}
 

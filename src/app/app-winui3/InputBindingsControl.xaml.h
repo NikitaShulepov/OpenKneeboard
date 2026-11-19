@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -11,19 +11,19 @@
 #include "InputBindingsControl.g.h"
 // clang-format on
 
-#include <OpenKneeboard/Events.hpp>
+#include <VDXROVR/Events.hpp>
 
 #include <unordered_map>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 class UserInputDevice;
 enum class UserAction;
-}// namespace OpenKneeboard
+}// namespace VDXROVR
 
-using namespace OpenKneeboard;
+using namespace VDXROVR;
 using namespace winrt::Microsoft::UI::Xaml::Controls;
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 struct InputBindingsControl : InputBindingsControlT<InputBindingsControl> {
   InputBindingsControl() noexcept;
   ~InputBindingsControl();
@@ -33,7 +33,7 @@ struct InputBindingsControl : InputBindingsControlT<InputBindingsControl> {
 
  private:
   winrt::apartment_context mUIThread;
-  ::OpenKneeboard::fire_and_forget PromptForBinding(UserAction);
+  ::VDXROVR::fire_and_forget PromptForBinding(UserAction);
   void ClearBinding(UserAction);
 
   void PopulateUI();
@@ -51,9 +51,9 @@ struct InputBindingsControl : InputBindingsControlT<InputBindingsControl> {
   std::unordered_map<UserAction, Row> mRows;
   void UpdateUI(UserAction);
 };
-}// namespace winrt::OpenKneeboardApp::implementation
-namespace winrt::OpenKneeboardApp::factory_implementation {
+}// namespace winrt::VDXROVRApp::implementation
+namespace winrt::VDXROVRApp::factory_implementation {
 struct InputBindingsControl : InputBindingsControlT<
                                 InputBindingsControl,
                                 implementation::InputBindingsControl> {};
-}// namespace winrt::OpenKneeboardApp::factory_implementation
+}// namespace winrt::VDXROVRApp::factory_implementation

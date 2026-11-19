@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -6,11 +6,11 @@
 // OpenKneeboard repository.
 #pragma once
 
-#include <OpenKneeboard/json_fwd.hpp>
+#include <VDXROVR/json_fwd.hpp>
 
 #include <shims/winrt/base.h>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 enum class ViewerFillMode {
   Default,
@@ -18,7 +18,7 @@ enum class ViewerFillMode {
   Transparent,
 };
 
-#define OPENKNEEBOARD_VIEWER_ALIGNMENTS \
+#define VDXROVR_VIEWER_ALIGNMENTS \
   IT(TopLeft) \
   IT(Top) \
   IT(TopRight) \
@@ -32,14 +32,14 @@ enum class ViewerFillMode {
 consteval size_t ViewerAlignmentsCount() {
   size_t count = 0;
 #define IT(x) ++count;
-  OPENKNEEBOARD_VIEWER_ALIGNMENTS;
+  VDXROVR_VIEWER_ALIGNMENTS;
 #undef IT
   return count;
 }
 
 enum class ViewerAlignment {
 #define IT(x) x,
-  OPENKNEEBOARD_VIEWER_ALIGNMENTS
+  VDXROVR_VIEWER_ALIGNMENTS
 #undef IT
 };
 
@@ -61,6 +61,6 @@ struct ViewerSettings final {
   constexpr bool operator==(const ViewerSettings&) const noexcept = default;
 };
 
-OPENKNEEBOARD_DECLARE_SPARSE_JSON(ViewerSettings)
+VDXROVR_DECLARE_SPARSE_JSON(ViewerSettings)
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

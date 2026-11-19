@@ -16,7 +16,7 @@ Use `clang-format`. If you use Visual Studio Code, the built-in
 
 ## Naming Conventions
 
-As the libraries used by OpenKneeboard follow different conventions, it's not
+As the libraries used by VDXROVR follow different conventions, it's not
 possible to be consistent with all of them. The goal is to be as consistent as
 possible while avoid conflicts; for example, properties and class names should not have the same convention.
 

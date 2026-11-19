@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -8,15 +8,15 @@
 
 #include "OpenXRKneeboard.hpp"
 
-#include <OpenKneeboard/D3D11.hpp>
-#include <OpenKneeboard/D3D11/Renderer.hpp>
-#include <OpenKneeboard/SHM/D3D11.hpp>
+#include <VDXROVR/D3D11.hpp>
+#include <VDXROVR/D3D11/Renderer.hpp>
+#include <VDXROVR/SHM/D3D11.hpp>
 
-#include <OpenKneeboard/config.hpp>
+#include <VDXROVR/config.hpp>
 
 struct XrGraphicsBindingD3D11KHR;
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 class OpenXRD3D11Kneeboard final : public OpenXRKneeboard {
  public:
@@ -61,4 +61,4 @@ class OpenXRD3D11Kneeboard final : public OpenXRKneeboard {
   std::unordered_map<XrSwapchain, SwapchainResources> mSwapchainResources;
 };
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

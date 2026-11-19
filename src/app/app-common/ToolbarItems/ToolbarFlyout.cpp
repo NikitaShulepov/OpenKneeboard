@@ -1,12 +1,12 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/ToolbarFlyout.hpp>
+#include <VDXROVR/ToolbarFlyout.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 ToolbarFlyout::ToolbarFlyout(
   std::string glyph,
@@ -48,4 +48,4 @@ std::vector<std::shared_ptr<IToolbarItem>> ToolbarFlyout::GetSubItems() const {
   return mSubItems;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

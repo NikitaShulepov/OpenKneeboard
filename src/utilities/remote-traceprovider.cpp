@@ -1,42 +1,42 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 
-#include <OpenKneeboard/tracing.hpp>
+#include <VDXROVR/tracing.hpp>
 
 #include <cstdlib>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 /* PS >
- * [System.Diagnostics.Tracing.EventSource]::new("OpenKneeboard.RemoteControl")
- * 6dafad04-3f57-55d2-e92e-7e49710d7e46
+ * [System.Diagnostics.Tracing.EventSource]::new("VDXROVR.RemoteControl")
+ * 6d66807e-e21a-4f88-bdb1-b4f0ae54ae27
  */
 TRACELOGGING_DEFINE_PROVIDER(
   gTraceProvider,
-  "OpenKneeboard.RemoteControl",
-  (0x6dafad04, 0x3f57, 0x55d2, 0xe9, 0x2e, 0x7e, 0x49, 0x71, 0x0d, 0x7e, 0x46));
+  "VDXROVR.RemoteControl",
+  (0x6d66807e, 0xe21a, 0x4f88, 0xbd, 0xb1, 0xb4, 0xf0, 0xae, 0x54, 0xae, 0x27));
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR
 
 namespace {
 
 class TraceLoggingRegistration {
  public:
   TraceLoggingRegistration() {
-    TraceLoggingRegister(OpenKneeboard::gTraceProvider);
+    TraceLoggingRegister(VDXROVR::gTraceProvider);
     TraceLoggingWrite(
-      OpenKneeboard::gTraceProvider,
+      VDXROVR::gTraceProvider,
       "Invocation/Start",
       TraceLoggingThisExecutable(),
       TraceLoggingValue(GetCommandLineW(), "Command Line"));
   }
   ~TraceLoggingRegistration() {
-    TraceLoggingWrite(OpenKneeboard::gTraceProvider, "Invocation/Stop");
-    TraceLoggingUnregister(OpenKneeboard::gTraceProvider);
+    TraceLoggingWrite(VDXROVR::gTraceProvider, "Invocation/Stop");
+    TraceLoggingUnregister(VDXROVR::gTraceProvider);
   }
 
   TraceLoggingRegistration(const TraceLoggingRegistration&) = delete;

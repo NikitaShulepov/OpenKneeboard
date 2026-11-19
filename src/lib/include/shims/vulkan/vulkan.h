@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -6,13 +6,13 @@
 // OpenKneeboard repository.
 #pragma once
 
-#include <OpenKneeboard/config.hpp>
+#include <VDXROVR/config.hpp>
 
-#ifdef OPENKNEEBOARD_32BIT_BUILD
+#ifdef VDXROVR_32BIT_BUILD
 
-#include <OpenKneeboard/Opaque64BitHandle.hpp>
+#include <VDXROVR/Opaque64BitHandle.hpp>
 
-namespace OpenKneeboard::Vulkan::Detail {
+namespace VDXROVR::Vulkan::Detail {
 
 /*
  * The Vulkan headers define handles by default in a way such that
@@ -20,21 +20,21 @@ namespace OpenKneeboard::Vulkan::Detail {
  * in overload resolution. Let's fix this.
  */
 template <class T>
-struct NonDispatchableHandle64 : public OpenKneeboard::Opaque64BitHandle<T> {
+struct NonDispatchableHandle64 : public VDXROVR::Opaque64BitHandle<T> {
   using Opaque64BitHandle<T>::Opaque64BitHandle;
 };
 
-}// namespace OpenKneeboard::Vulkan::Detail
+}// namespace VDXROVR::Vulkan::Detail
 
 #define VK_DEFINE_NON_DISPATCHABLE_HANDLE(object) \
   struct object \
-    : public ::OpenKneeboard::Vulkan::Detail::NonDispatchableHandle64< \
+    : public ::VDXROVR::Vulkan::Detail::NonDispatchableHandle64< \
         object> { \
     using NonDispatchableHandle64<object>::NonDispatchableHandle64; \
   };
 // As Vulkan usually uses `uint64_t` for 32-bit handles, it can't use nullptr;
 // as we have a nullptr overload in our struct, it'll work fine
 #define VK_NULL_HANDLE nullptr
-#endif// OPENKNEEBOARD_32BIT_BUILD
+#endif// VDXROVR_32BIT_BUILD
 
 #include <vulkan/vulkan.h>

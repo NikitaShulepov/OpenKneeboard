@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -14,19 +14,19 @@
 #include "FilePicker.h"
 #include "Globals.h"
 
-#include <OpenKneeboard/Filesystem.hpp>
-#include <OpenKneeboard/KneeboardState.hpp>
-#include <OpenKneeboard/LaunchURI.hpp>
-#include <OpenKneeboard/RuntimeFiles.hpp>
-#include <OpenKneeboard/SHM/ActiveConsumers.hpp>
-#include <OpenKneeboard/Settings.hpp>
-#include <OpenKneeboard/TroubleshootingStore.hpp>
+#include <VDXROVR/Filesystem.hpp>
+#include <VDXROVR/KneeboardState.hpp>
+#include <VDXROVR/LaunchURI.hpp>
+#include <VDXROVR/RuntimeFiles.hpp>
+#include <VDXROVR/SHM/ActiveConsumers.hpp>
+#include <VDXROVR/Settings.hpp>
+#include <VDXROVR/TroubleshootingStore.hpp>
 
-#include <OpenKneeboard/chrono.hpp>
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/scope_exit.hpp>
-#include <OpenKneeboard/utf8.hpp>
-#include <OpenKneeboard/version.hpp>
+#include <VDXROVR/chrono.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/scope_exit.hpp>
+#include <VDXROVR/utf8.hpp>
+#include <VDXROVR/version.hpp>
 
 #include <shims/winrt/base.h>
 
@@ -49,7 +49,7 @@
 #include <time.h>
 #include <zip.h>
 
-using namespace OpenKneeboard;
+using namespace VDXROVR;
 
 namespace {
 enum class RegistryView {
@@ -77,14 +77,14 @@ std::expected<std::wstring, LSTATUS> GetRegistryStringValue(
   const auto result = RegGetValueW(
     hkey, subKey, value, flags, nullptr, buffer.data(), &byteCount);
   if (result != ERROR_SUCCESS) {
-    OPENKNEEBOARD_BREAK;
+    VDXROVR_BREAK;
     return std::unexpected {result};
   }
   return {buffer};
 }
 }// namespace
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 
 bool HelpPage::mAgreedToPrivacyWarning = false;
 
@@ -94,7 +94,7 @@ HelpPage::HelpPage() {
   this->PopulateVersion();
   this->PopulateLicenses();
 
-  QuickStartLink().Click([]() -> OpenKneeboard::fire_and_forget {
+  QuickStartLink().Click([]() -> VDXROVR::fire_and_forget {
     const auto quickStartPath =
       RuntimeFiles::GetInstallationDirectory() / RuntimeFiles::QUICK_START_PDF;
 
@@ -106,10 +106,9 @@ HelpPage::~HelpPage() { this->RemoveAllEventListeners(); }
 
 void HelpPage::PopulateVersion() {
   auto details = std::format(
-    "OpenKneeboard {}\n\n"
-    "Copyright © 2021-2024 Frederick Emmott.\n\n"
-    "With thanks to Paul 'Goldwolf' Whittingham for the logo and banner "
-    "artwork.\n\n"
+    "VDXROVR {}\n\n"
+    "Original OpenKneeboard Copyright © 2021-2024 Frederick Emmott.\n"
+    "Fork maintained by NikitaShulepov.\n\n"
     "Build: {}-{}-{}\n"
     "Tag: {}\n",
     Version::ReleaseName,
@@ -156,14 +155,11 @@ auto ReadableTime(const std::chrono::time_point<C, T>& time) {
     std::chrono::time_point_cast<std::chrono::seconds>(time));
 }
 
-OpenKneeboard::fire_and_forget HelpPage::OnExportClick(
+VDXROVR::fire_and_forget HelpPage::OnExportClick(
   IInspectable,
   RoutedEventArgs) noexcept {
   constexpr winrt::guid thisCall {
-    0x02308bd3,
-    0x2b00,
-    0x4b7c,
-    {0x84, 0xa8, 0x61, 0xfc, 0xcd, 0xb7, 0xe5, 0x42}};
+    0x65ca7628, 0x9b30, 0x4df4, {0xb1, 0x36, 0x97, 0x5b, 0x6a, 0x2f, 0xa0, 0x93}};
 
   FilePicker picker(gMainWindow);
   picker.SettingsIdentifier(thisCall);
@@ -171,7 +167,7 @@ OpenKneeboard::fire_and_forget HelpPage::OnExportClick(
   picker.AppendFileType(_(L"Zip archive"), {L".zip"});
   picker.SuggestedFileName(
     std::format(
-      L"OpenKneeboard-v{}.{}.{}.{}-{:%Y%m%dT%H%M}.zip",
+      L"VDXROVR-v{}.{}.{}.{}-{:%Y%m%dT%H%M}.zip",
       Version::Major,
       Version::Minor,
       Version::Patch,
@@ -253,7 +249,7 @@ OpenKneeboard::fire_and_forget HelpPage::OnExportClick(
 
     const auto relative =
       to_utf8(std::filesystem::proximate(path, settingsDir).generic_wstring());
-    // v1.8 and below; PID etc. Now in %LOCALAPPDATA% / OpenKneeboard /
+    // v1.8 and below; PID etc. Now in %LOCALAPPDATA% / VDXROVR /
     // instance.txt
     if (relative == ".instance") {
       continue;
@@ -279,7 +275,7 @@ OpenKneeboard::fire_and_forget HelpPage::OnExportClick(
       for (const auto entry:
            std::filesystem::recursive_directory_iterator(crashDumps)) {
         if (entry.path().filename().wstring().starts_with(
-              L"OpenKneeboardApp.exe")) {
+              L"VDXROVRApp.exe")) {
           dumps.push_back({entry.path(), entry.last_write_time()});
         }
       }
@@ -298,7 +294,7 @@ OpenKneeboard::fire_and_forget HelpPage::OnExportClick(
     }
 
     if (path.extension() != ".txt") {
-      OPENKNEEBOARD_BREAK;
+      VDXROVR_BREAK;
       continue;
     }
 
@@ -327,7 +323,7 @@ OpenKneeboard::fire_and_forget HelpPage::OnExportClick(
   }
 }
 
-OpenKneeboard::fire_and_forget HelpPage::OnCheckForUpdatesClick(
+VDXROVR::fire_and_forget HelpPage::OnCheckForUpdatesClick(
   IInspectable,
   RoutedEventArgs) noexcept {
   co_await CheckForUpdates(UpdateCheckType::Manual, this->XamlRoot());
@@ -353,12 +349,12 @@ void HelpPage::PopulateLicenses() noexcept {
       children.Append(link);
     };
 
-  addEntry("OpenKneeboard", docDir / "LICENSE.txt");
+  addEntry("VDXROVR", docDir / "LICENSE.txt");
 
   Controls::TextBlock ackBlock;
   ackBlock.TextWrapping(TextWrapping::WrapWholeWords);
   ackBlock.Text(
-    _(L"OpenKneeboard uses and includes software from the following "
+    _(L"VDXROVR uses and includes software from the following "
       L"projects:"));
   children.Append(ackBlock);
 
@@ -751,4 +747,4 @@ void HelpPage::DisplayLicense(
   ShellExecuteW(NULL, L"open", path.c_str(), nullptr, nullptr, SW_SHOWNORMAL);
 }
 
-}// namespace winrt::OpenKneeboardApp::implementation
+}// namespace winrt::VDXROVRApp::implementation

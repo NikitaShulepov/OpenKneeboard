@@ -30,8 +30,8 @@ target_link_libraries(
 
 add_library(ThirdParty::magic_json_serialize_enum ALIAS magic_json_serialize_enum)
 
-include(ok_add_license_file)
-ok_add_license_file(
+include(vdxrovr_add_license_file)
+vdxrovr_add_license_file(
   "${magic_json_serialize_enum_SOURCE_DIR}/LICENSE"
   "LICENSE-ThirdParty-magic_json_serialize_enum.txt"
 )

@@ -1,19 +1,19 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
 
-#include <OpenKneeboard/ProcessShutdownBlock.hpp>
+#include <VDXROVR/ProcessShutdownBlock.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/dprint.hpp>
 
 #include <atomic>
 #include <source_location>
 #include <unordered_map>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 namespace {
 
@@ -116,4 +116,4 @@ void ProcessShutdownBlock::DumpActiveBlocks() noexcept {
   ShutdownData::Get().DumpActiveBlocks();
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

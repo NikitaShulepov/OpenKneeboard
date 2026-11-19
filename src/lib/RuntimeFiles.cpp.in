@@ -1,6 +1,6 @@
-#include <OpenKneeboard/RuntimeFiles.hpp>
+#include <VDXROVR/RuntimeFiles.hpp>
 
-namespace OpenKneeboard::RuntimeFiles {
+namespace VDXROVR::RuntimeFiles {
 const std::string_view WINDOW_CAPTURE_HOOK_DLL(
-  "$<TARGET_FILE_NAME:OpenKneeboard-WindowCaptureHook>");
-}// namespace OpenKneeboard::RuntimeFiles
+  "$<TARGET_FILE_NAME:VDXROVR-WindowCaptureHook>");
+}// namespace VDXROVR::RuntimeFiles

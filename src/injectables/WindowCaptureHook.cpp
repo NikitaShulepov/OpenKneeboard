@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -6,10 +6,10 @@
 // OpenKneeboard repository.
 #include "detours-ext.hpp"
 
-#include <OpenKneeboard/WindowCaptureControl.hpp>
+#include <VDXROVR/WindowCaptureControl.hpp>
 
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/dprint.hpp>
 
 #include <Windows.h>
 
@@ -19,7 +19,7 @@
 
 #include <windowsx.h>
 
-using namespace OpenKneeboard;
+using namespace VDXROVR;
 
 namespace {
 struct InjectedPoint {
@@ -280,18 +280,18 @@ CallWndProc_WindowCaptureHook(int code, WPARAM wParam, LPARAM lParam) {
   return CallNextHookEx(NULL, code, wParam, lParam);
 }
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 /* PS >
- * [System.Diagnostics.Tracing.EventSource]::new("OpenKneeboard.WindowCaptureHook")
- * 2f381a1b-6486-55d8-ee5a-3cc04e8df79d
+ * [System.Diagnostics.Tracing.EventSource]::new("VDXROVR.WindowCaptureHook")
+ * 46ec6965-f0f3-407a-8fce-0d3b13aebf9a
  */
 TRACELOGGING_DEFINE_PROVIDER(
   gTraceProvider,
-  "OpenKneeboard.WindowCaptureHook",
-  (0x2f381a1b, 0x6486, 0x55d8, 0xee, 0x5a, 0x3c, 0xc0, 0x4e, 0x8d, 0xf7, 0x9d));
+  "VDXROVR.WindowCaptureHook",
+  (0x46ec6965, 0xf0f3, 0x407a, 0x8f, 0xce, 0x0d, 0x3b, 0x13, 0xae, 0xbf, 0x9a));
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR
 
 static std::wstring GetProgramPath() {
   wchar_t buffer[1024];

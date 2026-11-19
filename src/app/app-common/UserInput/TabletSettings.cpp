@@ -1,28 +1,28 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/TabletSettings.hpp>
+#include <VDXROVR/TabletSettings.hpp>
 
-#include <OpenKneeboard/json.hpp>
+#include <VDXROVR/json.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 // Not using sparse json as an individual binding should not be diffed/merged:
 // if either the buttons or actions differ, it's a different binding, not a
 // modified one.
-OPENKNEEBOARD_DEFINE_JSON(TabletSettings::ButtonBinding, mButtons, mAction)
-OPENKNEEBOARD_DEFINE_SPARSE_JSON(
+VDXROVR_DEFINE_JSON(TabletSettings::ButtonBinding, mButtons, mAction)
+VDXROVR_DEFINE_SPARSE_JSON(
   TabletSettings::Device,
   mID,
   mName,
   mExpressKeyBindings,
   mOrientation)
-OPENKNEEBOARD_DEFINE_SPARSE_JSON(
+VDXROVR_DEFINE_SPARSE_JSON(
   TabletSettings,
   mDevices,
   mWarnIfOTDIPCUnusuable)
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

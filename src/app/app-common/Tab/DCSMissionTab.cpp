@@ -1,18 +1,18 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/APIEvent.hpp>
-#include <OpenKneeboard/DCSEvents.hpp>
-#include <OpenKneeboard/DCSExtractedMission.hpp>
-#include <OpenKneeboard/DCSMissionTab.hpp>
-#include <OpenKneeboard/FolderPageSource.hpp>
+#include <VDXROVR/APIEvent.hpp>
+#include <VDXROVR/DCSEvents.hpp>
+#include <VDXROVR/DCSExtractedMission.hpp>
+#include <VDXROVR/DCSMissionTab.hpp>
+#include <VDXROVR/FolderPageSource.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/dprint.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 DCSMissionTab::DCSMissionTab(
   const audited_ptr<DXResources>& dxr,
@@ -96,7 +96,7 @@ std::optional<std::string> DCSMissionTab::GetPersistentIDForPage(PageID) const {
   return std::nullopt;
 }
 
-OpenKneeboard::fire_and_forget DCSMissionTab::OnAPIEvent(
+VDXROVR::fire_and_forget DCSMissionTab::OnAPIEvent(
   APIEvent event,
   [[maybe_unused]] std::filesystem::path installPath,
   [[maybe_unused]] std::filesystem::path savedGamePath) {
@@ -126,4 +126,4 @@ OpenKneeboard::fire_and_forget DCSMissionTab::OnAPIEvent(
   }
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

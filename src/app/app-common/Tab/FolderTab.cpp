@@ -1,17 +1,17 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/FolderPageSource.hpp>
-#include <OpenKneeboard/FolderTab.hpp>
+#include <VDXROVR/FolderPageSource.hpp>
+#include <VDXROVR/FolderTab.hpp>
 
-#include <OpenKneeboard/dprint.hpp>
+#include <VDXROVR/dprint.hpp>
 
 #include <shims/nlohmann/json.hpp>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 FolderTab::FolderTab(
   const audited_ptr<DXResources>& dxr,
@@ -71,4 +71,4 @@ task<void> FolderTab::SetPath(std::filesystem::path path) {
   mPath = path;
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

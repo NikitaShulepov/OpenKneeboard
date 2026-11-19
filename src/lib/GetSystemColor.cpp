@@ -1,14 +1,14 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
 // This program is open source; see the LICENSE file in the root of the
 // OpenKneeboard repository.
-#include <OpenKneeboard/GetSystemColor.hpp>
+#include <VDXROVR/GetSystemColor.hpp>
 
 #include <Windows.h>
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 
 D2D1_COLOR_F GetSystemColor(int index) {
   auto color = ::GetSysColor(index);
@@ -20,4 +20,4 @@ D2D1_COLOR_F GetSystemColor(int index) {
   };
 }
 
-}// namespace OpenKneeboard
+}// namespace VDXROVR

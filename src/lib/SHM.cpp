@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -7,17 +7,17 @@
 #include "SHM/ReaderState.hpp"
 #include "SHM/WriterState.hpp"
 
-#include <OpenKneeboard/LazyOnceValue.hpp>
-#include <OpenKneeboard/SHM.hpp>
-#include <OpenKneeboard/SHM/ActiveConsumers.hpp>
-#include <OpenKneeboard/StateMachine.hpp>
-#include <OpenKneeboard/Win32.hpp>
+#include <VDXROVR/LazyOnceValue.hpp>
+#include <VDXROVR/SHM.hpp>
+#include <VDXROVR/SHM/ActiveConsumers.hpp>
+#include <VDXROVR/StateMachine.hpp>
+#include <VDXROVR/Win32.hpp>
 
-#include <OpenKneeboard/bitflags.hpp>
-#include <OpenKneeboard/config.hpp>
-#include <OpenKneeboard/dprint.hpp>
-#include <OpenKneeboard/tracing.hpp>
-#include <OpenKneeboard/version.hpp>
+#include <VDXROVR/bitflags.hpp>
+#include <VDXROVR/config.hpp>
+#include <VDXROVR/dprint.hpp>
+#include <VDXROVR/tracing.hpp>
+#include <VDXROVR/version.hpp>
 
 #include <Windows.h>
 
@@ -35,7 +35,7 @@
 
 using namespace felly::numeric_cast_types;
 
-namespace OpenKneeboard::SHM {
+namespace VDXROVR::SHM {
 
 enum class HeaderFlags : ULONG {
   FEEDER_ATTACHED = 1 << 0,
@@ -45,14 +45,14 @@ namespace {
 using namespace Detail;
 }
 
-}// namespace OpenKneeboard::SHM
+}// namespace VDXROVR::SHM
 
-namespace OpenKneeboard {
+namespace VDXROVR {
 template <>
 constexpr bool is_bitflags_v<SHM::HeaderFlags> = true;
-}// namespace OpenKneeboard
+}// namespace VDXROVR
 
-namespace OpenKneeboard::SHM {
+namespace VDXROVR::SHM {
 static uint64_t CreateSessionID() {
   std::random_device randDevice;
   std::uniform_int_distribution<uint32_t> randDist;
@@ -103,7 +103,7 @@ struct SharedData final {
   // Use the magic string to make sure we don't have
   // uninitialized memory that happens to have the
   // feeder-attached bit set
-  static constexpr std::string_view Magic {"OKBMagic"};
+  static constexpr std::string_view Magic {"VDXROVRMagic"};
   static_assert(Magic.size() == sizeof(uint64_t));
   uint64_t mMagic = *reinterpret_cast<const uint64_t*>(Magic.data());
 
@@ -230,7 +230,7 @@ class Impl {
           "Unexpected result from SHM WaitForSingleObject in lock(): "
           "{:#016x}",
           static_cast<uint64_t>(result));
-        OPENKNEEBOARD_BREAK;
+        VDXROVR_BREAK;
         return;
     }
 
@@ -265,7 +265,7 @@ class Impl {
         dprint(
           "Unexpected result from SHM WaitForSingleObject in try_lock(): {}",
           result);
-        OPENKNEEBOARD_BREAK;
+        VDXROVR_BREAK;
         return false;
     }
 
@@ -279,7 +279,7 @@ class Impl {
 
   void unlock() {
     mState.template Transition<State::Locked, State::Unlocked>();
-    OPENKNEEBOARD_TraceLoggingScope("SHM::Impl::unlock()");
+    VDXROVR_TraceLoggingScope("SHM::Impl::unlock()");
     ReleaseMutex(mMutexHandle.get());
   }
 
@@ -397,7 +397,7 @@ class Reader::Impl : public SHM::Impl<ReaderStateMachine> {
   SessionResources mSessionResources {};
 
   void UpdateSession() {
-    OPENKNEEBOARD_TraceLoggingScope("SHM::Reader::Impl::UpdateSession()");
+    VDXROVR_TraceLoggingScope("SHM::Reader::Impl::UpdateSession()");
     const auto& shared = *this->mHeader;
 
     if (shared.mSessionID != mSessionID) {
@@ -414,7 +414,7 @@ class Reader::Impl : public SHM::Impl<ReaderStateMachine> {
         OpenProcess(PROCESS_DUP_HANDLE, FALSE, shared.mFeederProcessID));
     }
     if (!feeder) {
-      OPENKNEEBOARD_BREAK;
+      VDXROVR_BREAK;
       return;
     }
     const auto index = shared.mFrameNumber % SHMSwapchainLength;
@@ -455,7 +455,7 @@ void Reader::Impl::IPCHandle::Update(
 }
 
 Reader::Reader(const ConsumerKind kind, const uint64_t gpuLUID) {
-  OPENKNEEBOARD_TraceLoggingScope("SHM::Reader::Reader()");
+  VDXROVR_TraceLoggingScope("SHM::Reader::Reader()");
   const auto path = SHMPath();
   dprint(L"Initializing SHM reader");
 
@@ -470,7 +470,7 @@ Reader::Reader(const ConsumerKind kind, const uint64_t gpuLUID) {
   dprint("Reader initialized.");
 }
 
-Reader::~Reader() { OPENKNEEBOARD_TraceLoggingScope("SHM::Reader::~Reader()"); }
+Reader::~Reader() { VDXROVR_TraceLoggingScope("SHM::Reader::~Reader()"); }
 
 Reader::operator bool() const {
   return p && p->IsValid() && p->mHeader->HaveFeeder();
@@ -479,7 +479,7 @@ Reader::operator bool() const {
 Writer::operator bool() const { return (bool)p; }
 
 std::expected<Frame, Frame::Error> Reader::MaybeGet() {
-  OPENKNEEBOARD_TraceLoggingScopedActivity(
+  VDXROVR_TraceLoggingScopedActivity(
     activity, "SHM::Reader::MaybeGetUncached()");
 
   // Quick checks so we don't acquire a lock when we absolutely don't need one
@@ -562,8 +562,8 @@ void Writer::SubmitFrame(
   p->mHeader->mFlags |= HeaderFlags::FEEDER_ATTACHED;
   p->mHeader->mFeederProcessID = p->mProcessID;
   const auto idx = (++p->mHeader->mFrameNumber) % SwapChainLength;
-  OPENKNEEBOARD_ASSERT(idx == info.mTextureIndex);
-  OPENKNEEBOARD_ASSERT(p->mReadyReadFenceValue == info.mFenceOut);
+  VDXROVR_ASSERT(idx == info.mTextureIndex);
+  VDXROVR_ASSERT(p->mReadyReadFenceValue == info.mFenceOut);
   auto& frame = p->mHeader->mFrames[idx];
 
   frame = {
@@ -589,4 +589,4 @@ uint64_t Reader::GetFrameCountForMetricsOnly() const {
   return p->mHeader->mFrameNumber;
 }
 
-}// namespace OpenKneeboard::SHM
+}// namespace VDXROVR::SHM

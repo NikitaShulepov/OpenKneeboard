@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -10,13 +10,13 @@
 #include "RenameTabDialog.g.cpp"
 // clang-format on
 
-#include <OpenKneeboard/utf8.hpp>
+#include <VDXROVR/utf8.hpp>
 
 #include <format>
 
-using namespace OpenKneeboard;
+using namespace VDXROVR;
 
-namespace winrt::OpenKneeboardApp::implementation {
+namespace winrt::VDXROVRApp::implementation {
 
 RenameTabDialog::RenameTabDialog() {
   InitializeComponent();
@@ -48,4 +48,4 @@ void RenameTabDialog::Prompt(const winrt::hstring& prompt) noexcept {
     winrt::Microsoft::UI::Xaml::Data::PropertyChangedEventArgs(L"Prompt"));
 }
 
-}// namespace winrt::OpenKneeboardApp::implementation
+}// namespace winrt::VDXROVRApp::implementation

@@ -1,4 +1,4 @@
-// OpenKneeboard
+// VDXROVR
 //
 // Copyright (c) 2025 Fred Emmott <fred@fredemmott.com>
 //
@@ -6,20 +6,20 @@
 // OpenKneeboard repository.
 #pragma once
 
-#include <OpenKneeboard/StateMachine.hpp>
+#include <VDXROVR/StateMachine.hpp>
 
-#include <OpenKneeboard/array.hpp>
+#include <VDXROVR/array.hpp>
 
-namespace OpenKneeboard::SHM {
+namespace VDXROVR::SHM {
 
-#define OPENKNEEBOARD_SHM_READER_STATES \
+#define VDXROVR_SHM_READER_STATES \
   IT(Unlocked) \
   IT(TryLock) \
   IT(Locked)
 
 enum class ReaderState {
 #define IT(x) x,
-  OPENKNEEBOARD_SHM_READER_STATES
+  VDXROVR_SHM_READER_STATES
 #undef IT
 };
 
@@ -31,4 +31,4 @@ using ReaderStateMachine = StateMachine<
 
 static_assert(lockable_state_machine<SHM::ReaderStateMachine>);
 
-}// namespace OpenKneeboard::SHM
+}// namespace VDXROVR::SHM
