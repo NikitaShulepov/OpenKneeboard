@@ -85,6 +85,8 @@ jobs:
                   r"|The majority of Open" + r"Kneeboard is under|Open" + r"Kneeboard repository\."
                   r"|GNU General Public License|#include\s+<Fred" + r"Emmott/"
                   r"|Fred" + r"Emmott::|github\.com/fred" + r"emmott/"
+                  r"|github\.com/Open" + r"Kneeboard/(?!Open" + r"Kneeboard(?:\.git\b|$|[/?#\x22\x27)\s>]))"
+                  r"|fred" + r"emmott-(?:bindline|weak-refs|cppwinrt|magic-json-serialize-enum|openxr-tracing|\*)"
                   r"|window->SetValue\(\"Open" + r"Kneeboard\"|Open" + r"KneeboardAPI"
                   r"|declare namespace Open" + r"Kneeboard|\.Open" + r"KneeboardPlugin"
                   r"|Id=\"Open" + r"KneeboardPlugin\"|legacyLocal|legacySaved"

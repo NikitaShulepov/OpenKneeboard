@@ -103,7 +103,7 @@ struct SharedData final {
   // Use the magic string to make sure we don't have
   // uninitialized memory that happens to have the
   // feeder-attached bit set
-  static constexpr std::string_view Magic {"VDXMagic"};
+  static constexpr std::string_view Magic {"DXVMagic"};
   static_assert(Magic.size() == sizeof(uint64_t));
   uint64_t mMagic = *reinterpret_cast<const uint64_t*>(Magic.data());
 
