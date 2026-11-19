@@ -176,20 +176,20 @@ std::filesystem::path GetSettingsDirectory() {
 }
 
 void MigrateSettingsDirectory() {
-  const newPath = GetSettingsDirectory();
-  if (!std::filesystem::is_empty(newPath)) {
+  std::error_code ec;
+  const auto newPath = GetSettingsDirectory();
+  if (std::filesystem::exists(newPath, ec) && !std::filesystem::is_empty(newPath, ec)) {
     return;
   }
   // Section 3.i exception: read legacy settings strictly read-only without modifying or extending legacy folders.
-  const legacyLocal = GetKnownFolderPath<FOLDERID_LocalAppData>() / "OpenKneeboard" / "Settings";
-  const legacySaved = GetKnownFolderPath<FOLDERID_SavedGames>() / "OpenKneeboard";
-  const sourceRoot = std::filesystem::exists(legacyLocal)
+  const auto legacyLocal = GetKnownFolderPath<FOLDERID_LocalAppData>() / "OpenKneeboard" / "Settings";
+  const auto legacySaved = GetKnownFolderPath<FOLDERID_SavedGames>() / "OpenKneeboard";
+  const auto sourceRoot = std::filesystem::exists(legacyLocal, ec)
     ? legacyLocal
     : legacySaved;
-  if (!std::filesystem::exists(sourceRoot)) {
+  if (!std::filesystem::exists(sourceRoot, ec)) {
     return;
   }
-  std::error_code ec;
   for (auto&& it : std::filesystem::recursive_directory_iterator(sourceRoot, ec)) {
     if (ec || it.is_directory()) {
       continue;
@@ -198,10 +198,15 @@ void MigrateSettingsDirectory() {
     if (src.extension() != ".json") {
       continue;
     }
+    const auto relPath = std::filesystem::relative(src, sourceRoot, ec);
+    if (ec || relPath.empty()) {
+      continue;
+    }
     auto dest = newPath;
-    for (auto&& part :
-         std::filesystem::relative(src.parent_path(), sourceRoot, ec) / src.filename()) {
-      dest /= (part == "profiles") ? std::filesystem::path("Profiles") : part;
+    for (const auto& part : relPath) {
+      dest /= (part == std::filesystem::path("profiles"))
+        ? std::filesystem::path("Profiles")
+        : part;
     }
     std::filesystem::create_directories(dest.parent_path(), ec);
     std::filesystem::copy_file(
