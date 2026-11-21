@@ -103,7 +103,7 @@ struct SharedData final {
   // Use the magic string to make sure we don't have
   // uninitialized memory that happens to have the
   // feeder-attached bit set
-  static constexpr std::string_view Magic {"DXVMagic"};
+  static constexpr std::string_view Magic {"VDXMagic"};
   static_assert(Magic.size() == sizeof(uint64_t));
   uint64_t mMagic = *reinterpret_cast<const uint64_t*>(Magic.data());
 
@@ -125,7 +125,7 @@ struct SharedData final {
 static_assert(std::is_standard_layout_v<SharedData>);
 constexpr DWORD SHM_SIZE = sizeof(SharedData);
 static_assert(
-  SHM_SIZE == 3024,
+  SHM_SIZE == 3232,
   "Potential mismatch between 32-bit and 64-bit SHM layout");
 
 }// namespace

@@ -119,7 +119,7 @@ jobs:
 
               with open(".github/workflows/ci.yml", "r", encoding="utf-8") as cf:
                   ci_txt = cf.read()
-              if ("Open" + "Kneeboard-GHA") in ci_txt or ("x64-windows-open" + "kneeboard") in ci_txt:
+              if ("Open" + "Kneeboard-GHA") in ci_txt or ("Open" + "Kneeboard-OBS-Plugin-GHA") in ci_txt or ("x64-windows-open" + "kneeboard") in ci_txt:
                   errors.append(".github/workflows/ci.yml:0 [section-3.i] Un-rebranded CI artifact or triplet name")
               if "steps.build-installer.outputs.installer-name" in ci_txt and "Source-GHA" not in ci_txt:
                   errors.append(".github/workflows/ci.yml:0 [section-3.ii] Installer upload requires paired Source-GHA archive")
@@ -244,6 +244,12 @@ jobs:
           path: |
             build/out/${{matrix.config}}
             !build/out/${{matrix.config}}/pdb
+      - name: Attach OBS Studio plugin
+        if: ${{ matrix.config != 'Debug' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: VDXROVR-OBS-Plugin-GHA${{github.run_number}}
+          path: build/out/${{matrix.config}}/obs-plugin
       - name: Install WiX
         run: |
           dotnet tool install --global wix --version 5.0.2
@@ -262,12 +268,6 @@ jobs:
           $InstallerName = (Get-Item $InstallerPath).Name
           Add-Content $env:GITHUB_OUTPUT "installer-path=${InstallerPath}"
           Add-Content $env:GITHUB_OUTPUT "installer-name=${InstallerName}"
-      - name: Upload unsigned installer
-        if: ${{ matrix.config != 'Debug' }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: ${{steps.build-installer.outputs.installer-name}}
-          path: ${{steps.build-installer.outputs.installer-path}}
       - name: Package source archive (License Section 3.ii)
         if: ${{ matrix.config != 'Debug' }}
         shell: pwsh
@@ -280,6 +280,12 @@ jobs:
         with:
           name: VDXROVR-Source-GHA${{github.run_number}}
           path: build/VDXROVR-Source-GHA${{github.run_number}}.zip
+      - name: Upload unsigned installer
+        if: ${{ matrix.config != 'Debug' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{steps.build-installer.outputs.installer-name}}
+          path: ${{steps.build-installer.outputs.installer-path}}
       - name: Generate release notes
         if: github.ref_type == 'tag' && matrix.config != 'Debug'
         id: release-notes

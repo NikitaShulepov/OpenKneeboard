@@ -23,6 +23,10 @@
 #include <VDXROVR/scope_exit.hpp>
 #include <VDXROVR/tracing.hpp>
 
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <format>
 #include <mutex>
 #include <ranges>
 
@@ -301,9 +305,10 @@ task<SHM::LayerConfig> InterprocessRenderer::RenderLayer(
     ret.mVR.mLocationOnTexture.mOffset.mY += bounds.mOffset.mY;
   }
 
+  const PixelRect layerRect {bounds.mOffset, layer.mFullSize};
   co_await view->RenderWithChrome(
     mCanvas.get(),
-    PixelRect {bounds.mOffset, layer.mFullSize},
+    layerRect,
     layer.mIsActiveForInput);
 
   co_return ret;
@@ -349,7 +354,10 @@ task<void> InterprocessRenderer::RenderNow() noexcept {
     mSpriteAtlas.emplace(mViewSizes);
   }
   const auto& sprites = mSpriteAtlas.value();
-  const auto canvasSize = sprites.GetAtlasSize();
+  auto canvasSize = sprites.GetAtlasSize();
+  const uint32_t gizmoY = canvasSize.mHeight;
+  canvasSize.mWidth = (std::max)(canvasSize.mWidth, 768u);
+  canvasSize.mHeight += 104u;
 
   TraceLoggingWriteTagged(activity, "AcquireDXLock/start");
   const std::unique_lock dxlock(*mDXR);
@@ -374,6 +382,343 @@ task<void> InterprocessRenderer::RenderNow() noexcept {
     shmLayers.push_back(co_await this->RenderLayer(renderInfo, bounds));
   }
 
+  {
+    auto d2d = mCanvas->d2d();
+    const float gy = static_cast<float>(gizmoY);
+    winrt::com_ptr<ID2D1SolidColorBrush> haloBrush;
+    winrt::com_ptr<ID2D1SolidColorBrush> cyanBrush;
+    winrt::com_ptr<ID2D1SolidColorBrush> whiteBrush;
+    winrt::com_ptr<ID2D1SolidColorBrush> darkRingBrush;
+    winrt::com_ptr<ID2D1SolidColorBrush> amberBrush;
+    winrt::com_ptr<ID2D1SolidColorBrush> goldBrush;
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.22f, 0.74f, 0.97f, 0.14f), haloBrush.put()));
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.49f, 0.83f, 0.99f, 0.36f), cyanBrush.put()));
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.84f, 0.93f, 0.99f, 0.50f), whiteBrush.put()));
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.04f, 0.07f, 0.12f, 0.45f), darkRingBrush.put()));
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.96078f, 0.61961f, 0.04314f, 0.95f), amberBrush.put()));
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.99216f, 0.87843f, 0.27843f, 1.0f), goldBrush.put()));
+
+    // [0..32]: Laser beam vertical sprite (subtle halo -> cyan -> soft core)
+    d2d->FillRectangle(
+      D2D1::RectF(8.0f, gy + 1.0f, 24.0f, gy + 31.0f), haloBrush.get());
+    d2d->FillRectangle(
+      D2D1::RectF(12.0f, gy + 1.0f, 20.0f, gy + 31.0f), cyanBrush.get());
+    d2d->FillRectangle(
+      D2D1::RectF(14.5f, gy + 1.0f, 17.5f, gy + 31.0f), whiteBrush.get());
+
+    // [32..64]: Hit reticle dot
+    const D2D1_POINT_2F c {48.0f, gy + 16.0f};
+    d2d->FillEllipse(D2D1::Ellipse(c, 11.0f, 11.0f), darkRingBrush.get());
+    d2d->FillEllipse(D2D1::Ellipse(c, 7.5f, 7.5f), cyanBrush.get());
+    d2d->FillEllipse(D2D1::Ellipse(c, 3.2f, 3.2f), whiteBrush.get());
+
+    // [64..96]: Solid amber swatch for runtime Edit Mode border bars
+    d2d->FillRectangle(
+      D2D1::RectF(64.0f, gy, 96.0f, gy + 32.0f), amberBrush.get());
+
+    // [96..128]: Solid bright gold swatch for hovered/active corner handles
+    d2d->FillRectangle(
+      D2D1::RectF(96.0f, gy, 128.0f, gy + 32.0f), goldBrush.get());
+
+    // [128..256]: Pure borderless chevron arrow (no box, no background)
+    {
+      winrt::com_ptr<ID2D1Factory> d2dFactory;
+      d2d->GetFactory(d2dFactory.put());
+      winrt::com_ptr<ID2D1StrokeStyle> roundStroke;
+      if (d2dFactory) {
+        const D2D1_STROKE_STYLE_PROPERTIES props = D2D1::StrokeStyleProperties(
+          D2D1_CAP_STYLE_ROUND,
+          D2D1_CAP_STYLE_ROUND,
+          D2D1_CAP_STYLE_ROUND,
+          D2D1_LINE_JOIN_ROUND);
+        d2dFactory->CreateStrokeStyle(&props, nullptr, 0, roundStroke.put());
+      }
+      winrt::com_ptr<ID2D1SolidColorBrush> chevShadowBrush;
+      winrt::com_ptr<ID2D1SolidColorBrush> chevBrush;
+      check_hresult(d2d->CreateSolidColorBrush(
+        D2D1::ColorF(0.02f, 0.04f, 0.08f, 0.72f), chevShadowBrush.put()));
+      check_hresult(d2d->CreateSolidColorBrush(
+        D2D1::ColorF(0.95f, 0.97f, 0.99f, 0.98f), chevBrush.put()));
+      const D2D1_POINT_2F pL {156.0f, gy + 11.0f};
+      const D2D1_POINT_2F pM {192.0f, gy + 22.0f};
+      const D2D1_POINT_2F pR {228.0f, gy + 11.0f};
+      d2d->DrawLine(pL, pM, chevShadowBrush.get(), 6.5f, roundStroke.get());
+      d2d->DrawLine(pM, pR, chevShadowBrush.get(), 6.5f, roundStroke.get());
+      d2d->DrawLine(pL, pM, chevBrush.get(), 4.0f, roundStroke.get());
+      d2d->DrawLine(pM, pR, chevBrush.get(), 4.0f, roundStroke.get());
+    }
+
+    // [0..768] x [gy+32..gy+104]: In-VR floating 3D Control Bar (mode + distance + multi-tab spawn/close)
+    const float dy = gy + 32.0f;
+    constexpr float dw = 768.0f;
+    constexpr float dh = 72.0f;
+    const auto vrSettings = mKneeboard->GetVRSettings();
+    const auto& hf = vrSettings.mHeadFollow;
+    const auto effectiveMode = GetEffectiveFollowMode(hf);
+    const bool isHandMode =
+      effectiveMode == VRFollowMode::LeftHand
+      || effectiveMode == VRFollowMode::RightHand;
+    const bool isHeadMode =
+      effectiveMode == VRFollowMode::HeadFollowLazy
+      || effectiveMode == VRFollowMode::HeadFollowSmooth
+      || effectiveMode == VRFollowMode::HeadLocked;
+
+    winrt::com_ptr<ID2D1SolidColorBrush> dockBgBrush;
+    winrt::com_ptr<ID2D1SolidColorBrush> dockBorderBrush;
+    winrt::com_ptr<ID2D1SolidColorBrush> btnInactiveBrush;
+    winrt::com_ptr<ID2D1SolidColorBrush> btnActiveBrush;
+    winrt::com_ptr<ID2D1SolidColorBrush> btnStrokeBrush;
+    winrt::com_ptr<ID2D1SolidColorBrush> textLightBrush;
+    winrt::com_ptr<ID2D1SolidColorBrush> textDarkBrush;
+    winrt::com_ptr<ID2D1SolidColorBrush> textMutedBrush;
+    winrt::com_ptr<ID2D1SolidColorBrush> readoutAccentBrush;
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.035f, 0.055f, 0.095f, 0.94f), dockBgBrush.put()));
+    check_hresult(d2d->CreateSolidColorBrush(
+      vrSettings.mEditModeEnabled
+        ? D2D1::ColorF(0.984f, 0.749f, 0.141f, 0.82f)
+        : D2D1::ColorF(0.580f, 0.639f, 0.722f, 0.38f),
+      dockBorderBrush.put()));
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.118f, 0.161f, 0.231f, 0.84f), btnInactiveBrush.put()));
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.851f, 0.467f, 0.024f, 0.94f), btnActiveBrush.put()));
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.580f, 0.639f, 0.722f, 0.30f), btnStrokeBrush.put()));
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.886f, 0.910f, 0.941f, 1.0f), textLightBrush.put()));
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.043f, 0.067f, 0.125f, 1.0f), textDarkBrush.put()));
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.580f, 0.639f, 0.722f, 1.0f), textMutedBrush.put()));
+    check_hresult(d2d->CreateSolidColorBrush(
+      isHandMode
+        ? D2D1::ColorF(0.984f, 0.749f, 0.141f, 1.0f)
+        : D2D1::ColorF(0.220f, 0.741f, 0.973f, 1.0f),
+      readoutAccentBrush.put()));
+
+    d2d->FillRoundedRectangle(
+      D2D1::RoundedRect(D2D1::RectF(2.0f, dy + 2.0f, dw - 2.0f, dy + dh - 2.0f), 14.0f, 14.0f),
+      dockBgBrush.get());
+    d2d->DrawRoundedRectangle(
+      D2D1::RoundedRect(D2D1::RectF(2.0f, dy + 2.0f, dw - 2.0f, dy + dh - 2.0f), 14.0f, 14.0f),
+      dockBorderBrush.get(),
+      2.0f);
+
+    const float divX = dw * 0.598f;
+    d2d->DrawLine(
+      D2D1::Point2F(divX, dy + 14.0f),
+      D2D1::Point2F(divX, dy + dh - 14.0f),
+      btnStrokeBrush.get(),
+      1.5f);
+    const float divX2 = dw * 0.818f;
+    d2d->DrawLine(
+      D2D1::Point2F(divX2, dy + 14.0f),
+      D2D1::Point2F(divX2, dy + dh - 14.0f),
+      btnStrokeBrush.get(),
+      1.5f);
+
+    winrt::com_ptr<IDWriteTextFormat> btnFormat;
+    winrt::com_ptr<IDWriteTextFormat> symFormat;
+    winrt::com_ptr<IDWriteTextFormat> readoutFormat;
+    winrt::com_ptr<IDWriteTextFormat> subFormat;
+    if (mDXR && mDXR->mDWriteFactory) {
+      check_hresult(mDXR->mDWriteFactory->CreateTextFormat(
+        L"Segoe UI",
+        nullptr,
+        DWRITE_FONT_WEIGHT_SEMI_BOLD,
+        DWRITE_FONT_STYLE_NORMAL,
+        DWRITE_FONT_STRETCH_NORMAL,
+        14.5f,
+        L"",
+        btnFormat.put()));
+      check_hresult(mDXR->mDWriteFactory->CreateTextFormat(
+        L"Consolas",
+        nullptr,
+        DWRITE_FONT_WEIGHT_BOLD,
+        DWRITE_FONT_STYLE_NORMAL,
+        DWRITE_FONT_STRETCH_NORMAL,
+        24.0f,
+        L"",
+        symFormat.put()));
+      check_hresult(mDXR->mDWriteFactory->CreateTextFormat(
+        L"Consolas",
+        nullptr,
+        DWRITE_FONT_WEIGHT_BOLD,
+        DWRITE_FONT_STYLE_NORMAL,
+        DWRITE_FONT_STRETCH_NORMAL,
+        15.5f,
+        L"",
+        readoutFormat.put()));
+      check_hresult(mDXR->mDWriteFactory->CreateTextFormat(
+        L"Segoe UI",
+        nullptr,
+        DWRITE_FONT_WEIGHT_SEMI_BOLD,
+        DWRITE_FONT_STYLE_NORMAL,
+        DWRITE_FONT_STRETCH_NORMAL,
+        10.0f,
+        L"",
+        subFormat.put()));
+    }
+
+    const auto drawCenteredText = [&](
+      const std::wstring& text,
+      IDWriteTextFormat* fmt,
+      const D2D1_RECT_F& rect,
+      ID2D1SolidColorBrush* brush) {
+      if (!fmt || !mDXR || !mDXR->mDWriteFactory) {
+        return;
+      }
+      winrt::com_ptr<IDWriteTextLayout> layout;
+      if (FAILED(mDXR->mDWriteFactory->CreateTextLayout(
+            text.c_str(),
+            static_cast<UINT32>(text.size()),
+            fmt,
+            (std::max)(1.0f, rect.right - rect.left),
+            (std::max)(1.0f, rect.bottom - rect.top),
+            layout.put()))) {
+        return;
+      }
+      layout->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+      layout->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+      d2d->DrawTextLayout(D2D1::Point2F(rect.left, rect.top), layout.get(), brush);
+    };
+
+    const std::wstring headLabel = !isHeadMode
+      ? L"Head"
+      : (effectiveMode == VRFollowMode::HeadFollowSmooth
+           ? L"Head \u00B7 Smooth"
+           : (effectiveMode == VRFollowMode::HeadLocked ? L"Head \u00B7 HUD"
+                                                        : L"Head \u00B7 Cone"));
+    winrt::com_ptr<ID2D1SolidColorBrush> spawnBgBrush;
+    winrt::com_ptr<ID2D1SolidColorBrush> spawnStrokeBrush;
+    winrt::com_ptr<ID2D1SolidColorBrush> spawnTextBrush;
+    winrt::com_ptr<ID2D1SolidColorBrush> closeBgBrush;
+    winrt::com_ptr<ID2D1SolidColorBrush> closeStrokeBrush;
+    winrt::com_ptr<ID2D1SolidColorBrush> closeTextBrush;
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.063f, 0.290f, 0.220f, 0.92f), spawnBgBrush.put()));
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.204f, 0.827f, 0.600f, 0.68f), spawnStrokeBrush.put()));
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.655f, 0.953f, 0.816f, 1.0f), spawnTextBrush.put()));
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.365f, 0.082f, 0.133f, 0.94f), closeBgBrush.put()));
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.984f, 0.443f, 0.522f, 0.72f), closeStrokeBrush.put()));
+    check_hresult(d2d->CreateSolidColorBrush(
+      D2D1::ColorF(0.996f, 0.804f, 0.827f, 1.0f), closeTextBrush.put()));
+
+    enum class DockTone : uint8_t { Default, Active, Spawn, Close };
+    struct DockBtnSpec {
+      float uMin;
+      float uMax;
+      DockTone tone;
+      bool isSym;
+      std::wstring label;
+    };
+    const bool canCloseOverlay = shmLayers.size() > 1;
+    const bool highlightSharedModes = shmLayers.size() <= 1;
+    const std::array<DockBtnSpec, 8> buttons {{
+      {0.012f, 0.132f,
+       (highlightSharedModes && effectiveMode == VRFollowMode::WorldLocked)
+         ? DockTone::Active
+         : DockTone::Default,
+       false,
+       (highlightSharedModes && effectiveMode == VRFollowMode::WorldLocked)
+         ? L"\u25CF World"
+         : L"World"},
+      {0.140f, 0.305f,
+       (highlightSharedModes && isHeadMode) ? DockTone::Active : DockTone::Default,
+       false,
+       highlightSharedModes ? headLabel : L"Head"},
+      {0.313f, 0.448f,
+       (highlightSharedModes && effectiveMode == VRFollowMode::LeftHand)
+         ? DockTone::Active
+         : DockTone::Default,
+       false,
+       (highlightSharedModes && effectiveMode == VRFollowMode::LeftHand)
+         ? L"\u00D7 L Hand"
+         : L"L Hand"},
+      {0.456f, 0.591f,
+       (highlightSharedModes && effectiveMode == VRFollowMode::RightHand)
+         ? DockTone::Active
+         : DockTone::Default,
+       false,
+       (highlightSharedModes && effectiveMode == VRFollowMode::RightHand)
+         ? L"\u00D7 R Hand"
+         : L"R Hand"},
+      {0.606f, 0.666f, DockTone::Default, true, L"-"},
+      {0.752f, 0.812f, DockTone::Default, true, L"+"},
+      {0.824f, canCloseOverlay ? 0.916f : 0.988f, DockTone::Spawn, false, L"+ Tab"},
+      {0.924f, 0.988f, DockTone::Close, true, L"\u00D7"},
+    }};
+
+    for (size_t bi = 0; bi < buttons.size(); ++bi) {
+      const auto& b = buttons[bi];
+      if (!canCloseOverlay && b.tone == DockTone::Close) {
+        continue;
+      }
+      const D2D1_RECT_F r = D2D1::RectF(
+        b.uMin * dw, dy + 10.0f, b.uMax * dw, dy + dh - 10.0f);
+      ID2D1SolidColorBrush* bg = btnInactiveBrush.get();
+      ID2D1SolidColorBrush* stroke = btnStrokeBrush.get();
+      ID2D1SolidColorBrush* fg = textLightBrush.get();
+      float strokeW = 1.25f;
+      if (b.tone == DockTone::Active) {
+        bg = btnActiveBrush.get();
+        stroke = goldBrush.get();
+        fg = textDarkBrush.get();
+        strokeW = 2.0f;
+      } else if (b.tone == DockTone::Spawn) {
+        bg = spawnBgBrush.get();
+        stroke = spawnStrokeBrush.get();
+        fg = spawnTextBrush.get();
+        strokeW = 1.5f;
+      } else if (b.tone == DockTone::Close) {
+        bg = closeBgBrush.get();
+        stroke = closeStrokeBrush.get();
+        fg = closeTextBrush.get();
+        strokeW = 1.5f;
+      }
+      d2d->FillRoundedRectangle(D2D1::RoundedRect(r, 9.0f, 9.0f), bg);
+      d2d->DrawRoundedRectangle(D2D1::RoundedRect(r, 9.0f, 9.0f), stroke, strokeW);
+      drawCenteredText(
+        b.label, b.isSym ? symFormat.get() : btnFormat.get(), r, fg);
+    }
+
+    float distM = 0.55f;
+    if (isHandMode) {
+      const float handLen = std::hypot(
+        hf.mHandOffsetX, std::hypot(hf.mHandOffsetY, hf.mHandOffsetZ));
+      distM = std::clamp(handLen > 1e-4f ? handLen : 0.10f, 0.06f, 0.65f);
+    } else if (isHeadMode) {
+      distM = std::clamp(std::abs(hf.mHeadOffsetZ), 0.20f, 1.35f);
+    } else if (!shmLayers.empty()) {
+      const auto& p = shmLayers.front().mVR.mPose;
+      distM = std::clamp(
+        std::hypot(p.mX, std::hypot(p.mEyeY, p.mZ)), 0.20f, 2.0f);
+    }
+    const int distCm = static_cast<int>(std::lround(distM * 100.0f));
+    const std::wstring distStr = std::format(L"{} cm", distCm);
+    const D2D1_RECT_F valRect = D2D1::RectF(
+      0.668f * dw, dy + 10.0f, 0.750f * dw, dy + 42.0f);
+    const D2D1_RECT_F subRect = D2D1::RectF(
+      0.668f * dw, dy + 42.0f, 0.750f * dw, dy + 62.0f);
+    drawCenteredText(
+      distStr, readoutFormat.get(), valRect, readoutAccentBrush.get());
+    drawCenteredText(
+      isHandMode ? L"HAND" : L"DIST",
+      subFormat.get(),
+      subRect,
+      textMutedBrush.get());
+  }
   this->SubmitFrame(shmLayers, inputLayerID);
 }
 

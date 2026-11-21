@@ -422,6 +422,8 @@ target_link_libraries(
   ThirdParty::DirectXTK
   VDXROVR-RayIntersectsRect
   VDXROVR-SHM
+  PRIVATE
+  VDXROVR-APIEvent
 )
 
 set(VERSION_CPP_FILE "${CMAKE_CURRENT_BINARY_DIR}/include/VDXROVR/version.hpp")

@@ -58,4 +58,7 @@ endif ()
 
 add_subdirectory(dcs-hook)
 add_subdirectory(utilities)
+if (BUILD_IS_64BIT)
+  add_subdirectory(obs-plugin)
+endif ()
 add_subdirectory(app)

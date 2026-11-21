@@ -21,6 +21,7 @@
   IT(CmdClearAttachments) \
   IT(CmdClearColorImage) \
   IT(CmdCopyImage) \
+  IT(CmdCopyImageToBuffer) \
   IT(CmdDraw) \
   IT(CmdEndRenderingKHR) \
   IT(CmdPipelineBarrier) \
@@ -65,6 +66,7 @@
   IT(GetDescriptorSetLayoutBindingOffsetEXT) \
   IT(GetDescriptorSetLayoutSizeEXT) \
   IT(GetDeviceQueue) \
+  IT(GetFenceStatus) \
   IT(GetImageMemoryRequirements) \
   IT(GetImageMemoryRequirements2KHR) \
   IT(GetImageSubresourceLayout) \

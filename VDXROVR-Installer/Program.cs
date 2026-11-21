@@ -199,6 +199,7 @@ ManagedProject CreateProject(DirectoryInfo inputRoot)
                 new Dir("utilities",
                     new Files("utilities/*.exe",
                         f => hardLinks.All(l => Path.Combine(inputRoot.FullName, l.Link) != f))),
+                new Dir("obs-plugin", new Files("obs-plugin/*.*")),
                 new Dir("include", new Files("include/*.*")),
                 new Dir("scripts", new Files("scripts/*.*")),
                 new Files(installerResources, @"installer/*.*")),

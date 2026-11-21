@@ -77,6 +77,13 @@ struct APIEvent final {
 
   // struct NudgeVRViewEvent
   static constexpr char EVT_NUDGE_VR_VIEW[] = "NudgeVRView";
+  // struct SetVRManipulatedTransformEvent
+  static constexpr char EVT_SET_VR_MANIPULATED_TRANSFORM[] =
+    "SetVRManipulatedTransform";
+  // struct VRContentPointerEvent
+  static constexpr char EVT_VR_CONTENT_POINTER[] = "VRContentPointer";
+  // struct VROverlayManageEvent
+  static constexpr char EVT_VR_OVERLAY_MANAGE[] = "VROverlayManage";
 
   // struct ShowVRViewEvent
   static constexpr char EVT_SHOW_VR_VIEW[] = "ShowVRView";
@@ -177,6 +184,83 @@ struct NudgeVRViewEvent {
   std::optional<float> mMaxHeight;
 };
 VDXROVR_DECLARE_JSON(NudgeVRViewEvent);
+
+struct SetVRManipulatedTransformEvent {
+  static constexpr auto ID {APIEvent::EVT_SET_VR_MANIPULATED_TRANSFORM};
+
+  uint8_t mKneeboard {0};
+  uint64_t mLayerID {0};
+
+  std::optional<float> mX;
+  std::optional<float> mEyeY;
+  std::optional<float> mZ;
+  std::optional<float> mRX;
+  std::optional<float> mRY;
+  std::optional<float> mRZ;
+
+  std::optional<float> mHeadOffsetX;
+  std::optional<float> mHeadOffsetY;
+  std::optional<float> mHeadOffsetZ;
+  std::optional<float> mHeadPitchDeg;
+  std::optional<float> mHeadYawDeg;
+
+  std::optional<float> mHandOffsetX;
+  std::optional<float> mHandOffsetY;
+  std::optional<float> mHandOffsetZ;
+  std::optional<float> mHandPitchDeg;
+  std::optional<float> mHandForwardX;
+  std::optional<float> mHandForwardY;
+  std::optional<float> mHandForwardZ;
+
+  std::optional<uint8_t> mFollowMode;
+  std::optional<bool> mPinToHand;
+  std::optional<uint8_t> mPinnedHand;
+
+  std::optional<float> mMaxWidth;
+  std::optional<float> mMaxHeight;
+};
+VDXROVR_DECLARE_JSON(SetVRManipulatedTransformEvent);
+
+struct VRContentPointerEvent {
+  static constexpr auto ID {APIEvent::EVT_VR_CONTENT_POINTER};
+
+  enum class Action : uint8_t {
+    Move = 0,
+    PrimaryDown = 1,
+    PrimaryUp = 2,
+    Wheel = 3,
+    Leave = 4,
+  };
+
+  uint8_t mKneeboard {0};
+  uint64_t mLayerID {0};
+  Action mAction {Action::Move};
+  float mU {0.5f};
+  float mV {0.5f};
+  uint32_t mButtons {0};
+  int32_t mWheelDeltaY {0};
+};
+VDXROVR_DECLARE_JSON(VRContentPointerEvent);
+
+struct VROverlayManageEvent {
+  static constexpr auto ID {APIEvent::EVT_VR_OVERLAY_MANAGE};
+
+  enum class Action : uint8_t {
+    SpawnNextTab = 0,
+    CloseOverlay = 1,
+  };
+
+  Action mAction {Action::SpawnNextTab};
+  uint8_t mKneeboard {0};
+  uint64_t mLayerID {0};
+  std::optional<float> mSpawnX;
+  std::optional<float> mSpawnEyeY;
+  std::optional<float> mSpawnZ;
+  std::optional<float> mSpawnRX;
+  std::optional<float> mSpawnRY;
+  std::optional<float> mSpawnRZ;
+};
+VDXROVR_DECLARE_JSON(VROverlayManageEvent);
 
 // Show, hide, or toggle one view in VR, as if its 'Enabled in VR' switch was
 // changed. Show and toggle need a view number: the active view is always

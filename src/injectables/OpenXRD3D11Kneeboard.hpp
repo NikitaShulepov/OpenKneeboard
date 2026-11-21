@@ -14,6 +14,14 @@
 
 #include <VDXROVR/config.hpp>
 
+#include <directxtk/CommonStates.h>
+#include <directxtk/SpriteBatch.h>
+
+#include <array>
+#include <deque>
+#include <mutex>
+#include <vector>
+
 struct XrGraphicsBindingD3D11KHR;
 
 namespace VDXROVR {
@@ -35,7 +43,26 @@ class OpenXRD3D11Kneeboard final : public OpenXRKneeboard {
   };
   static DXGIFormats GetDXGIFormats(OpenXRNext*, XrSession);
 
+  void OnAppSwapchainCreated(
+    XrSwapchain swapchain,
+    const XrSwapchainCreateInfo& createInfo) override;
+  void OnAppSwapchainDestroyed(XrSwapchain swapchain) override;
+  void OnAppSwapchainImageAcquired(
+    XrSwapchain swapchain,
+    uint32_t imageIndex) override;
+  void OnAppSwapchainImageReleased(XrSwapchain swapchain) override;
+
  protected:
+  VRMirrorGraphicsApi GetMirrorGraphicsApi() const noexcept override {
+    return VRMirrorGraphicsApi::D3D11;
+  }
+  bool CaptureMirrorFrame(
+    const OpenXRMirror::CaptureRequest& request,
+    std::vector<uint8_t>& outBgra,
+    uint32_t& outWidth,
+    uint32_t& outHeight,
+    uint32_t& outSourceWidth,
+    uint32_t& outSourceHeight) override;
   SHM::Reader& GetSHM() override;
   XrSwapchain CreateSwapchain(XrSession, const PixelSize&) override;
   void ReleaseSwapchainResources(XrSwapchain) override;
@@ -59,6 +86,45 @@ class OpenXRD3D11Kneeboard final : public OpenXRKneeboard {
   using SwapchainResources = D3D11::SwapchainResources;
 
   std::unordered_map<XrSwapchain, SwapchainResources> mSwapchainResources;
+
+  struct TrackedAppSwapchain {
+    uint32_t mWidth {0};
+    uint32_t mHeight {0};
+    uint32_t mArraySize {1};
+    uint32_t mSampleCount {1};
+    DXGI_FORMAT mFormat {DXGI_FORMAT_UNKNOWN};
+    std::vector<winrt::com_ptr<ID3D11Texture2D>> mImages;
+    std::deque<uint32_t> mAcquiredQueue;
+    uint32_t mLastReleasedIndex {0};
+    bool mHasReleased {false};
+  };
+
+  std::mutex mAppSwapchainsMutex;
+  std::unordered_map<uint64_t, TrackedAppSwapchain> mAppSwapchains;
+  std::unordered_map<uint64_t, std::vector<winrt::com_ptr<ID3D11Texture2D>>>
+    mOverlaySwapchainImages;
+
+  uint32_t mMirrorRtWidth {0};
+  uint32_t mMirrorRtHeight {0};
+  winrt::com_ptr<ID3D11Texture2D> mMirrorRtTexture;
+  winrt::com_ptr<ID3D11RenderTargetView> mMirrorRtView;
+  std::array<winrt::com_ptr<ID3D11Texture2D>, 2> mMirrorStaging;
+  std::array<bool, 2> mMirrorStagingReady {false, false};
+  uint32_t mMirrorStagingWriteIdx {0};
+  std::unique_ptr<DirectX::SpriteBatch> mMirrorSpriteBatch;
+  std::unique_ptr<DirectX::CommonStates> mMirrorStates;
+
+  winrt::com_ptr<ID3D11Texture2D> mMirrorScratch2D;
+  uint32_t mMirrorScratchW {0};
+  uint32_t mMirrorScratchH {0};
+  DXGI_FORMAT mMirrorScratchFmt {DXGI_FORMAT_UNKNOWN};
+  winrt::com_ptr<ID3D11ShaderResourceView> mMirrorScratchSRV;
+
+  bool EnsureMirrorResources(uint32_t width, uint32_t height) noexcept;
+  ID3D11ShaderResourceView* PrepareSourceSRV(
+    ID3D11Texture2D* srcTex,
+    uint32_t arrayIndex,
+    DXGI_FORMAT declaredFormat) noexcept;
 };
 
 }// namespace VDXROVR

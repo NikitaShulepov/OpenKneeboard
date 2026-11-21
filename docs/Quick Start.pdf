@@ -5,11 +5,11 @@
 4 0 obj << /Length 392 >>
 stream
 BT
-/F1 18 Tf 54 740 Td (DXVROVR Quick Start) Tj
+/F1 18 Tf 54 740 Td (VDXROVR Quick Start) Tj
 /F1 11 Tf 0 -28 Td (Derivative VR Kneeboard & Overlay Tool) Tj
 0 -18 Td (Maintained by: NikitaShulepov) Tj
-0 -18 Td (Repository: https://github.com/NikitaShulepov/DXVROVR) Tj
-0 -18 Td (OpenXR API Layer: XR_APILAYER_NIKITASHULEPOV_DXVROVR) Tj
+0 -18 Td (Repository: https://github.com/NikitaShulepov/VDXROVR) Tj
+0 -18 Td (OpenXR API Layer: XR_APILAYER_NikitaShulepov_VDXROVR) Tj
 0 -28 Td (Use VR Settings to configure Head-Follow, Hand Pinning, Edit Mode, and Hand Gestures.) Tj
 ET
 endstream

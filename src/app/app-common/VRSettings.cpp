@@ -38,10 +38,80 @@ VDXROVR_DEFINE_SPARSE_JSON(GazeTargetScale, mVertical, mHorizontal);
 
 VDXROVR_DEFINE_SPARSE_JSON(VROpacitySettings, mNormal, mGaze);
 
+NLOHMANN_JSON_SERIALIZE_ENUM(
+  VRFollowMode,
+  {
+    {VRFollowMode::WorldLocked, "WorldLocked"},
+    {VRFollowMode::HeadLocked, "HeadLocked"},
+    {VRFollowMode::HeadFollowSmooth, "HeadFollowSmooth"},
+    {VRFollowMode::HeadFollowLazy, "HeadFollowLazy"},
+    {VRFollowMode::LeftHand, "LeftHand"},
+    {VRFollowMode::RightHand, "RightHand"},
+  });
+VDXROVR_DEFINE_SPARSE_JSON(
+  VRHeadFollowSettings,
+  mMode,
+  mDeadzoneAngleDeg,
+  mDeadzoneDistanceM,
+  mFollowSpeed,
+  mLockRoll,
+  mLockPitch,
+  mPinToHand,
+  mPinnedHand,
+  mHeadOffsetX,
+  mHeadOffsetY,
+  mHeadOffsetZ,
+  mHeadPitchDeg,
+  mHeadYawDeg,
+  mHandOffsetX,
+  mHandOffsetY,
+  mHandOffsetZ,
+  mHandPitchDeg,
+  mHandForwardX,
+  mHandForwardY,
+  mHandForwardZ,
+  mWristTiltOffset)
+VDXROVR_DEFINE_SPARSE_JSON(
+  VRGestureSettings,
+  mEnabled,
+  mAllowPinchReposition,
+  mPinchThresholdM,
+  mSwipeMinDistanceM,
+  mCooldownMs)
+NLOHMANN_JSON_SERIALIZE_ENUM(
+  VRMirrorEyeMode,
+  {
+    {VRMirrorEyeMode::Left, "Left"},
+    {VRMirrorEyeMode::Right, "Right"},
+    {VRMirrorEyeMode::Both, "Both"},
+  });
+NLOHMANN_JSON_SERIALIZE_ENUM(
+  VRMirrorResolution,
+  {
+    {VRMirrorResolution::HD720, "HD720"},
+    {VRMirrorResolution::FHD1080, "FHD1080"},
+  });
+VDXROVR_DEFINE_SPARSE_JSON(
+  VRMirrorSettings,
+  mEnabled,
+  mEyeMode,
+  mResolution,
+  mSmoothingEnabled,
+  mTemporalStrength,
+  mCameraStabilization,
+  mShowOverlays,
+  mIpdMm,
+  mCaptureGameAudio,
+  mWindowAudioMonitor)
 VDXROVR_DEFINE_SPARSE_JSON(
   VRRenderSettings,
   mQuirks,
-  mEnableGazeInputFocus)
+  mEnableGazeInputFocus,
+  mEditModeEnabled,
+  mAllowControllerManipulation,
+  mHeadFollow,
+  mGestures,
+  mMirror)
 
 template <>
 void from_json_postprocess<VRSettings>(const nlohmann::json& j, VRSettings& v) {

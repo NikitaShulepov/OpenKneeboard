@@ -65,6 +65,30 @@ target_link_libraries(
 )
 
 add_utility_executable(
+  VDXROVR-VRMirror
+  WIN32
+  vr-mirror-window.cpp
+  icon.rc
+)
+target_link_libraries(
+  VDXROVR-VRMirror
+  PRIVATE
+  VDXROVR-Lib-Headers
+  System::D3d11
+  System::Dxgi
+  System::Mmdevapi
+  System::Ole32
+  System::User32
+  ThirdParty::DirectXTK
+)
+target_compile_options(
+  VDXROVR-VRMirror
+  PRIVATE
+  "/UNTDDI_VERSION"
+  "/DNTDDI_VERSION=NTDDI_WIN10_FE"
+)
+
+add_utility_executable(
   VDXROVR-Viewer
   WIN32
   viewer.cpp

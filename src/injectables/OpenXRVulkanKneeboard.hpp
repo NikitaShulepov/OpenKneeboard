@@ -22,6 +22,11 @@
 
 #include <d3d11_4.h>
 
+#include <array>
+#include <deque>
+#include <mutex>
+#include <vector>
+
 namespace VDXROVR {
 
 class OpenXRVulkanKneeboard final : public OpenXRKneeboard {
@@ -45,7 +50,26 @@ class OpenXRVulkanKneeboard final : public OpenXRKneeboard {
     PFN_vkGetInstanceProcAddr pfnVkGetInstanceProcAddr);
   ~OpenXRVulkanKneeboard();
 
+  void OnAppSwapchainCreated(
+    XrSwapchain swapchain,
+    const XrSwapchainCreateInfo& createInfo) override;
+  void OnAppSwapchainDestroyed(XrSwapchain swapchain) override;
+  void OnAppSwapchainImageAcquired(
+    XrSwapchain swapchain,
+    uint32_t imageIndex) override;
+  void OnAppSwapchainImageReleased(XrSwapchain swapchain) override;
+
  protected:
+  VRMirrorGraphicsApi GetMirrorGraphicsApi() const noexcept override {
+    return VRMirrorGraphicsApi::Vulkan;
+  }
+  bool CaptureMirrorFrame(
+    const OpenXRMirror::CaptureRequest& request,
+    std::vector<uint8_t>& outBgra,
+    uint32_t& outWidth,
+    uint32_t& outHeight,
+    uint32_t& outSourceWidth,
+    uint32_t& outSourceHeight) override;
   SHM::Reader& GetSHM() override;
   XrSwapchain CreateSwapchain(XrSession, const PixelSize&) override;
   void ReleaseSwapchainResources(XrSwapchain) override;
@@ -90,6 +114,43 @@ class OpenXRVulkanKneeboard final : public OpenXRKneeboard {
   std::optional<SwapchainResources> mSwapchainResources;
 
   std::unique_ptr<SHM::Vulkan::Reader> mSHM;
+
+  struct TrackedAppSwapchain {
+    uint32_t mWidth {0};
+    uint32_t mHeight {0};
+    uint32_t mArraySize {1};
+    uint32_t mSampleCount {1};
+    std::vector<VkImage> mImages;
+    std::deque<uint32_t> mAcquiredQueue;
+    uint32_t mLastReleasedIndex {0};
+    bool mHasReleased {false};
+  };
+
+  struct MirrorVulkanSlot {
+    VkCommandBuffer mCmdBuffer {VK_NULL_HANDLE};
+    unique_vk<VkFence> mFence;
+    unique_vk<VkImage> mBlitImage;
+    unique_vk<VkDeviceMemory> mBlitMemory;
+    unique_vk<VkBuffer> mReadbackBuffer;
+    unique_vk<VkDeviceMemory> mReadbackMemory;
+    uint32_t mWidth {0};
+    uint32_t mHeight {0};
+    bool mPending {false};
+  };
+
+  std::mutex mAppSwapchainsMutex;
+  std::unordered_map<uint64_t, TrackedAppSwapchain> mAppSwapchains;
+  unique_vk<VkCommandPool> mMirrorCommandPool;
+  std::array<MirrorVulkanSlot, 2> mMirrorSlots;
+  uint32_t mMirrorWriteIdx {0};
+
+  uint32_t FindMemoryType(
+    uint32_t typeBits,
+    VkMemoryPropertyFlags requiredFlags) const noexcept;
+  bool EnsureMirrorSlot(
+    MirrorVulkanSlot& slot,
+    uint32_t width,
+    uint32_t height) noexcept;
 
   void WaitForAllFences();
 };

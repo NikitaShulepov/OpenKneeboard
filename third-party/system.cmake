@@ -23,6 +23,8 @@ set(
   Comctl32
   Dxguid
   Gdi32
+  Mmdevapi
+  Ole32
   User32
   WindowsApp
 )

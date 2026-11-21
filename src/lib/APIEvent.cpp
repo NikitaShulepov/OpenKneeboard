@@ -256,6 +256,71 @@ VDXROVR_DEFINE_JSON(
   mMaxWidth,
   mMaxHeight);
 
+VDXROVR_DEFINE_JSON(
+  SetVRManipulatedTransformEvent,
+  mKneeboard,
+  mLayerID,
+  mX,
+  mEyeY,
+  mZ,
+  mRX,
+  mRY,
+  mRZ,
+  mHeadOffsetX,
+  mHeadOffsetY,
+  mHeadOffsetZ,
+  mHeadPitchDeg,
+  mHeadYawDeg,
+  mHandOffsetX,
+  mHandOffsetY,
+  mHandOffsetZ,
+  mHandPitchDeg,
+  mHandForwardX,
+  mHandForwardY,
+  mHandForwardZ,
+  mFollowMode,
+  mPinToHand,
+  mPinnedHand,
+  mMaxWidth,
+  mMaxHeight);
+
+NLOHMANN_JSON_SERIALIZE_ENUM(
+  VRContentPointerEvent::Action,
+  {
+    {VRContentPointerEvent::Action::Move, "Move"},
+    {VRContentPointerEvent::Action::PrimaryDown, "PrimaryDown"},
+    {VRContentPointerEvent::Action::PrimaryUp, "PrimaryUp"},
+    {VRContentPointerEvent::Action::Wheel, "Wheel"},
+    {VRContentPointerEvent::Action::Leave, "Leave"},
+  });
+VDXROVR_DEFINE_JSON(
+  VRContentPointerEvent,
+  mKneeboard,
+  mLayerID,
+  mAction,
+  mU,
+  mV,
+  mButtons,
+  mWheelDeltaY);
+
+NLOHMANN_JSON_SERIALIZE_ENUM(
+  VROverlayManageEvent::Action,
+  {
+    {VROverlayManageEvent::Action::SpawnNextTab, "SpawnNextTab"},
+    {VROverlayManageEvent::Action::CloseOverlay, "CloseOverlay"},
+  });
+VDXROVR_DEFINE_JSON(
+  VROverlayManageEvent,
+  mAction,
+  mKneeboard,
+  mLayerID,
+  mSpawnX,
+  mSpawnEyeY,
+  mSpawnZ,
+  mSpawnRX,
+  mSpawnRY,
+  mSpawnRZ);
+
 template <>
 void from_json_postprocess<ShowVRViewEvent>(
   const nlohmann::json& j,
